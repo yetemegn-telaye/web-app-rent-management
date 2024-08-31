@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import Sidebar from "../components/SideBar";
+import Header from "../components/Header";
 
 const LandlordLayout = ({ children }: { children: React.ReactNode }) => {
     return (
         <div className="min-h-screen bg-primary">
         {/* Navbar */}
-        <header className="bg-white shadow-lg px-6 py-4 flex justify-between items-center w-full">
+        {/* <header className="bg-white shadow-lg px-6 py-4 flex justify-between items-center w-full">
             <div className="flex items-center">
                 <button className="text-gray-700 focus:outline-none lg:hidden mr-4">
                     <i className="fas fa-bars"></i>
@@ -28,12 +29,12 @@ const LandlordLayout = ({ children }: { children: React.ReactNode }) => {
                     <span className="text-sm text-gray-700">Abebe Daniel</span>
                 </div>
             </div>
-        </header>
-
+        </header> */}
+        <Header />
         {/* Main Content Area */}
         <div className="flex text-sm">
             {/* Sidebar */}
-            <aside className="w-64 bg-white shadow-lg h-screen mt-1">
+            {/* <aside className="w-64 bg-white shadow-lg h-screen mt-1">
                 <div className="p-12">
                   
                     <nav className="space-y-2 text-primary-dark font-medium">
@@ -81,8 +82,8 @@ const LandlordLayout = ({ children }: { children: React.ReactNode }) => {
                         </div>
                     </nav>
                 </div>
-            </aside>
-
+            </aside> */}
+            <Sidebar />
             {/* Main Content */}
             <main className="flex-1 p-6">
                 {children}
