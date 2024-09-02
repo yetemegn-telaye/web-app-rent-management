@@ -8,7 +8,7 @@ module.exports = {
       colors: {
         primary: {
           DEFAULT: '#E6F0F0',  // Teal-like primary color
-          light: '#5EEAD4',    // Lighter shade of the primary color
+          light: '#E6F0F0',    // Lighter shade of the primary color
           dark: '#115E59',     // Darker shade of the primary color
         },
         secondary: {
