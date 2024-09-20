@@ -32,14 +32,16 @@ const AddTenant: React.FC = ()=>{
 
     return(
        <LandlordLayout>
-             <div className="flex flex-col lg:flex-row items-center justify-between p-8 my-4">
+             <div className="flex flex-col lg:flex-row items-center justify-between my-8 px-4 ">
                 <div className="flex flex-col items-start justify-between gap-2">
-                    <h1 className="text-xl lg:text-2xl font-semibold text-secondary-dark">Add Tenant</h1>
+                    <h1 className="text-xl lg:text-2xl font-semibold text-secondary-dark">
+    
+                        Add Tenant</h1>
                     <span className="text-sm lg:text-base text-gray-500 font-light">Add a new Tenant</span>
                 </div>
             
             </div>
-            <div>
+            <div className="px-4">
             <OptionsSection 
                         buttonOptions={buttonOptions} 
                         selectedOption={selectedOption} 

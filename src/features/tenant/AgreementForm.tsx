@@ -75,8 +75,8 @@ const AgreementForm: React.FC = () => {
        
     };
     return(
-       <form className="text-secondary-dark flex flex-col gap-6 py-8" onSubmit={handleSubmit}>
-              <div className="flex justify-between items-center mt-8">
+       <form className="text-secondary-dark flex flex-col mt-8 gap-6 py-8" onSubmit={handleSubmit}>
+              <div className="flex justify-between items-center">
               <div className="flex flex-col w-1/3 items-start gap-2">
                 <label className="font-medium text-sm">Listing Type</label>
                 <Dropdown label="Select Listing Type" options={spaceTypeOptions} onSelect={(value)=> handleChange('spaceType',value)} />
@@ -153,15 +153,26 @@ const AgreementForm: React.FC = () => {
             </div>
        
         </div>
-        <div className="flex flex-col gap-4 mt-8 w-1/2">
-        <h3 className="text-secondary-dark font-bold text-lg">Add Document Image</h3>
+        <div className="flex items-center gap-2">
+        <div className="flex flex-col gap-4 mt-8 w-1/3">
+        <h3 className="text-secondary-dark font-bold text-lg">Add Agreement Document</h3>
         <div className="flex w-full items-center gap-3">
         <ImageUploader label="Upload Or Drag Agreement Image" onImageUpload={handleFileUpload('agreementFile')} />
+       
+        </div>
+        <p className="text-secondary-light font-light text-sm">Each image should not exceed a maximum size of 10 MB.</p>
+        </div>
+
+        <div className="flex flex-col gap-4 mt-8 w-1/3">
+        <h3 className="text-secondary-dark font-bold text-lg">Add Deposit Slip Image</h3>
+        <div className="flex w-full items-center gap-3">
         <ImageUploader label="Upload Or Drag Deposit Slip Image" onImageUpload={handleFileUpload('depositSlipFile')} />
         
         </div>
         <p className="text-secondary-light font-light text-sm">Each image should not exceed a maximum size of 10 MB.</p>
-      </div>
+        </div>
+        </div>
+        
       <div className="flex justify-end">
       <button type="submit" className="text-white bg-primary-dark w-24 py-1 rounded-md font-bold">Next</button>
       </div>

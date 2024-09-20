@@ -63,8 +63,8 @@ const TenantProfileForm: React.FC = () => {
 
 
     return(
-        <form className="text-secondary-dark flex flex-col gap-6 py-8" onSubmit={handleSubmit}>
-        <div className="flex justify-between items-center gap-8">
+        <form className="text-secondary-dark flex flex-col mt-8 gap-6 py-8" onSubmit={handleSubmit}>
+        <div className="flex justify-between items-center gap-2">
             <div className="flex flex-col items-start gap-2 w-1/3">
                 <label className="font-medium text-sm">First Name</label>
                 <input type="text" className="w-full py-2 px-4 border border-gray-300 rounded-md" onChange={(e) => handleChange('firstName', e.target.value)}  placeholder="First Name"  />
@@ -78,7 +78,7 @@ const TenantProfileForm: React.FC = () => {
                 <input type="text" className="w-full py-2 px-4  border border-gray-300 rounded-md" onChange={(e) => handleChange('lastName', e.target.value)} placeholder="Last Name"  />
             </div>
         </div>
-        <div className="flex justify-between items-center gap-8">
+        <div className="flex items-center gap-2">
         <div className="flex flex-col items-start gap-2 w-1/3">
                 <label className="font-medium text-sm">Company Name</label>
                 <input type="text" className="w-full py-2 px-4 border border-gray-300 rounded-md" onChange={(e) => handleChange('companyName', e.target.value)} placeholder="Company Name"  />
@@ -89,19 +89,19 @@ const TenantProfileForm: React.FC = () => {
             </div>
  
                 
-                <div className="flex flex-col w-1/3 items-start gap-2">
+                {/* <div className="flex flex-col w-1/3 items-start gap-2">
                 <label className="font-medium text-sm">Listing Type</label>
                 <Dropdown label="Select Listing Type" options={spaceTypeOptions} onSelect={(value)=> handleChange('spaceType',value)} />
-                </div>
+                </div> */}
               
                 
          
         </div>
-        <div className="flex justify-between items-center gap-8">
-        <div className="flex flex-col w-1/3 items-start gap-2">
+        <div className="flex justify-start items-center gap-2">
+        {/* <div className="flex flex-col w-1/3 items-start gap-2">
                 <label className="font-medium text-sm">Listing ID</label>
                 <Dropdown label="Select ID" options={spaceIdOptions} onSelect={(value)=> handleChange('spaceId',value)} />
-                </div>
+                </div> */}
             <div className="flex flex-col items-start gap-2 w-1/3">
                 <label className="font-medium text-sm">Email</label>
                 <input type="email" className="w-full py-2 px-4 border border-gray-300 rounded-md" onChange={(e) => handleChange('tenantEmail', e.target.value)} placeholder="@some.com" /> 
@@ -110,20 +110,24 @@ const TenantProfileForm: React.FC = () => {
                 <label className="font-medium text-sm">Phone Number</label>
                 <div className="relative w-full">
                 <input type="text" className="w-full py-2 px-4 pl-12 border border-gray-300 rounded-md" onChange={(e) => handleChange('phoneNumber', e.target.value)} placeholder="Phone Number"  />
-                <FontAwesomeIcon icon={faPhone} className="absolute top-3 right-80"/>
+                <FontAwesomeIcon icon={faPhone} className="absolute top-3 left-5"/>
                 </div>
             </div>
        
         </div>
-        <div className="flex flex-col gap-4 mt-8 w-1/2">
-        <h3 className="text-secondary-dark font-bold text-lg">Add Document Image</h3>
-        <div className="flex w-full items-center gap-3">
-        <ImageUploader label="Upload Or Drag Agreement Image" onImageUpload={handleFileUpload('businessLicenseFile')} />
-        <ImageUploader label="Upload Or Drag Deposit Slip Image" onImageUpload={handleFileUpload('tenantIdFile')} />
-        
-        </div>
+        <div className="flex justify-start items-center gap-2">
+        <div className="flex flex-col gap-4 mt-8 w-1/3">
+        <h3 className="text-secondary-dark font-bold text-lg">Add Tenant Identfication</h3>
+        <ImageUploader label="Upload Or Drag Tenant Id Image" onImageUpload={handleFileUpload('businessLicenseFile')} />
         <p className="text-secondary-light font-light text-sm">Each image should not exceed a maximum size of 10 MB.</p>
       </div>
+      <div className="flex flex-col gap-4 mt-8 w-1/3">
+        <h3 className="text-secondary-dark font-bold text-lg">Add Business Licence</h3>
+        <ImageUploader label="Upload Or Drag Business License Image" onImageUpload={handleFileUpload('tenantIdFile')} /> 
+        <p className="text-secondary-light font-light text-sm">Each image should not exceed a maximum size of 10 MB.</p>
+      </div>
+        </div>
+        
       <div className="flex justify-end">
       <button type="submit" className="text-white bg-primary-dark w-24 py-1 rounded-md font-bold">Create</button>
       </div>

@@ -44,12 +44,12 @@ const CurrentStateForm: React.FC = () => {
     return (
         <form className="text-secondary-dark flex flex-col gap-6 py-8" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-4 mt-8 w-3/4">
-                <h3 className="text-secondary-dark font-bold text-lg">Add Images of Office OFF001</h3>
-                <div className="flex w-full items-center gap-3">
+                <h3 className="text-secondary-dark font-bold text-lg">Add Images of Space</h3>
+                <div className="flex w-1/3 items-center gap-3">
                     <ImageUploader key={key + 1} label="Upload Or Drag Listing Image" onImageUpload={handleFileUpload} />
-                    <ImageUploader key={key + 2} label="Upload Or Drag Listing 2 Image" onImageUpload={handleFileUpload} />
+                    {/* <ImageUploader key={key + 2} label="Upload Or Drag Listing 2 Image" onImageUpload={handleFileUpload} />
                     <ImageUploader key={key + 3} label="Upload Or Drag Listing 3 Image" onImageUpload={handleFileUpload} />
-                    <ImageUploader key={key + 4} label="Upload Or Drag Listing 4 Image" onImageUpload={handleFileUpload} />
+                    <ImageUploader key={key + 4} label="Upload Or Drag Listing 4 Image" onImageUpload={handleFileUpload} /> */}
                     <button><FontAwesomeIcon icon={faCirclePlus} className='text-3xl text-secondary-light hover:text-orange-600'/></button>
                 </div>
                 <p className="text-secondary-light font-light text-sm">Please Upload a minimum of 4 images, should not exceed a max size of 10MB.</p>
