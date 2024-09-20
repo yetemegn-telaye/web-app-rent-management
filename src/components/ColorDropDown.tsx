@@ -22,34 +22,15 @@ const ColorDropdown: React.FC<ColorDropdownProps> = ({ options, onSelect }) => {
     onSelect(option);
   };
 
-  const getColorClass = (color: string | null) => {
-    switch (color) {
-      case 'red':
-        return 'bg-red-500';
-      case 'blue':
-        return 'bg-blue-500';
-      case 'green':
-        return 'bg-green-500';
-      case 'yellow':
-        return 'bg-yellow-500';
-      case 'purple':
-        return 'bg-purple-500';
-      case 'gray':
-        return 'bg-gray-500';
-      default:
-        return 'bg-gray-300'; // Default color when no option is selected
-    }
-  };
-
   return (
     <div className="relative w-full">
       <button
         className={`w-full bg-white border ${
           isOpen ? 'border-primary-dark' : 'border-gray-300'
-        } text-gray-400 py-2 px-4 flex items-center justify-between focus:outline-none rounded-md`}
+        }  py-2 px-4 flex items-center justify-between focus:outline-none rounded-md`}
         onClick={toggleDropdown}
       >
-        <span>{selectedOption ? selectedOption : 'Choose Color'}</span>
+        <span className={`${selectedOption ? 'text-gray-700': 'text-gray-400'}`}>{selectedOption ? selectedOption : 'Choose Color'}</span>
         <div className="flex justify-between items-center gap-2">
           <div className={`w-4 h-4 rounded-full ${selectedOption ? 'bg-'+selectedOption+'-500' : selectedOption==='white' ? 'bg-pink-500 border border-primary-dark' : 'bg-gray-300'}`}></div>
           <FontAwesomeIcon icon={faChevronDown} />

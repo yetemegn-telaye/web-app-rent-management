@@ -32,7 +32,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, options,onSelect }) => {
         } text-gray-400 py-2 px-4 flex items-center justify-between focus:outline-none rounded-md`}
         onClick={toggleDropdown}
       >
-        <span>{selectedOption ? selectedOption : label}</span>
+        <span className={`${selectedOption ? 'text-gray-700': 'text-gray-400'}`}>{selectedOption ? selectedOption : label}</span>
         <FontAwesomeIcon icon={faChevronDown}/>
       </button>
       {isOpen && (
