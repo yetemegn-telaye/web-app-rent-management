@@ -23,6 +23,10 @@ module.exports = {
         warning: '#F59E0B',     // Yellow color for warning messages
         danger: '#EF4444',      // Red color for error messages
       },
+
+      fontFamily: {
+        'montserrat': ['Montserrat'],
+    }
     },
   },
   plugins: [],
