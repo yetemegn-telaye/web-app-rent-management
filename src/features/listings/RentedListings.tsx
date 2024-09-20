@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LandlordLayout from "../../layout/LandlordLayout";
 import { faEdit, faFilter, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
-import ListingCard from "../../components/ListingCard";
+import ListingCard from "./ListingCard";
 import image1 from '../../assets/images/office1.webp';
 import image2 from '../../assets/images/office2.jpg';
 import image3 from '../../assets/images/office3.jpg';

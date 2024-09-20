@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LandlordLayout from "../../layout/LandlordLayout";
 import { faEdit, faFilter, faUser, faTimes, faAdd } from "@fortawesome/free-solid-svg-icons";
-import ListingCard from "../../components/ListingCard";
+import ListingCard from "./ListingCard";
 import image1 from '../../assets/images/office1.webp';
 import image2 from '../../assets/images/office2.jpg';
 import image3 from '../../assets/images/office3.jpg';
@@ -17,7 +17,7 @@ interface Listing {
     floor: number;
     area: number;
     priceRange: string;
-    status: 'Open for rent' | 'Closed';
+    status: 'Open for rent' |'Occupied' | 'Closed';
     views: number;
     imageUrl: string;
 }
@@ -41,7 +41,7 @@ const listings: Listing[] = [
         floor: 2,
         area: 50,
         priceRange: '25,000 - 33,000',
-        status: 'Open for rent',
+        status: 'Occupied',
         views: 12,
         imageUrl: image2,
     },
@@ -85,7 +85,7 @@ const listings: Listing[] = [
         floor: 1,
         area: 50,
         priceRange: '25,000 - 33,000',
-        status: 'Open for rent',
+        status: 'Occupied',
         views: 42,
         imageUrl: image2,
     },

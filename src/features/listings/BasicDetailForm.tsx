@@ -54,6 +54,7 @@ const BasicDetailForm: React.FC<BasicDetailFormProps> = ({setSelectedOption})=>{
         event.preventDefault();
         setSelectedOption('Special Features');
         console.log('files uploaded', spaceCoverImg , spaceImages);
+        console.log('basic form data',formData);
         
     }
 
