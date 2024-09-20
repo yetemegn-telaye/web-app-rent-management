@@ -1,7 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface Listing {
   id: string;
+  spaceId: string;
   title: string;
   floor: number;
   area: number;
@@ -12,6 +14,8 @@ interface Listing {
 }
 
 const ListingCard: React.FC<Listing> = ({
+  id,
+  spaceId,
   title,
   floor,
   area,
@@ -34,10 +38,10 @@ const ListingCard: React.FC<Listing> = ({
       </div>
       <div className="mt-4">
         <div className='flex justify-between mt-2 text-gray-500 text-sm'>
-        <h3 className="font-bold text-secondary-dark text-lg">
-          {title}
-        </h3>
-        <span className="text-secondary-light">{views} views</span>
+          <h3 className="font-bold text-secondary-dark text-lg">
+            {title}
+          </h3>
+          <span className="text-secondary-light">{views} views</span>
         </div>
         <hr className='my-4'/>
         <div className="flex justify-between mt-2 text-gray-500 text-sm">
@@ -46,11 +50,14 @@ const ListingCard: React.FC<Listing> = ({
         </div>
         <div className="flex justify-between mt-2 text-gray-700 text-sm">
           <span>Price: {priceRange} ETB</span>
-         
         </div>
       </div>
       <div className="mt-4">
-        <button className="w-full bg-primary-dark hover:bg-secondary-dark text-white text-sm py-2 rounded-lg">View</button>
+        <Link to={`/listing-detail/${id}`}>
+          <button className="w-full bg-primary-dark hover:bg-secondary-dark text-white text-sm py-2 rounded-lg">
+            View
+          </button>
+        </Link>
       </div>
     </div>
   );
