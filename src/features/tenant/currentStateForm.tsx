@@ -43,7 +43,7 @@ const CurrentStateForm: React.FC = () => {
 
     return (
         <form className="text-secondary-dark flex flex-col gap-6 py-8" onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-4 mt-8 w-3/4">
+            <div className="flex flex-col gap-4 w-3/4">
                 <h3 className="text-secondary-dark font-bold text-lg">Add Images of Space</h3>
                 <div className="flex w-1/3 items-center gap-3">
                     <ImageUploader key={key + 1} label="Upload Or Drag Listing Image" onImageUpload={handleFileUpload} />

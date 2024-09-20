@@ -4,7 +4,12 @@ import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import ImageUploader from "../../components/ImageUploader";
 import { useState } from "react";
 
-const TenantProfileForm: React.FC = () => {
+
+type TenantProfileFormProps = {
+    setSelectedOption: (option: string) => void; 
+}
+
+const TenantProfileForm: React.FC<TenantProfileFormProps> = ({setSelectedOption}) => {
     const industryOptions = ['Construction', 'Media', 'Politics', 'Technology', 'Mining'];
     const spaceTypeOptions = ['Office 00F01, 2nd Floor', 'Commercial CM001, 1st Floor', 'Commercial CM002, 1st Floor'];
     const spaceIdOptions = ['0FFO1','0FF02','OFF03','0FFO1','0FF02','OFF03'];
@@ -58,12 +63,13 @@ const TenantProfileForm: React.FC = () => {
         }
 
         console.log("Entered data",formData,businessLicenseFile,tenantIdFile);
+        setSelectedOption('Current State of Listing');
        
     };
 
 
     return(
-        <form className="text-secondary-dark flex flex-col mt-8 gap-6 py-8" onSubmit={handleSubmit}>
+        <form className="text-secondary-dark flex flex-col gap-4 py-8" onSubmit={handleSubmit}>
         <div className="flex justify-between items-center gap-2">
             <div className="flex flex-col items-start gap-2 w-1/3">
                 <label className="font-medium text-sm">First Name</label>

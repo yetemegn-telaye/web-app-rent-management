@@ -6,22 +6,33 @@ import { useState } from "react";
 import AgreementForm from "./AgreementForm";
 import TenantProfileForm from "./TenantForm";
 import CurrentStateForm from "./currentStateForm";
+import StepperComponent from "../../components/FormStepper";
+import FormStepper from "../../components/FormStepper";
 
 
 const AddTenant: React.FC = ()=>{
     const buttonOptions = [
-        { label: 'Agreement Info', primary: true },
+        { label: 'Agreement Info' },
         { label: 'Tenant Info' },
         { label: 'Current State of Listing' },
     ];
     const [selectedOption, setSelectedOption] = useState(buttonOptions[0].label);
 
+    const [currentStep, setCurrentStep] = useState(0); 
+
+
+  const handleNextStep = (nextOption: string) => {
+    setSelectedOption(nextOption);
+    const nextStepIndex = buttonOptions.findIndex((option) => option.label === nextOption);
+    setCurrentStep(nextStepIndex); 
+  };
+
     const renderContent = () => {
         switch (selectedOption) {
             case 'Agreement Info':
-                return <AgreementForm/>;
+                return <AgreementForm setSelectedOption={() => handleNextStep('Tenant Info')}/>;
             case 'Tenant Info':
-                return <TenantProfileForm/>;
+                return <TenantProfileForm setSelectedOption={() => handleNextStep('Current State of Listing')}/>;
             case 'Current State of Listing':
                 return <CurrentStateForm/>;
             default:
@@ -41,14 +52,16 @@ const AddTenant: React.FC = ()=>{
                 </div>
             
             </div>
-            <div className="px-4">
-            <OptionsSection 
-                        buttonOptions={buttonOptions} 
-                        selectedOption={selectedOption} 
-                        onOptionSelected={(label) => setSelectedOption(label)} 
-                    />
-            </div>
-            <div className="flex flex-col h-full relative">
+            
+        
+                    <FormStepper
+          buttonOptions={buttonOptions}
+          selectedOption={selectedOption}
+          onOptionSelected={(label) => handleNextStep(label)}
+          activeStep={currentStep}
+        />
+
+            <div className="flex flex-col mt-10 h-full relative">
                         {renderContent()}
             </div>
        </LandlordLayout>

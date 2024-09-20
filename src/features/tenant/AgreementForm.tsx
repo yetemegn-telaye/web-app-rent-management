@@ -6,7 +6,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAreaChart, faCalendarAlt, faChartColumn, faChevronDown, faMoneyBill1Wave } from "@fortawesome/free-solid-svg-icons";
 import ImageUploader from "../../components/ImageUploader";
 
-const AgreementForm: React.FC = () => {
+type AgreementFormProps = {
+    setSelectedOption: (option: string) => void; 
+}
+
+const AgreementForm: React.FC<AgreementFormProps> = ({setSelectedOption}) => {
     const contractPeriodOptions: string[] = ['3 months', '6 months', '1 year', '2 year'];
     const paymentScheduleOptions: string[] = ['Every 1 month', 'Every 3 months', 'Every 6 months', 'Every year', 'Every 2 Years'];
     const spaceTypeOptions = ['Office 00F01, 2nd Floor', 'Commercial CM001, 1st Floor', 'Commercial CM002, 1st Floor'];
@@ -72,10 +76,11 @@ const AgreementForm: React.FC = () => {
         }
 
         console.log("entered data",formData,agreementFile,depositSlipFile);
+        setSelectedOption('Tenant Info');
        
     };
     return(
-       <form className="text-secondary-dark flex flex-col mt-8 gap-6 py-8" onSubmit={handleSubmit}>
+       <form className="text-secondary-dark flex flex-col gap-4 py-8" onSubmit={handleSubmit}>
               <div className="flex justify-between items-center">
               <div className="flex flex-col w-1/3 items-start gap-2">
                 <label className="font-medium text-sm">Listing Type</label>
