@@ -22,7 +22,7 @@ interface Listing {
     floor: number;
     area: number;
     priceRange: string;
-    status: 'Open for rent' | 'Closed';
+    status: 'Open for rent' | 'Closed'|'Occupied';
     views: number;
     imageUrl: string;
 }
@@ -57,7 +57,7 @@ const listings: Listing[] = [
         floor: 3,
         area: 100,
         priceRange: '33,000',
-        status: 'Closed',
+        status: 'Occupied',
         views: 22,
         imageUrl: image3,
     },
@@ -78,7 +78,7 @@ const ListingDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>(); 
     const listing = listings.find((listing) => listing.id === id);
     const [currentStatus, setCurrentStatus] = useState<string>('');
-    const statDropDownOptions = ['Open for rent', 'Closed'];
+    const statDropDownOptions = ['Open for rent', 'Occupied'];
 
     const buttonOptions = [
         { label: 'Features', primary: true },
@@ -103,7 +103,7 @@ const ListingDetail: React.FC = () => {
             case 'Features':
                 return <ListingFeatures />;
             case 'Document':
-                return <Agreement isClosed={listing?.status === 'Closed'} />;  {/* Pass isClosed prop */}
+                return <Agreement isClosed={listing?.status === 'Occupied'} />;  {/* Pass isClosed prop */}
             case 'Payments':
                 return <Payment userType='landlord'/>;
             case 'History':
