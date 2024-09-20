@@ -4,61 +4,36 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faMapPin } from '@fortawesome/free-solid-svg-icons';
 import Calendar from '../../components/Calendar';
 import OptionsSection from '../../components/OptionsSection';
+import SetOpenDate from './SetOpenDate';
+import ManagerProfile from './ManagerProfile';
 
 const Property: React.FC = () => {
-    const [startTime, setStartTime] = useState('14:30');
-    const [endTime, setEndTime] = useState('14:30');
-    const [repeat, setRepeat] = useState('Monday - Friday');
-    const [selectedDate, setSelectedDate] = useState<string | null>(null); 
-
-    const [savedValues, setSavedValues] = useState({
-        startTime: '',
-        endTime: '',
-        repeat: '',
-        date: ''
-    });
-    interface SelectedDate {
-        day: number;
-        month: number;
-        year: number;
-        dayName: string;
-    }
-
-    const handleStartTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setStartTime(event.target.value);
-    };
-
-    const handleEndTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEndTime(event.target.value);
-    };
-
-    const handleRepeatChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setRepeat(event.target.value);
-    };
-    const handleDateChange = (selectedDates: SelectedDate[]) => {
-        
-        console.log('Selected Dates:', selectedDates);
-       
-        const formattedDates = selectedDates.map(date => 
-            `${date.dayName}, ${date.day} - ${new Date(date.year, date.month).toLocaleString('default', { month: 'long' })} - ${date.year}`
-        ).join(', ');
     
-        console.log('Formatted Dates:', formattedDates);
+    const buttonOptions = [
+        { label: 'Set Open House Date' },
+        { label: 'View Manager' },
+        { label: 'Document' },
+    ];
+
+    const [selectedOption, setSelectedOption] = useState(buttonOptions[0].label);
+
+    const renderContent = () => {
+        switch (selectedOption) {
+            case 'Set Open House Date':
+                return <SetOpenDate />;
+            case 'View Manager':
+                return <ManagerProfile/>;
+            case 'Document':
+                return <p>sd</p>;
+            default:
+                return <div>df</div>;
+        }
     };
 
-    const handleSave = () => {
-        setSavedValues({
-            startTime,
-            endTime,
-            repeat,
-            date: selectedDate || 'No date selected'
-        });
-        alert('Values saved successfully!');
-    };
 
     return (
         <LandlordLayout>
-            <div className='flex items-center justify-between  p-3 my-4 overflow-auto'>
+            <div className='flex items-center justify-between p-3 my-4 overflow-auto'>
                 <div className='flex flex-col items-start justify-between gap-2'>
                     <h1 className="text-2xl font-semibold text-secondary-dark">Ambassador Mall</h1>
                     <span className='text-sm text-gray-500 font-light'>Property Detail</span>
@@ -69,17 +44,16 @@ const Property: React.FC = () => {
             </div>
 
             <div className="flex gap-4">
-                <div className="flex flex-col items-center p-4 w-2/5 bg-white ">
-                    
+                <div className="flex flex-col items-center p-4 w-2/5 bg-white">
                     <div className="flex w-full justify-between">
                         <img
                             className="w-3/4 h-72 object-cover rounded-lg"
                             src="https://via.placeholder.com/150"
                             alt="Property"
                         />
-                        <div className=" flex flex-col w-1/4 px-2 items-center gap-3 justify-start">
+                        <div className="flex flex-col w-1/4 px-2 items-center gap-3 justify-start">
                             <img
-                                className="w-full h-16  object-cover rounded-lg"
+                                className="w-full h-16 object-cover rounded-lg"
                                 src="https://via.placeholder.com/150"
                                 alt="Thumbnail"
                             />
@@ -132,76 +106,20 @@ const Property: React.FC = () => {
                     </div>
                 </div>
 
-               <div className='flex flex-col w-full'>
-         
-                    <OptionsSection/>
+                <div className='flex flex-col w-full'>
+                    <OptionsSection
+                        buttonOptions={buttonOptions}
+                        selectedOption={selectedOption}
+                        onOptionSelected={(label) => setSelectedOption(label)}
+                    />
               
-                <div className="flex flex-col h-4/5 border items-center justify-center bg-white  relative">
-                    
-                    <div className="mt-4 flex w-full items-center justify-between p-8 gap-8">
-                        {repeat === 'Custom' && <Calendar onDateChange={handleDateChange} />}
-                        
-                        <div className="flex-1 space-y-4">
-                            <div>
-                                <label className="text-sm font-semibold text-gray-500">Set Time</label>
-                                <div className="flex space-x-2">
-                                    <input
-                                        type="time"
-                                        value={startTime}
-                                        onChange={handleStartTimeChange}
-                                        className="p-2 border border-gray-300 rounded-md"
-                                    />
-                                    <input
-                                        type="time"
-                                        value={endTime}
-                                        onChange={handleEndTimeChange}
-                                        className="p-2 border border-gray-300 rounded-md"
-                                    />
-                                </div>
-                            </div>
-                            <div>
-                                <label className="text-sm font-semibold text-gray-500">Repeat</label>
-                                <select
-                                    value={repeat}
-                                    onChange={handleRepeatChange}
-                                    className="p-2 border border-gray-300 rounded-md w-full"
-                                >
-                                    <option>Monday - Friday</option>
-                                    <option>Weekends</option>
-                                    <option>Custom</option>
-                                </select>
-                            </div>
-                            <div className="mt-8 w-full text-center">
-                                <p className="text-gray-700 font-medium">Selected Time: {startTime} - {endTime}</p>
-                                <p className="text-gray-700 font-medium">Repeat: {repeat}</p>
-                                {repeat === 'Custom' && (
-                                    <p className="text-gray-700 font-medium">Selected Date: {selectedDate || 'No date selected'}</p>
-                                )}
-                            </div>
-                        </div>
+              <div className="flex flex-col w-full h-full items-center justify-center relative">
+                        {renderContent()}
                     </div>
-
-         
-                    <button 
-                        className="absolute bottom-4 right-4 bg-primary-dark text-white py-2 px-6 rounded-md"
-                        onClick={handleSave}
-                    >
-                        Save
-                    </button>
-                </div>
                 </div>
             </div>
 
-      
-            {savedValues.startTime && (
-                <div className="mt-4 p-4 bg-gray-100 border rounded-md">
-                    <h3 className="text-lg font-semibold text-gray-700">Saved Values</h3>
-                    <p><strong>Start Time:</strong> {savedValues.startTime}</p>
-                    <p><strong>End Time:</strong> {savedValues.endTime}</p>
-                    <p><strong>Repeat:</strong> {savedValues.repeat}</p>
-                    <p><strong>Date:</strong> {savedValues.date}</p>
-                </div>
-            )}
+         
         </LandlordLayout>
     );
 };
