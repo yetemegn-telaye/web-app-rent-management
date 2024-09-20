@@ -84,43 +84,41 @@ const TenantProfileForm: React.FC<TenantProfileFormProps> = ({setSelectedOption}
                 <input type="text" className="w-full py-2 px-4  border border-gray-300 rounded-md" onChange={(e) => handleChange('lastName', e.target.value)} placeholder="Last Name"  />
             </div>
         </div>
-        <div className="flex items-center gap-2">
-        <div className="flex flex-col items-start gap-2 w-1/3">
-                <label className="font-medium text-sm">Company Name</label>
-                <input type="text" className="w-full py-2 px-4 border border-gray-300 rounded-md" onChange={(e) => handleChange('companyName', e.target.value)} placeholder="Company Name"  />
-            </div>
-            <div className="flex flex-col items-start gap-2 w-1/3">
-                <label className="font-medium text-sm">Industry</label>
-                <Dropdown label="Select Industry" options={industryOptions} onSelect={(value)=> handleChange('industry', value)} />
-            </div>
- 
-                
-                {/* <div className="flex flex-col w-1/3 items-start gap-2">
-                <label className="font-medium text-sm">Listing Type</label>
-                <Dropdown label="Select Listing Type" options={spaceTypeOptions} onSelect={(value)=> handleChange('spaceType',value)} />
-                </div> */}
-              
-                
-         
-        </div>
+       {
+        formData.firstName !== '' && formData.lastName!=='' && formData.middleName!=='' ?
         <div className="flex justify-start items-center gap-2">
-        {/* <div className="flex flex-col w-1/3 items-start gap-2">
-                <label className="font-medium text-sm">Listing ID</label>
-                <Dropdown label="Select ID" options={spaceIdOptions} onSelect={(value)=> handleChange('spaceId',value)} />
-                </div> */}
-            <div className="flex flex-col items-start gap-2 w-1/3">
-                <label className="font-medium text-sm">Email</label>
-                <input type="email" className="w-full py-2 px-4 border border-gray-300 rounded-md" onChange={(e) => handleChange('tenantEmail', e.target.value)} placeholder="@some.com" /> 
-            </div>
-            <div className="flex flex-col items-start gap-2 w-1/3">
-                <label className="font-medium text-sm">Phone Number</label>
-                <div className="relative w-full">
-                <input type="text" className="w-full py-2 px-4 pl-12 border border-gray-300 rounded-md" onChange={(e) => handleChange('phoneNumber', e.target.value)} placeholder="Phone Number"  />
-                <FontAwesomeIcon icon={faPhone} className="absolute top-3 left-5"/>
-                </div>
-            </div>
-       
+     
+        <div className="flex flex-col items-start gap-2 w-1/3">
+            <label className="font-medium text-sm">Email</label>
+            <input type="email" className="w-full py-2 px-4 border border-gray-300 rounded-md" onChange={(e) => handleChange('tenantEmail', e.target.value)} placeholder="@some.com" /> 
         </div>
+        <div className="flex flex-col items-start gap-2 w-1/3">
+            <label className="font-medium text-sm">Phone Number</label>
+            <div className="relative w-full">
+            <input type="text" className="w-full py-2 px-4 pl-12 border border-gray-300 rounded-md" onChange={(e) => handleChange('phoneNumber', e.target.value)} placeholder="Phone Number"  />
+            <FontAwesomeIcon icon={faPhone} className="absolute top-3 left-5"/>
+            </div>
+        </div>
+   
+    </div>:null
+       }
+       
+        {
+            formData.tenantEmail !=='' && formData.phoneNumber!=='' ?
+            <div className="flex items-center gap-2">
+            <div className="flex flex-col items-start gap-2 w-1/3">
+                    <label className="font-medium text-sm">Company Name</label>
+                    <input type="text" className="w-full py-2 px-4 border border-gray-300 rounded-md" onChange={(e) => handleChange('companyName', e.target.value)} placeholder="Company Name"  />
+                </div>
+                <div className="flex flex-col items-start gap-2 w-1/3">
+                    <label className="font-medium text-sm">Industry</label>
+                    <Dropdown label="Select Industry" options={industryOptions} onSelect={(value)=> handleChange('industry', value)} />
+                </div> 
+            </div>: null
+        }
+
+       
+     
         <div className="flex justify-start items-center gap-2">
         <div className="flex flex-col gap-4 mt-8 w-1/3">
         <h3 className="text-secondary-dark font-bold text-lg">Add Tenant Identfication</h3>

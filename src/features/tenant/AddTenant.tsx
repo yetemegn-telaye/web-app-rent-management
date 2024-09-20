@@ -54,7 +54,7 @@ const AddTenant: React.FC = ()=>{
             </div>
             
         
-                    <FormStepper
+                <FormStepper
           buttonOptions={buttonOptions}
           selectedOption={selectedOption}
           onOptionSelected={(label) => handleNextStep(label)}

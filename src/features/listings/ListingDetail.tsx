@@ -22,10 +22,11 @@ interface Listing {
     floor: number;
     area: number;
     priceRange: string;
-    status: 'Open for rent' | 'Closed'|'Occupied';
+    status: 'Open for rent' | 'Closed'| 'Occupied';
     views: number;
     imageUrl: string;
 }
+
 
 const listings: Listing[] = [
     {
@@ -46,7 +47,7 @@ const listings: Listing[] = [
         floor: 2,
         area: 50,
         priceRange: '25,000 - 33,000',
-        status: 'Open for rent',
+        status: 'Occupied',
         views: 12,
         imageUrl: image2,
     },
@@ -57,7 +58,7 @@ const listings: Listing[] = [
         floor: 3,
         area: 100,
         priceRange: '33,000',
-        status: 'Occupied',
+        status: 'Closed',
         views: 22,
         imageUrl: image3,
     },
@@ -72,18 +73,40 @@ const listings: Listing[] = [
         views: 42,
         imageUrl: image2,
     },
+    {
+        id: '5',
+        spaceId: 'CM002',
+        title: 'Commercial(CM002)',
+        floor: 1,
+        area: 50,
+        priceRange: '25,000 - 33,000',
+        status: 'Open for rent',
+        views: 42,
+        imageUrl: image2,
+    },
+    {
+        id: '6',
+        spaceId: 'CM002',
+        title: 'Commercial(CM002)',
+        floor: 1,
+        area: 50,
+        priceRange: '25,000 - 33,000',
+        status: 'Occupied',
+        views: 42,
+        imageUrl: image2,
+    },
 ];
 
 const ListingDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>(); 
     const listing = listings.find((listing) => listing.id === id);
     const [currentStatus, setCurrentStatus] = useState<string>('');
-    const statDropDownOptions = ['Open for rent', 'Occupied'];
+    const statDropDownOptions = ['Open for rent', 'Occupied','Closed'];
 
     const buttonOptions = [
-        { label: 'Features', primary: true },
-        { label: 'Document' },
+        { label: 'Document',primary: true  },
         { label: 'History' },
+        { label: 'Features'},
     ];
    
     const handleSelectedStatus = (status: string) => {
@@ -91,9 +114,10 @@ const ListingDetail: React.FC = () => {
     }
 
     
-    if (listing?.status === 'Closed') {
-        buttonOptions.push({ label: 'Payments' });
-        buttonOptions.push({ label: 'Maintenance' });
+    if (listing?.status === 'Occupied') {
+        buttonOptions.unshift({ label: 'Maintenance' });
+        buttonOptions.unshift({ label: 'Payments' });
+       
     }
 
     const [selectedOption, setSelectedOption] = useState(buttonOptions[0].label);

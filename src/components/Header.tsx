@@ -27,6 +27,7 @@ export default function Header() {
             </div>
             <div className="hidden w-1/2 lg:flex items-center space-x-6 justify-end">
                 <div className="relative">
+                    
                     <span className="text-sm text-gray-500">ENGLISH</span>
                     <i className="fas fa-chevron-down text-gray-500"></i>
                 </div>

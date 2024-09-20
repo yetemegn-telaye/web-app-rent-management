@@ -68,38 +68,46 @@ const BasicDetailForm: React.FC<BasicDetailFormProps> = ({setSelectedOption})=>{
               
           
             </div>
-
-            <div className="flex justify-between items-center gap-8">
-            <div className="flex flex-col w-1/3 items-start gap-2">
-                <label className="font-medium text-sm">Floor</label>
-                <Dropdown label="Select Floor" options={floorOptions} onSelect={(value)=> handleChange('floor',value)} />
-                </div>
-            </div>
-
-            <div className="flex justify-between items-center gap-8">
+            {
+                formData.spaceType  !=='' ?
+                <div className="flex justify-between items-center gap-8">
+                <div className="flex flex-col w-1/3 items-start gap-2">
+                    <label className="font-medium text-sm">Floor</label>
+                    <Dropdown label="Select Floor" options={floorOptions} onSelect={(value)=> handleChange('floor',value)} />
+                    </div>
+                </div> : <></>
+            }
+         
+            {
+                 formData.floor !== '' ?
+                <div className="flex justify-between items-center gap-8">
             <div className="flex flex-col w-1/3 items-start gap-2">
                 <label className="font-medium text-sm">Space Number</label>
                 <Dropdown label="Select Office or Commercial Number" options={spaceIdOptions} onSelect={(value)=> handleChange('spaceId',value)} />
                 </div>
-            </div>
+            </div>: <></>
 
-            <div className="flex items-center gap-2">
-            <div className="flex flex-col w-1/3 items-start gap-2">
-                <label className="font-medium text-sm">Number of Rooms</label>
-                <input type="number" className="w-full py-2 px-4 border border-gray-300 rounded-md" onChange={(e) => handleChange('numRooms', e.target.value)} placeholder="Enter num. of rooms"  /> 
-            </div>
-            <div className="flex flex-col items-start gap-2 w-1/3">
-                <label className="font-medium text-sm">Area</label>
-                <div className="relative w-full">
-                <FontAwesomeIcon icon={faAreaChart} className="text-secondary absolute top-3 left-2" />
-                <input type="text" className="w-full py-2 px-4 pl-8 border border-gray-300 rounded-md" onChange={(e) => handleChange('area', e.target.value)} placeholder="Enter in Sq ft."  /> 
+            }
+            {
+                 formData.spaceId!=='' ?
+                <div className="flex items-center gap-2">
+                <div className="flex flex-col w-1/3 items-start gap-2">
+                    <label className="font-medium text-sm">Number of Rooms</label>
+                    <input type="number" className="w-full py-2 px-4 border border-gray-300 rounded-md" onChange={(e) => handleChange('numRooms', e.target.value)} placeholder="Enter num. of rooms"  /> 
                 </div>
-            </div>
-            </div>
+                <div className="flex flex-col items-start gap-2 w-1/3">
+                    <label className="font-medium text-sm">Area</label>
+                    <div className="relative w-full">
+                    <FontAwesomeIcon icon={faAreaChart} className="text-secondary absolute top-3 left-2" />
+                    <input type="text" className="w-full py-2 px-4 pl-8 border border-gray-300 rounded-md" onChange={(e) => handleChange('area', e.target.value)} placeholder="Enter in Sq ft."  /> 
+                    </div>
+                </div>
+                </div>: <></>
 
-
-
-            <div className="flex justify-between items-center gap-8">
+            }
+            {
+                formData.numRooms !== 0 && formData.area !== '' ?
+                <div className="flex justify-between items-center gap-8">
                 <div className="flex gap-1 w-1/3 justify-evenly mr-4">
                 <div className="flex flex-col w-1/2 items-start gap-2">
                 <label htmlFor="minPrice" className="block text-sm font-medium text-gray-700">Minimum Price</label>
@@ -123,7 +131,14 @@ const BasicDetailForm: React.FC<BasicDetailFormProps> = ({setSelectedOption})=>{
             </div>
                 </div>
 
-            </div>
+            </div>: <></>
+            }
+
+         
+
+
+
+           
 
 
 
