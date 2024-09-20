@@ -49,7 +49,7 @@ const AddListing: React.FC = () => {
           activeStep={currentStep} 
         />
 
-        <div className="flex flex-col h-full mt-10 relative">
+        <div className="flex flex-col h-100vh relative">
           {renderContent()}
         </div>
       </div>

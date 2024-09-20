@@ -37,7 +37,7 @@ const SpecialFeatureForm : React.FC = ()=>{
 
     }
     return(
-        <form className="text-secondary-dark flex flex-col gap-4 py-8" onSubmit={handleSubmit}>
+        <form className="text-secondary-dark flex flex-col gap-4" onSubmit={handleSubmit}>
             <div className="flex items-center gap-2">
             {/* <div className="flex flex-col items-start gap-2 w-1/3">
                 <label className="font-medium text-sm">Surveillance Camera</label>
