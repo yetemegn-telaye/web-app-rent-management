@@ -1,6 +1,7 @@
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faBell } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
@@ -28,6 +29,11 @@ export default function Header() {
                 <div className="relative">
                     <span className="text-sm text-gray-500">ENGLISH</span>
                     <i className="fas fa-chevron-down text-gray-500"></i>
+                </div>
+                <div className='relative'>
+                    <Link to="/notifications" className='hover:bg-opacity-20'>
+                    <FontAwesomeIcon icon={faBell} className="text-primary-dark" />
+                    </Link>
                 </div>
                 <div className="flex items-center space-x-2 text-sm"> 
                     <img
