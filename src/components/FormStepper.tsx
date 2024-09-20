@@ -13,7 +13,9 @@ interface StepperProps {
 const FormStepper: React.FC<StepperProps> = ({ buttonOptions, selectedOption, onOptionSelected, activeStep }) => {
 
   const handleStepChange = (stepIndex: number) => {
-    onOptionSelected(buttonOptions[stepIndex].label); 
+    if (stepIndex > activeStep) {
+        onOptionSelected(buttonOptions[stepIndex].label); 
+      }
   };
 
   return (
