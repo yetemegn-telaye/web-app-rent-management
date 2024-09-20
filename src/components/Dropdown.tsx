@@ -6,24 +6,30 @@ import React, { useState } from 'react';
 interface DropdownProps {
   label: string;
   options: string[];
+  onSelect: (option: string) => void;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ label, options }) => {
+const Dropdown: React.FC<DropdownProps> = ({ label, options,onSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
-  const toggleDropdown = () => setIsOpen(!isOpen);
+  const toggleDropdown = (event: React.MouseEvent) => {
+    event.preventDefault();
+    setIsOpen(!isOpen);
+  };
+
   const selectOption = (option: string) => {
     setSelectedOption(option);
     setIsOpen(false);
+    onSelect(option);
   };
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <button
-        className={`w-40 bg-white border ${
+        className={`w-full bg-white border ${
           isOpen ? 'border-primary-dark' : 'border-gray-300'
-        } text-gray-700 py-2 px-4 flex items-center justify-between focus:outline-none rounded-md`}
+        } text-gray-400 py-2 px-4 flex items-center justify-between focus:outline-none rounded-md`}
         onClick={toggleDropdown}
       >
         <span>{selectedOption ? selectedOption : label}</span>

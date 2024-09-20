@@ -98,32 +98,32 @@ const Calendar: React.FC<CalendarProps> = ({ onDateChange }) => {
     };
 
     return (
-        <div className="flex-1">
+        <div className="flex-1 bg-primary-light">
             <div className="border rounded-lg p-4 relative">
-                <div className="flex justify-between items-center">
-                    <h4 className="text-sm font-semibold text-gray-500">
-                        {new Date(year, month).toLocaleString('default', { month: 'long' })} {year}
-                    </h4>
-                    <div className="space-x-2">
+                
+                    <div className="flex justify-between items-center space-x-2">
                         <button onClick={handlePreviousMonth}>
                             <FontAwesomeIcon icon={faChevronLeft} />
                         </button>
+                        <h4 className="text-sm font-semibold text-primary-dark">
+                        {new Date(year, month).toLocaleString('default', { month: 'long' })} {year}
+                    </h4>
                         <button onClick={handleNextMonth}>
                             <FontAwesomeIcon icon={faChevronRight} />
                         </button>
                     </div>
-                </div>
+               
                 <div className="mt-2 grid grid-cols-7 gap-2">
-                    {/* Render the day names */}
+                   
                     {dayNames.map((dayName, index) => (
                         <div
                             key={index}
-                            className="flex justify-center items-center h-8 w-8 text-sm font-semibold"
+                            className="flex justify-center text-accent items-center h-8 w-8 text-sm font-semibold"
                         >
                             {dayName}
                         </div>
                     ))}
-                    {/* Render the calendar grid */}
+                   
                     {dates.map((date, index) => (
                         <div
                             key={index}
