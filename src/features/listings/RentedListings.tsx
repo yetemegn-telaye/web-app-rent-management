@@ -11,6 +11,7 @@ import Dropdown from "../../components/Dropdown";
 
 interface Listing {
     id: string;
+    spaceId: string;
     title: string;
     floor: number;
     area: number;
@@ -23,6 +24,7 @@ interface Listing {
 const listings: Listing[] = [
     {
         id: 'OFF001',
+        spaceId: 'OFF001',
         title: 'Office(OFF001)',
         floor: 2,
         area: 50,
@@ -33,6 +35,7 @@ const listings: Listing[] = [
     },
     {
         id: 'CM001',
+        spaceId: 'CM001',
         title: 'Commercial(CM001)',
         floor: 2,
         area: 50,
@@ -43,6 +46,7 @@ const listings: Listing[] = [
     },
     {
         id: 'OFF002',
+        spaceId: 'OFF002',
         title: 'Office(OFF002)',
         floor: 3,
         area: 100,
@@ -56,10 +60,16 @@ const listings: Listing[] = [
 
 const RentedListings: React.FC = () => {
     const [isFilterVisible, setIsFilterVisible] = useState(false);
+    const dropDownOptions = ['All', 'Available', 'Rented'];
+    const [selectedTypeOption, setSelectedTypeOption] = useState('All');
 
+    const handleSelectedTypeOption = (selectedTypeOption: string) => {
+        setSelectedTypeOption(selectedTypeOption);
+    }
     const toggleFilter = () => {
         setIsFilterVisible(!isFilterVisible);
     };
+  
 
     return (
         <LandlordLayout>
@@ -77,7 +87,7 @@ const RentedListings: React.FC = () => {
                     </button>
                 </div>
             </div>
-            <div className="flex justify-end gap-4 my-8">
+            <div className="flex w-1/3 justify-end gap-4 my-8">
             <button
                         type="button"
                         className="bg-primary-dark bg-opacity-15 text-secondary-dark p-2 rounded-lg ml-2 flex items-center"
@@ -86,7 +96,7 @@ const RentedListings: React.FC = () => {
                         <FontAwesomeIcon icon={isFilterVisible ? faTimes : faFilter} />
                         {isFilterVisible ? ' Close Filters' : ' Filter'}
                     </button>
-            <Dropdown label="All" options={['All', 'Available', 'Rented']} />
+            <Dropdown label="All" options={dropDownOptions} onSelect={handleSelectedTypeOption} />
             </div>
             {isFilterVisible && <FilterSection />}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
