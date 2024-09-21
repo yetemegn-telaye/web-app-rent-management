@@ -1,5 +1,6 @@
 import { useState } from "react";
 import buildingImg from '../../assets/images/ambassador1.webp';
+import { useNavigate } from "react-router-dom";
 
 interface FormData {
     email: string;
@@ -8,6 +9,7 @@ interface FormData {
 
 const Login = () => {
     const [loginFormData, setLoginFormData] = useState<FormData>({ email: '', password: '' });
+    const navigate = useNavigate();
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setLoginFormData({ ...loginFormData, [name]: value });
@@ -15,6 +17,7 @@ const Login = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log(loginFormData);
+        navigate('/getting-started');
     }
 
     return (

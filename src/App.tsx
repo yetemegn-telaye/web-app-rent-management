@@ -15,12 +15,14 @@ import AddListing from './features/listings/AddListing';
 import MyRent from './features/rentedTenantView';
 import Settings from './features/settings';
 import Dashboard from './features/dashboard';
+import OnboardingScreen from './features/onbaordingScreeen';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/getting-started" element={<OnboardingScreen />} />
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/property" element={<Property />} />
         <Route path="/all-listing" element={<Listings/>} />
