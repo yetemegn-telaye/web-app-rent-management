@@ -11,8 +11,8 @@ interface RecentMaintenanceRequestsProps {
 }
 
 const RecentMaintenanceRequestComponent: React.FC<RecentMaintenanceRequestsProps> = ({ requests }) => (
-  <div className="card">
-    <h2>Recent Maintenance Requests</h2>
+  <div className="bg-white h-full p-4 rounded-md shadow-xl">
+    <h2 className="text-lg font-mediun text-secondary-dark">Recent Maintenance Requests</h2>
     {requests.map((request, index) => (
       <div key={index}>
         <p>{request.type} - {request.status}</p>
