@@ -22,7 +22,7 @@ const Login = () => {
 
     return (
         <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
-            {/* Left Section */}
+  
             <div className="flex flex-col justify-between w-full lg:w-1/2 bg-gray-100 p-8 lg:p-24">
                 <div className="mb-12">
                     <div className="flex items-center mb-6">
@@ -118,7 +118,6 @@ const Login = () => {
                 </p>
             </div>
 
-            {/* Right Section */}
             <div className="lg:w-1/2 hidden lg:block relative">
                 <div
                     className="absolute inset-0 transform -skew-x-12 origin-bottom-left"

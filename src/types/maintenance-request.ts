@@ -1,4 +1,4 @@
-export interface Root {
+export interface MaintenanceRequest {
     pictures: string[]
     estimated_price: number
     priority: string

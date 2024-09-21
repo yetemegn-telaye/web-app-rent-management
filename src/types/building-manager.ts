@@ -1,4 +1,4 @@
-export interface createBuildingManager {
+export interface BuildingManager {
     first_name: string
     middle_name: string
     last_name: string

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import LandlordLayout from '../../layout/LandlordLayout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faUserAlt } from '@fortawesome/free-solid-svg-icons';
 import OptionsSection from '../../components/OptionsSection';
 import image1 from '../../assets/images/office1.webp';
 import image2 from '../../assets/images/office2.jpg';
@@ -147,9 +147,7 @@ const ListingDetail: React.FC = () => {
                     <span className="text-sm lg:text-base text-gray-500 font-light">Listing detail page for ID: {id}</span>
                 </div>
                 <div className="space-x-4 mt-4 lg:mt-0">
-                    <button className="bg-red-700 px-4 py-1 font-light text-white rounded-md">
-                        <FontAwesomeIcon icon={faTrash} /> Remove
-                    </button>
+                   
                     <button className="bg-primary-dark px-4 py-1 font-light text-white rounded-md">
                         <FontAwesomeIcon icon={faEdit} /> Edit
                     </button>
@@ -178,12 +176,15 @@ const ListingDetail: React.FC = () => {
                                 <Dropdown label={listing!.status} options={statDropDownOptions} onSelect={handleSelectedStatus} />
                             </div>
                         </div>
-                        {listing?.status === 'Closed' && (
-                            <div className="mt-4">
-                                <button className="w-full py-2 px-4 bg-primary-dark hover:bg-secondary-dark text-white rounded-md">View Tenant</button>
+                        {listing?.status === 'Occupied' && (
+                            <div className="mt-4 text-center">
+                                <button className=" py-2 px-4 bg-primary-dark hover:bg-secondary-dark text-white rounded-md">
+                                    <FontAwesomeIcon icon={faUserAlt} className='mr-3'/>
+                                    Contact Tenant</button>
                             </div>
                         )}
                     </div>
+                   
                 </div>
 
                 <div className="flex flex-col w-full">

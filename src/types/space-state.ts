@@ -1,4 +1,4 @@
-export interface Root {
+export interface SpaceState {
     surveillance_camera: number
     previous_use: string
     balcony: number

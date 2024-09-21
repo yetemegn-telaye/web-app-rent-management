@@ -1,4 +1,4 @@
-export interface Root {
+export interface Building {
     lease_start_date: string
     lease_end_date: string
     business_type: string

@@ -116,7 +116,7 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, onViewClick,userT
                 payment.status === 'Delayed' && userType === 'landlord' ? (
                   <button 
                     className="bg-danger text-white hover:bg-red-600 px-4 py-1 rounded-md" 
-                    onClick={() => handlePayClick(payment.invoiceId)}
+                    onClick={() => alert('Tenant has been alerted successfully!')}
                   >
                     Alert 
                   </button>

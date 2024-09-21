@@ -1,4 +1,4 @@
-export interface Root {
+export interface Payment {
     status: string
     payment_price: number
     penalty_amount: number
