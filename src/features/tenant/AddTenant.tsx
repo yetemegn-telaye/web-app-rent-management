@@ -3,7 +3,7 @@ import LandlordLayout from "../../layout/LandlordLayout";
 import { faClose, faTrash } from "@fortawesome/free-solid-svg-icons";
 import OptionsSection from "../../components/OptionsSection";
 import { useState } from "react";
-import AgreementForm from "./AgreementForm";
+import AgreementForm from "../agreement/AgreementForm";
 import TenantProfileForm from "./TenantForm";
 import CurrentStateForm from "./currentStateForm";
 import StepperComponent from "../../components/FormStepper";
