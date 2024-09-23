@@ -5,7 +5,6 @@ import Login from './features/auth/Login';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Property from './features/property';
 import Listings from './features/listings';
-import RentedListings from './features/listings/RentedListings';
 import ListingDetail from './features/listings/ListingDetail';
 import AllPayment from './features/payment/AllPayment';
 import Notifications from './features/notifications';
@@ -27,7 +26,6 @@ function App() {
         <Route path="/property" element={<Property />} />
         <Route path="/all-listing" element={<Listings/>} />
         <Route path="/add-listing" element={<AddListing/>}/>
-        <Route path="/rented-listings" element={<RentedListings/>} />
         <Route path="/listing-detail/:id" element={<ListingDetail/>} />
         <Route path="/all-payments" element={<AllPayment/>} />
         <Route path="/add-tenant" element={<AddTenant/>} />

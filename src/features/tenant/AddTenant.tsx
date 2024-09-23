@@ -8,9 +8,13 @@ import TenantProfileForm from "./TenantForm";
 import CurrentStateForm from "./currentStateForm";
 import StepperComponent from "../../components/FormStepper";
 import FormStepper from "../../components/FormStepper";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../redux/store";
+import { RootState } from "../../redux/store";
 
 
 const AddTenant: React.FC = ()=>{
+
     const buttonOptions = [
         { label: 'Agreement Info' },
         { label: 'Tenant Info' },

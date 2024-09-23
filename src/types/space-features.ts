@@ -1,16 +1,27 @@
-export interface SpaceFeatures {
-    surveillance_camera: number
+export interface CreateSpaceFeature {
+    surveillance_camera: boolean
     previous_use: string
-    balcony: number
-    natural_light: number
-    high_ceiling: number
-    neighborhood_businesses: string
+    balcony: boolean
+    furnished: boolean
+    natural_light: boolean
+    high_ceiling: boolean
+    wall_paint: string
     position_on_building: string
-    near_elevator: number
-    near_main_entrance: number
-    near_stairs: number
-    busy_corridor: number
-    corner: number
+    conference_rooms: number
     space_id: number
   }
   
+
+export interface SpaceFeature {
+    id: number
+    surveillance_camera: boolean
+    previous_use: string
+    balcony: boolean
+    furnished: boolean
+    natural_light: boolean
+    high_ceiling: boolean
+    wall_paint: string
+    position_on_building: string
+    conference_rooms: number
+    space_id: number
+  }

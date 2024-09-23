@@ -1,0 +1,20 @@
+import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "../features/auth/authSlice";
+import listingReducer from "../features/listings/listingSlice";
+import agreementReducer from "../features/agreement/agreementSlice";
+import baseApi from "../utils/api";
+import { useSelector, TypedUseSelectorHook } from "react-redux";
+
+export const store = configureStore({
+    reducer:{
+        auth: authReducer,
+        listing: listingReducer,
+        agreement: agreementReducer,
+        [baseApi.reducerPath]: baseApi.reducer
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseApi.middleware)
+});
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

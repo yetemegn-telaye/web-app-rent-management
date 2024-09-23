@@ -2,9 +2,13 @@ import { faBars, faBell } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { AppDispatch, useAppSelector } from '../redux/store';
+import { useDispatch } from 'react-redux';
 
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
+    const {user} = useAppSelector(state => state.auth);
+    const dispatch = useDispatch<AppDispatch>();
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -43,8 +47,8 @@ export default function Header() {
                         alt="Manager"
                     />
                     <div className='flex flex-col font-light items-start'>
-                    <span className="text-sm text-gray-700 ">Abebe Daniel</span>
-                    <span className="text-sm text-gray-700">Manager</span>
+                    <span className="text-sm text-gray-700 ">{user.name} {user.email}</span>
+                    <span className="text-sm text-gray-700">{user.role}</span> 
                     </div>
                 </div>
             </div>
