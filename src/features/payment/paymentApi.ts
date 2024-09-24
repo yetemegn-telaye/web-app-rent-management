@@ -1,4 +1,4 @@
-import { CreateLease, Lease } from "../../types/lease";
+
 import { ApprovePayment, MakePayment } from "../../types/payment";
 import baseApi from "../../utils/api";
 
