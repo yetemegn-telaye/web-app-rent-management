@@ -4,7 +4,7 @@ import PaymentModal from './PaymentModal';
 import PayModal from './PayModal';
 import SuccessModal from '../../components/SuccesModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faCheckCircle, faEye } from '@fortawesome/free-solid-svg-icons';
 
 interface PaymentRecord {
   invoiceId: string;
@@ -13,6 +13,7 @@ interface PaymentRecord {
   amount: string;
   totalAmount: string;
   status: string;
+  paid_by: string;
 }
 
 interface PaymentTableProps {
@@ -92,7 +93,7 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, onViewClick,userT
         </thead>
         <tbody>
           {payments.map((payment, index) => (
-            <tr key={index} className={`${payment.status === 'Delayed' ? 'border border-danger border-opacity-15 rounded-xl bg-red-100 animate-pulse' : ''}`}>
+            <tr key={index} className={`border-b hover:bg-primary  ${payment.status === 'Delayed' ? 'border border-danger border-opacity-15 rounded-xl bg-red-100 animate-pulse' : ''}`}>
               <td className="p-2 text-center">{payment.status === 'Delayed' ?'-' : payment.invoiceId}</td>
               <td className="p-2">{payment.date}</td>
               <td className="p-2">{payment.utility}</td>
@@ -102,7 +103,7 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, onViewClick,userT
                 {payment.status}
               </td>
               <td className={`p-2`}>
-                {payment.status==='paid' ? 'paid by tenant' : ''}
+                {payment.status==='paid' ? payment.paid_by : '-'}
               </td>
               <td className="p-2">
                 {payment.status === 'Delayed' && userType === 'tenant' ? (
@@ -121,6 +122,16 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, onViewClick,userT
                     Alert 
                   </button>
                 ):
+                payment.status === 'waiting for approval' && userType === 'landlord' ? (
+                  <button 
+                    className="bg-secondary-light flex items-center text-white hover:bg-orange-500 px-2 py-1 rounded-md" 
+                    onClick={() => alert('Payment has been approved successfully!')}
+                  >
+                     <FontAwesomeIcon icon={faCheckCircle} className='size-3 mr-2'/>
+                    Approve
+                   
+                  </button>
+                ):
                 (
                   <button 
                     className="bg-primary-dark text-white hover:bg-secondary-dark px-4 py-1 rounded-md" 
@@ -131,7 +142,12 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, onViewClick,userT
                 )}
               </td>
             </tr>
+            
           ))}
+          <tr className="bg-gray-100 rounded-xl font-bold">
+            <td colSpan={8} className="text-right text-lg px-4 py-4"><span className='text-gray-400 font-light mr-2'>Total Rent Collected:</span> 988,0998 ETB</td>
+            <td ></td>
+          </tr>
         </tbody>
       </table>
       <div className="flex justify-end mt-4 mr-10">

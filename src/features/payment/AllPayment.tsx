@@ -5,16 +5,16 @@ import LandlordLayout from "../../layout/LandlordLayout"
 import FilterPayment from "./FilterPayment";
 
 const payments = [
-    { invoiceId: '-', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'Delayed' },
-    { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid' },
-    { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid' },
-    { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid' },
-    { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid' },
-    { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid' },
-      { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid' },
-      { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid' },
-      { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid' },
-      { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid' },
+    { invoiceId: '-', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'Delayed', paid_by: 'abebe' },
+    { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid', paid_by: 'abebe'  },
+    { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid', paid_by: 'abebe'  },
+    { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid', paid_by: 'abebe'  },
+    { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid', paid_by: 'abebe'  },
+    { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid', paid_by: 'abebe'  },
+      { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid', paid_by: 'abebe'  },
+      { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid', paid_by: 'abebe'  },
+      { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid', paid_by: 'abebe'  },
+      { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid', paid_by: 'abebe'  },
   ];
   
 

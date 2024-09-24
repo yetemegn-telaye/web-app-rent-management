@@ -30,7 +30,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, payment })
 
         <div className="flex p-4 rounded-lg shadow-sm">
         
-          <div className="w-1/3 flex items-start justify-center">
+          <div className=" w-1/3 flex items-start justify-center">
             <img
               src="https://via.placeholder.com/150" 
               alt="Rental Agreement"
