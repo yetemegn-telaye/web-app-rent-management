@@ -3,6 +3,7 @@ import LandlordLayout from "../../layout/LandlordLayout";
 import MaintenanceCard from "./MaintenanceCard";
 import { useState } from "react";
 import RequestWorkOrder from "./RequestWorkOrder";
+import plumbingImg from '../../assets/images/plumbing.webp';
 
 
 const maintainanceRequests = [
@@ -11,7 +12,7 @@ const maintainanceRequests = [
       spaceId: 'OFF01',
       spaceType: 'Office',
       damageType: 'Plumbing Fix',
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: plumbingImg,
       status: 'Pending',
       requestDate: '2 days ago',
       acceptDate: 'sept 14 2024',
@@ -23,8 +24,8 @@ const maintainanceRequests = [
       spaceId: 'OFF01',
       spaceType: 'Commercial',
       damageType: 'Plumbing Fix',
-      imageUrl: 'https://via.placeholder.com/150',
-      status: 'Started',
+      imageUrl: plumbingImg,
+      status: 'waiting for approval',
       requestDate: '2 days ago',
       acceptDate: 'sept 14 2024',
       startDate: 'sept 15 2024',
@@ -35,8 +36,8 @@ const maintainanceRequests = [
       spaceId: 'OFF01',
       spaceType: 'Commercial',
       damageType: 'Plumbing Fix',
-      imageUrl: 'https://via.placeholder.com/150',
-      status: 'Done',
+      imageUrl: plumbingImg,
+      status: 'waiting to be started',
       requestDate: '2 days ago',
       acceptDate: 'sept 14 2024',
       startDate: 'sept 15 2024',
@@ -47,7 +48,7 @@ const maintainanceRequests = [
       spaceId: 'OFF01',
       spaceType: 'Commercial',
       damageType: 'Plumbing Fix',
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl: plumbingImg,
       status: 'Canceled',
       requestDate: '2 days ago',
       acceptDate: 'sept 14 2024',
