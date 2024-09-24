@@ -159,7 +159,7 @@ const MyRent: React.FC = () => {
             case 'Maintenance':
                 return <Maintenance userType='tenant' />;
             case 'Special Features':
-                    return <ListingFeatures/>;
+                    return <ListingFeatures spaceId={0}/>;
             default:
                 return <div></div>;
         }

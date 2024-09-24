@@ -1,13 +1,37 @@
-export interface Root {
+export interface CreateMaintenanceRequest {
     pictures: string[]
-    estimated_price: number
     priority: string
     description: string
-    maintenance_team: string
     maintenance_type: string
     status: string
-    tenant_id: number
+    user_id: number
     space_id: number
-    building_manager_id: number
   }
   
+
+  export interface Maintenance {
+    id: number
+    pictures: string[]
+    priority: string
+    description: string
+    maintenance_type: string
+    status: string
+    user_id: number
+    space_id: number
+  }
+
+  export interface StartMaintenanceFix{
+    request_id: number
+    status: string
+  }
+
+  export interface CompleteMaintenance {
+    request_id: number
+    fixed_images: string[]
+  }
+
+  export interface ApproveMaintenanceRequest {
+    user_id: number
+    request_id:number
+    status: string
+  }

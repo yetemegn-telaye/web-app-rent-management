@@ -1,5 +1,11 @@
 import { useState } from "react";
 import buildingImg from '../../assets/images/ambassador1.webp';
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "./authSlice";
+import { AppDispatch } from "../../redux/store";
+import { RootState } from "../../redux/store";
+
 
 interface FormData {
     email: string;
@@ -8,18 +14,31 @@ interface FormData {
 
 const Login = () => {
     const [loginFormData, setLoginFormData] = useState<FormData>({ email: '', password: '' });
+    const navigate = useNavigate();
+    const dispatch = useDispatch<AppDispatch>();
+    const {isLoading, error, user} = useSelector((state: RootState) => state.auth);
+
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setLoginFormData({ ...loginFormData, [name]: value });
     }
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit =  (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(loginFormData);
+        const {email,password} = loginFormData;
+        dispatch(loginUser({ email, password }))
+        .unwrap()
+        .then(() => {
+            navigate('/getting-started');
+        })
+        .catch(() => {
+            console.log('An error occured');
+        });
     }
 
     return (
         <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
-            {/* Left Section */}
+  
             <div className="flex flex-col justify-between w-full lg:w-1/2 bg-gray-100 p-8 lg:p-24">
                 <div className="mb-12">
                     <div className="flex items-center mb-6">
@@ -115,7 +134,6 @@ const Login = () => {
                 </p>
             </div>
 
-            {/* Right Section */}
             <div className="lg:w-1/2 hidden lg:block relative">
                 <div
                     className="absolute inset-0 transform -skew-x-12 origin-bottom-left"

@@ -1,100 +1,127 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LandlordLayout from "../../layout/LandlordLayout";
 import { faEdit, faFilter, faUser, faTimes, faAdd } from "@fortawesome/free-solid-svg-icons";
-import ListingCard from "../../components/ListingCard";
+import ListingCard from "./ListingCard";
 import image1 from '../../assets/images/office1.webp';
 import image2 from '../../assets/images/office2.jpg';
 import image3 from '../../assets/images/office3.jpg';
 import FilterSection from "../../components/FilterSection";
 import Dropdown from "../../components/Dropdown";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../redux/store";
+import { RootState } from "../../redux/store";
+import { getAllListings } from "./listingSlice";
+import { error } from "console";
+import { Space } from "../../types/space";
 
-interface Listing {
-    id: string;
-    spaceId: string;
-    title: string;
-    floor: number;
-    area: number;
-    priceRange: string;
-    status: 'Open for rent' | 'Closed';
-    views: number;
-    imageUrl: string;
-}
 
-const listings: Listing[] = [
+
+export const listings: Space[] = [
     {
-        id: '1',
-        spaceId: 'OFF001',
-        title: 'Office(OFF001)',
-        floor: 2,
-        area: 50,
-        priceRange: '25,000 - 33,000',
-        status: 'Open for rent',
-        views: 10,
-        imageUrl: image1,
+        id: 1,
+        space_id: 'off01',
+        size: 233,
+        pictures: [image1,image2,image2],
+        coverImage: image1,
+        on_floor: 2,
+        space_purpose: 'office',
+        price: 30000,
+        number_of_rooms: 2,
+        space_status: 'Occupied',
+        num_of_views: 34,
+        space_feature_id: 1,
     },
     {
-        id: '2',
-        spaceId: 'CM001',
-        title: 'Commercial(CM001)',
-        floor: 2,
-        area: 50,
-        priceRange: '25,000 - 33,000',
-        status: 'Open for rent',
-        views: 12,
-        imageUrl: image2,
+        id: 2,
+        space_id: 'off01',
+        size: 233,
+        pictures: [image1,image2,image2],
+        coverImage: image1,
+        on_floor: 2,
+        space_purpose: 'office',
+        price: 30000,
+        number_of_rooms: 2,
+        space_status: 'Occupied',
+        num_of_views: 34,
+        space_feature_id: 1,
     },
     {
-        id: '3',
-        spaceId: 'OFF002',
-        title: 'Office(OFF002)',
-        floor: 3,
-        area: 100,
-        priceRange: '33,000',
-        status: 'Closed',
-        views: 22,
-        imageUrl: image3,
+        id: 3,
+        space_id: 'off01',
+        size: 233,
+        pictures: [image1,image2,image2],
+        coverImage: image1,
+        on_floor: 2,
+        space_purpose: 'office',
+        price: 30000,
+        number_of_rooms: 2,
+        space_status: 'Occupied',
+        num_of_views: 34,
+        space_feature_id: 1,
     },
     {
-        id: '4',
-        spaceId: 'CM002',
-        title: 'Commercial(CM002)',
-        floor: 1,
-        area: 50,
-        priceRange: '25,000 - 33,000',
-        status: 'Open for rent',
-        views: 42,
-        imageUrl: image2,
+        id: 4,
+        space_id: 'off01',
+        size: 233,
+        pictures: [image1,image2,image2],
+        coverImage: image1,
+        on_floor: 2,
+        space_purpose: 'office',
+        price: 30000,
+        number_of_rooms: 2,
+        space_status: 'Occupied',
+        num_of_views: 34,
+        space_feature_id: 1,
     },
     {
-        id: '5',
-        spaceId: 'CM002',
-        title: 'Commercial(CM002)',
-        floor: 1,
-        area: 50,
-        priceRange: '25,000 - 33,000',
-        status: 'Open for rent',
-        views: 42,
-        imageUrl: image2,
+        id: 5,
+        space_id: 'off01',
+        size: 233,
+        pictures: [image1,image2,image2],
+        coverImage: image1,
+        on_floor: 2,
+        space_purpose: 'office',
+        price: 30000,
+        number_of_rooms: 2,
+        space_status: 'Occupied',
+        num_of_views: 34,
+        space_feature_id: 1,
     },
     {
-        id: '6',
-        spaceId: 'CM002',
-        title: 'Commercial(CM002)',
-        floor: 1,
-        area: 50,
-        priceRange: '25,000 - 33,000',
-        status: 'Open for rent',
-        views: 42,
-        imageUrl: image2,
+        id: 6,
+        space_id: 'off01',
+        size: 233,
+        pictures: [image1,image2,image2],
+        coverImage: image1,
+        on_floor: 2,
+        space_purpose: 'office',
+        price: 30000,
+        number_of_rooms: 2,
+        space_status: 'Occupied',
+        num_of_views: 34,
+        space_feature_id: 1,
     },
 ];
 
 const Listings: React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const allListings = useSelector((state:RootState)=>state.listing.listings);
     const [isFilterVisible, setIsFilterVisible] = useState(false);
     const dropDownOptions = ['All', 'Available', 'Rented'];
     const [selectedTypeOption, setSelectedTypeOption] = useState('All');
+
+   useEffect(()=>{
+    dispatch(getAllListings())
+    .then(() => {
+       console.log('all listings',allListings);
+    })
+    .catch((error) => {
+        alert(error);
+    });
+
+   },[dispatch,listings]);
 
     const handleSelectedTypeOption = (selectedTypeOption: string) => {
         setSelectedTypeOption(selectedTypeOption);
@@ -135,7 +162,7 @@ const Listings: React.FC = () => {
             {isFilterVisible && <FilterSection />}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {listings.map((listing) => (
-                    <ListingCard key={listing.id} {...listing} />
+                    <ListingCard key={listing.id} listing={listing} />
                 ))}
             </div>
             

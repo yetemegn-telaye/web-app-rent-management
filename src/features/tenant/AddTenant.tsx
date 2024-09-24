@@ -3,27 +3,43 @@ import LandlordLayout from "../../layout/LandlordLayout";
 import { faClose, faTrash } from "@fortawesome/free-solid-svg-icons";
 import OptionsSection from "../../components/OptionsSection";
 import { useState } from "react";
-import AgreementForm from "./AgreementForm";
+import AgreementForm from "../agreement/AgreementForm";
 import TenantProfileForm from "./TenantForm";
-import CurrentStateForm from "./currentStateForm";
+import CurrentStateForm from "../listings/currentStateForm";
+import StepperComponent from "../../components/FormStepper";
+import FormStepper from "../../components/FormStepper";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../redux/store";
+import { RootState } from "../../redux/store";
 
 
 const AddTenant: React.FC = ()=>{
+
     const buttonOptions = [
-        { label: 'Agreement Info', primary: true },
+        { label: 'Agreement Info' },
         { label: 'Tenant Info' },
         { label: 'Current State of Listing' },
     ];
     const [selectedOption, setSelectedOption] = useState(buttonOptions[0].label);
 
+    const [currentStep, setCurrentStep] = useState(0); 
+    const [agreementId, setAgreementId] = useState<number | null>(null);
+    const [tenantId, setTenantId] = useState<number | null>(null);
+
+  const handleNextStep = (nextOption: string) => {
+    setSelectedOption(nextOption);
+    const nextStepIndex = buttonOptions.findIndex((option) => option.label === nextOption);
+    setCurrentStep(nextStepIndex); 
+  };
+
     const renderContent = () => {
         switch (selectedOption) {
             case 'Agreement Info':
-                return <AgreementForm/>;
+                return <AgreementForm setAgreementId={setAgreementId} setSelectedOption={() => handleNextStep('Tenant Info')}/>;
             case 'Tenant Info':
-                return <TenantProfileForm/>;
+                return <TenantProfileForm setTenantId={setTenantId}  agreementId={agreementId} setSelectedOption={() => handleNextStep('Current State of Listing')}/>;
             case 'Current State of Listing':
-                return <CurrentStateForm/>;
+                return <CurrentStateForm agreement_id={agreementId} tenant_id={tenantId}/>;
             default:
                 return <div></div>;
         }
@@ -41,14 +57,16 @@ const AddTenant: React.FC = ()=>{
                 </div>
             
             </div>
-            <div className="px-4">
-            <OptionsSection 
-                        buttonOptions={buttonOptions} 
-                        selectedOption={selectedOption} 
-                        onOptionSelected={(label) => setSelectedOption(label)} 
-                    />
-            </div>
-            <div className="flex flex-col h-full relative">
+            
+        
+                <FormStepper
+          buttonOptions={buttonOptions}
+          selectedOption={selectedOption}
+          onOptionSelected={(label) => handleNextStep(label)}
+          activeStep={currentStep}
+        />
+
+            <div className="flex flex-col mt-10 h-full relative">
                         {renderContent()}
             </div>
        </LandlordLayout>

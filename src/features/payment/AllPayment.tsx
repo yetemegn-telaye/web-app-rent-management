@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Payment from ".";
-import PaymentTable from "../../components/payment/PaymentTable"
+import PaymentTable from "./PaymentTable"
 import LandlordLayout from "../../layout/LandlordLayout"
-import FilterPayment from "../../components/payment/FilterPayment";
+import FilterPayment from "./FilterPayment";
 
 const payments = [
     { invoiceId: '-', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'Delayed' },

@@ -13,7 +13,11 @@ const LandlordLayout = ({ children }: { children: React.ReactNode }) => {
             <main className="flex-1 p-6">
                 {children}
             </main>
+        
         </div>
+        <p className="text-center text-sm text-gray-500">
+                    Copyright © 2024 XPProperty
+        </p>
     </div>
     );
 };
