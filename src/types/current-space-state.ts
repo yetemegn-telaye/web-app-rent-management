@@ -1,5 +1,6 @@
 export interface CreateSpaceState {
     space_id: number
+    lease_id: number
     current_images: string
     damage: {
       damage_description: string
@@ -11,8 +12,8 @@ export interface CreateSpaceState {
   export interface SpaceState {
     id: number
     space_id: number
-    tenant_id_entered: number
-    space_state_date: string
+    lease_id: number
+    space_state_date: Date
     current_images: string
     damage: {
       damage_description: string

@@ -1,4 +1,5 @@
 export interface BuildingManager {
+    id: number
     first_name: string
     middle_name: string
     last_name: string

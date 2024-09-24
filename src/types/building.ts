@@ -1,11 +1,20 @@
+import Time from "react-datepicker/dist/time"
+
 export interface Building {
-    lease_start_date: string
-    lease_end_date: string
-    business_type: string
-    rent_price: number
-    rent_payment_date: string
-    rent_payment_period: string
-    waiting_period: number
-    tenant_id: number
+    id: number
+    total_spaces: number
+    available_spaces:number
+    occupied_spaced: number
+    total_size: number
+    tot_num_floors: number
+    total_parking_space: number
+    manager_id: number
+    elevator: boolean
   }
   
+  export interface CreateOpenHouseDate {
+    start_time: Time
+    end_time: Time
+    repeat: string[]
+    building_id: number
+  }

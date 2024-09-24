@@ -69,7 +69,7 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, onViewClick,userT
     
   };
   const handleConfirmPayment = (file: File | null) => {
-    // Process the payment and file upload here
+   
     console.log("Processing payment for invoice:", selectedInvoice, "with file:", file);
     handlePaymentConfirmation(file);
   };
