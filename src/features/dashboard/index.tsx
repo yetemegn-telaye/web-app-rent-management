@@ -8,6 +8,7 @@ import TotalMaintenanceCostCard from "./PaymentsThisWeekCard";
 import UpcomingPaymentsCard from "./UpcomingPaymentsCard";
 import PaymentsThisWeekCard from "./PaymentsThisWeekCard";
 import NewsCard from "./NewsCard";
+import PieChart from "../../components/PieChart";
 
 const Dashboard: React.FC = ()=>{
     const payments = [
@@ -30,6 +31,7 @@ const Dashboard: React.FC = ()=>{
                     <OccupancyRateCard rate={62} />
                     <div className="row-span-2">
                     <TotalEarningsCard officeRents={40} commercialRents={60} />
+                   
                     </div>
                     
                     <div className="col-span-2">
@@ -41,6 +43,7 @@ const Dashboard: React.FC = ()=>{
                     <PaymentsThisWeekCard payments={payments} />
                     <NewsCard/>
                     <RecentMaintenanceRequestComponent requests={[
+                        { type: 'Plumbing Fix', status: 'pending', location: 'Office 00FF01' },
                         { type: 'Plumbing Fix', status: 'pending', location: 'Office 00FF01' },
                         { type: 'Plumbing Fix', status: 'pending', location: 'Office 00FF01' }
                     ]} />
