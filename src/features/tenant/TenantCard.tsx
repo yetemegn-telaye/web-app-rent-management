@@ -1,3 +1,5 @@
+import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -51,10 +53,10 @@ const TenantCard: React.FC<Tenant> = ({
         
         </div>
       </div>
-      <div className="mt-4">
+      <div className="mt-4 w-full flex justify-end">
         <Link to={`/listing-detail/${id}`}>
-          <button className="w-full bg-primary-dark hover:bg-secondary-dark text-white text-sm py-2 rounded-lg">
-            View
+          <button className=" bg-primary-dark hover:bg-secondary-dark text-white text-sm py-2 px-4 text-center rounded-lg">
+            <FontAwesomeIcon icon={faEye} />
           </button>
         </Link>
       </div>

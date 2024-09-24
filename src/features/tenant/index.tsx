@@ -2,6 +2,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LandlordLayout from "../../layout/LandlordLayout";
 import { faAdd } from "@fortawesome/free-solid-svg-icons";
 import TenantCard from "./TenantCard";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import { useEffect } from "react";
+import { getAllTenants } from "./tenantSlice";
+import { useNavigate } from "react-router-dom";
 
 
 interface Tenant {
@@ -66,8 +71,40 @@ const tenants: Tenant[] = [
                 tenantEmail: 'samuel@walls.com',
                 phoneNumber: '+251911092345'
                 },
+                {
+                    id: '4',
+                    firstName: 'Samuel',
+                    middleName: 'Abebe',
+                    lastName: 'Daniel',
+                    companyName: 'Walls Trading PLC.',
+                    industry: 'Construction',
+                    spaceType: 'Office',
+                    spaceId: '0FFO1',
+                    tenantEmail: 'samuel@walls.com',
+                    phoneNumber: '+251911092345'
+                    },
+                    {
+                        id: '4',
+                        firstName: 'Samuel',
+                        middleName: 'Abebe',
+                        lastName: 'Daniel',
+                        companyName: 'Walls Trading PLC.',
+                        industry: 'Construction',
+                        spaceType: 'Office',
+                        spaceId: '0FFO1',
+                        tenantEmail: 'samuel@walls.com',
+                        phoneNumber: '+251911092345'
+                        },
 ];
 const AllTenant: React.FC = ()=>{
+    const dispatch = useDispatch<AppDispatch>();
+    const allTenants = useSelector((state: RootState) => state.tenant.tenants);
+    const navigate = useNavigate();
+
+    // useEffect(() => {
+    //     dispatch(getAllTenants());
+    // },[dispatch,allTenants]);
+
 
     return(
       <LandlordLayout>
@@ -77,7 +114,7 @@ const AllTenant: React.FC = ()=>{
                     <span className="text-sm lg:text-base text-gray-500 font-light">view all tenants</span>
                 </div>
                 <div className="space-x-4 mt-4 lg:mt-0">
-                    <button className="bg-primary-dark px-4 py-2 font-light text-white rounded-md">
+                    <button onClick={()=>navigate('/add-tenant')} className="bg-primary-dark px-4 py-2 font-light text-white rounded-md">
                         <FontAwesomeIcon icon={faAdd} className="mr-2" /> Add Tenant
                     </button>
                 </div>
