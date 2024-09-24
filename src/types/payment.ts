@@ -1,18 +1,18 @@
 
-export interface makePayment {
+export interface MakePayment {
     payment_id: number
     deposit_slip_image: string
     paid_date: string
 }
 
-export interface approvePayment {
+export interface ApprovePayment {
     payment_id: number
     status: string
     receipt_image: string
     invoice_id: string
 }
 
-export interface rejectPayment {
+export interface RejectPayment {
   payment_id: number
 }
 

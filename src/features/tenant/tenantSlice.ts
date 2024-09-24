@@ -48,6 +48,29 @@ export const createTenant = createAsyncThunk(
     }
 );
 
+export const getAllTenants = createAsyncThunk(
+    'tenant/getAllTenants',
+    async (_ , {dispatch,rejectWithValue}) => {
+        try{ 
+            const response = await dispatch(tenantApi.endpoints.getAllTenants.initiate(_));
+            return response.data;
+        } catch (error:any) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const getTenantById = createAsyncThunk(
+    'tenant/getTenantById',
+    async (id: number , {dispatch,rejectWithValue}) => {
+        try{ 
+            const response = await dispatch(tenantApi.endpoints.getTenantById.initiate(id));
+            return response.data;
+        } catch (error:any) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
 
 
 const tenantSlice = createSlice({
@@ -60,14 +83,42 @@ const tenantSlice = createSlice({
         });
         builder.addCase(createTenant.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.tenant = action.payload.lease;
+            state.tenant = action.payload.data;
             state.message = action.payload.message;
         });
         builder.addCase(createTenant.rejected, (state, action) => {
             state.isLoading = false;
             state.error = action.payload as string;
         });
+
+
+
+        builder.addCase(getAllTenants.pending, (state) => {
+            state.isLoading = true;
+        });
+        builder.addCase(getAllTenants.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.tenants = action.payload.data;
+            state.message = action.payload.message;
+        });
+        builder.addCase(getAllTenants.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload as string;
+        });
         
+
+        builder.addCase(getTenantById.pending, (state) => {
+            state.isLoading = true;
+        });
+        builder.addCase(getTenantById.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.tenant = action.payload.data;
+            state.message = action.payload.message;
+        });
+        builder.addCase(getTenantById.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload as string;
+        });
     }
 });
 

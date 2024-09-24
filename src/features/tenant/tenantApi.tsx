@@ -10,5 +10,20 @@ export const tenantApi = baseApi.injectEndpoints({
                 body: tenant
             }),
         }),
+
+        getAllTenants: builder.query({
+            query:()=>({
+                url: '/tenants/get_all',
+                method: 'GET'
+            })
+
+        }),
+
+        getTenantById: builder.query({
+            query: (id:number)=>({
+                url: `/tenants/${id}`,
+                method: 'GET'
+            }),
+        }),
     }),
 });

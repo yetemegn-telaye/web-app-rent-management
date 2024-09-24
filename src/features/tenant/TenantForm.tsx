@@ -3,13 +3,23 @@ import Dropdown from "../../components/Dropdown";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import ImageUploader from "../../components/ImageUploader";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import ImageDropzone from "../../components/ImageDropzone";
+import { createTenant } from "./tenantSlice";
 
 
 type TenantProfileFormProps = {
-    setSelectedOption: (option: string) => void; 
+    setSelectedOption: (option: string) => void;
+    agreementId: number | null; 
+    setTenantId: (id: number) => void;
+
 }
 
-const TenantProfileForm: React.FC<TenantProfileFormProps> = ({setSelectedOption}) => {
+const TenantProfileForm: React.FC<TenantProfileFormProps> = ({ setTenantId,agreementId,setSelectedOption}) => {
+    const dispatch = useDispatch<AppDispatch>();
+    const tenant = useSelector((state: RootState) => state.tenant.tenant);
+
     const industryOptions = ['Construction', 'Media', 'Politics', 'Technology', 'Mining'];
     const spaceTypeOptions = ['Office 00F01, 2nd Floor', 'Commercial CM001, 1st Floor', 'Commercial CM002, 1st Floor'];
     const spaceIdOptions = ['0FFO1','0FF02','OFF03','0FFO1','0FF02','OFF03'];
@@ -22,14 +32,15 @@ const TenantProfileForm: React.FC<TenantProfileFormProps> = ({setSelectedOption}
         industry: '',
         spaceType: '',
         spaceId: '',
+        gender: '',
         tenantEmail: '',
-        phoneNumber: ''
+        phoneNumber: '',
     };
 
 
     const [formData, setFormData] = useState(initialState);
-    const [businessLicenseFile, setBusinessLicenseFile] = useState<File | null>(null);
-    const [tenantIdFile, setTenantIdFile] = useState<File | null>(null);
+    const [businessLicenseFile, setBusinessLicenseFile] = useState<string[] | null>(null);
+    const [tenantIdFile, setTenantIdFile] = useState<string[] | null>(null);
 
 
     const handleChange = (name: string, value: any)=>{
@@ -39,13 +50,37 @@ const TenantProfileForm: React.FC<TenantProfileFormProps> = ({setSelectedOption}
         }));
     }
 
-    const handleFileUpload = (name: string) => (file: File | null) => {
-        if (name === "businessLicenseFile") {
-            setBusinessLicenseFile(file);
-        } else if (name === "tenantIdFile") {
-            setTenantIdFile(file);
-        }
+
+    const handleDrop = (files: File[],type: string) => {
+        console.log(files);
+        const fileNames = files.map(file => file.name);
+        if (type === 'tenantNationalId') {
+           
+            fileNames.map((fileName) => {
+                setTenantIdFile((prevState) => {
+                    if (prevState) {
+                        return [...prevState, fileName];
+                    } else {
+                        return [fileName];
+                    }
+                });
+            }
+            );
+          } else if (type === 'businessLicense') {
+            fileNames.map((fileName) => {
+                setBusinessLicenseFile((prevState) => {
+                    if (prevState) {
+                        return [...prevState, fileName];
+                    } else {
+                        return [fileName];
+                    }
+                });
+            }
+            );
+          }
     };
+
+ 
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();  
@@ -54,13 +89,40 @@ const TenantProfileForm: React.FC<TenantProfileFormProps> = ({setSelectedOption}
         Object.entries(formData).forEach(([key, value]) => {
                 uploadData.append(key, value.toString());
         });
+        const {
+            firstName,
+            middleName,
+            lastName,
+            companyName,
+            industry,
+            gender,
+            phoneNumber,
+            tenantEmail,  
+        } = formData;
+        // national_id_image: tenantIdFile, business_license_image: string  lease_id: number
+        dispatch(createTenant( {first_name: firstName,
+            middle_name: middleName,
+            last_name: lastName,
+            company_name: companyName,
+            industry: industry,
+            gender,
+            phone_number: phoneNumber,
+            email: tenantEmail, 
+            national_id_image: tenantIdFile || [], 
+            business_license_image: businessLicenseFile || [], 
+            lease_id: agreementId || 0
+        }))
+        .unwrap()
+        .then(() => {
+            //setSelectedOption('Current State of Listing');
+            setTenantId(tenant.id);
+            console.log('Lease Created',tenant);
+        })
+        .catch(() => {
+            alert('An error occured');
+        });
+        
 
-        if (businessLicenseFile) {
-            uploadData.append('businessLicenseFile', businessLicenseFile);
-        }
-        if (tenantIdFile) {
-            uploadData.append('tenantIdFile', tenantIdFile);
-        }
 
         console.log("Entered data",formData,businessLicenseFile,tenantIdFile);
         setSelectedOption('Current State of Listing');
@@ -122,12 +184,13 @@ const TenantProfileForm: React.FC<TenantProfileFormProps> = ({setSelectedOption}
         <div className="flex justify-start items-center gap-2">
         <div className="flex flex-col gap-4 mt-8 w-1/3">
         <h3 className="text-secondary-dark font-bold text-lg">Add Tenant Identfication</h3>
-        <ImageUploader label="Upload Or Drag Tenant Id Image" onImageUpload={handleFileUpload('businessLicenseFile')} />
+         <ImageDropzone onDropImages={handleDrop} type="tenantNationalId" />
         <p className="text-secondary-light font-light text-sm">Each image should not exceed a maximum size of 10 MB.</p>
       </div>
       <div className="flex flex-col gap-4 mt-8 w-1/3">
         <h3 className="text-secondary-dark font-bold text-lg">Add Business Licence</h3>
-        <ImageUploader label="Upload Or Drag Business License Image" onImageUpload={handleFileUpload('tenantIdFile')} /> 
+        
+         <ImageDropzone onDropImages={handleDrop} type="businessLicense" />
         <p className="text-secondary-light font-light text-sm">Each image should not exceed a maximum size of 10 MB.</p>
       </div>
         </div>

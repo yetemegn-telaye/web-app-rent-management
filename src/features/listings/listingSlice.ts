@@ -5,11 +5,13 @@ import { listingApi } from "./listingApi";
 import { act } from "react";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 import { stat } from "fs";
+import { CreateSpaceState, SpaceState } from "../../types/current-space-state";
 
 
 interface ListingState {
    listings: Space[],
    listing: Space,
+   current_space_state: SpaceState,
    feature: SpaceFeature,
    isLoading: boolean,
    message: string| null,
@@ -45,6 +47,17 @@ const initialState: ListingState = {
         conference_rooms: 0,
         space_id: 0
     },
+    current_space_state: {
+        id: 0,
+        space_id: 0,
+        lease_id: 0,
+        space_state_date: '',
+        current_images: [],
+        damage: {
+            damage_description: "",
+            damage_image: []
+        }
+    },
     isLoading: false,
     message: "",
     error: null
@@ -71,6 +84,30 @@ export const addListingFeature = createAsyncThunk(
             // const [logoutUserMutation] = useLogoutUserMutation();
             // const response = await logoutUserMutation(token).unwrap();
             const response = await dispatch(listingApi.endpoints.addListingFeature.initiate(feature));
+            return response.data;
+        } catch (error:any) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const createSpaceState = createAsyncThunk(
+    'listing/createSpaceState',
+    async (space_state: CreateSpaceState , {dispatch,rejectWithValue}) => {
+        try{
+            const response = await dispatch(listingApi.endpoints.createSpaceState.initiate(space_state));
+            return response.data;
+        } catch (error:any) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const getSpaceState =  createAsyncThunk(
+    'listing/getSpaceState',
+    async (id:number, {dispatch,rejectWithValue}) => {
+        try{
+            const response = await dispatch(listingApi.endpoints.getSpaceState.initiate(id));
             return response.data;
         } catch (error:any) {
             return rejectWithValue(error.response.data);
@@ -189,6 +226,34 @@ const listingSlice = createSlice({
             state.error = action.payload as string | null;
         });
 
+
+        builder.addCase(createSpaceState.pending, (state) => {
+            state.isLoading = true;
+        }
+        );
+        builder.addCase(createSpaceState.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.current_space_state = action.payload;
+            state.message = action.payload.message;
+        });
+        builder.addCase(createSpaceState.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload as string| null;
+        });
+
+        builder.addCase(getSpaceState.pending, (state) => {
+            state.isLoading = true;
+        }
+        );
+        builder.addCase(getSpaceState.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.current_space_state = action.payload;
+            state.message = action.payload.message;
+        });
+        builder.addCase(getSpaceState.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload as string| null;
+        });
 
     }
 });

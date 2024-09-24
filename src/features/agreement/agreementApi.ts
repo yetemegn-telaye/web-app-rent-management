@@ -10,6 +10,20 @@ export const agreementApi = baseApi.injectEndpoints({
                 body: agreement
             }),
         }),
+
+        getAllAgreements: builder.query({
+            query: ()=>({
+                url: '/leases/get_all',
+                method: 'GET'
+            }),
+        }),
+        
+        getAgreementById: builder.query({
+            query: (id:number)=>({
+                url: `/leases/${id}`,
+                method: 'GET'
+            }),
+        }),
     }),
    
 });

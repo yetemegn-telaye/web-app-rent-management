@@ -3,6 +3,7 @@ import baseApi from "../../utils/api";
 import { getLCP } from "web-vitals";
 import { CreateSpace } from "../../types/space";
 import { CreateSpaceFeature } from "../../types/space-features";
+import { CreateSpaceState } from "../../types/current-space-state";
 
 export const listingApi = baseApi.injectEndpoints({
     endpoints: (builder)=>({
@@ -65,7 +66,20 @@ export const listingApi = baseApi.injectEndpoints({
             }),
         }),
        
-    
+        createSpaceState: builder.mutation({
+            query: (spaceState:CreateSpaceState)=>({
+                url: '/create/space_state',
+                method: 'POST',
+                body: spaceState
+            }),
+        }),
+        
+        getSpaceState: builder.query({
+            query: (id:number)=>({
+                url: `/space_state/${id}`,
+                method: 'GET'
+            }),
+        }),
     }),
 });
 

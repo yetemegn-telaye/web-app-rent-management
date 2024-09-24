@@ -5,7 +5,7 @@ import OptionsSection from "../../components/OptionsSection";
 import { useState } from "react";
 import AgreementForm from "../agreement/AgreementForm";
 import TenantProfileForm from "./TenantForm";
-import CurrentStateForm from "./currentStateForm";
+import CurrentStateForm from "../listings/currentStateForm";
 import StepperComponent from "../../components/FormStepper";
 import FormStepper from "../../components/FormStepper";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,7 +23,8 @@ const AddTenant: React.FC = ()=>{
     const [selectedOption, setSelectedOption] = useState(buttonOptions[0].label);
 
     const [currentStep, setCurrentStep] = useState(0); 
-
+    const [agreementId, setAgreementId] = useState<number | null>(null);
+    const [tenantId, setTenantId] = useState<number | null>(null);
 
   const handleNextStep = (nextOption: string) => {
     setSelectedOption(nextOption);
@@ -34,11 +35,11 @@ const AddTenant: React.FC = ()=>{
     const renderContent = () => {
         switch (selectedOption) {
             case 'Agreement Info':
-                return <AgreementForm setSelectedOption={() => handleNextStep('Tenant Info')}/>;
+                return <AgreementForm setAgreementId={setAgreementId} setSelectedOption={() => handleNextStep('Tenant Info')}/>;
             case 'Tenant Info':
-                return <TenantProfileForm setSelectedOption={() => handleNextStep('Current State of Listing')}/>;
+                return <TenantProfileForm setTenantId={setTenantId}  agreementId={agreementId} setSelectedOption={() => handleNextStep('Current State of Listing')}/>;
             case 'Current State of Listing':
-                return <CurrentStateForm/>;
+                return <CurrentStateForm agreement_id={agreementId} tenant_id={tenantId}/>;
             default:
                 return <div></div>;
         }

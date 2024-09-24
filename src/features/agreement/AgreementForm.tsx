@@ -13,11 +13,12 @@ import { createAgreement } from "./agreementSlice";
 
 type AgreementFormProps = {
     setSelectedOption: (option: string) => void; 
+    setAgreementId: (id: number) => void;
 }
 
-const AgreementForm: React.FC<AgreementFormProps> = ({setSelectedOption}) => {
+const AgreementForm: React.FC<AgreementFormProps> = ({setAgreementId ,setSelectedOption}) => {
     const dispatch = useDispatch<AppDispatch>();
-    const agreement = useSelector((state: RootState) => state.agreement);
+    const agreement = useSelector((state: RootState) => state.agreement.agreement);
     const contractPeriodOptions: string[] = ['3 months', '6 months', '1 year', '2 year'];
     const paymentScheduleOptions: string[] = ['Every 1 month', 'Every 3 months', 'Every 6 months', 'Every year', 'Every 2 Years'];
     const spaceTypeOptions = ['Office 00F01, 2nd Floor', 'Commercial CM001, 1st Floor', 'Commercial CM002, 1st Floor'];
@@ -51,6 +52,8 @@ const AgreementForm: React.FC<AgreementFormProps> = ({setSelectedOption}) => {
             [name] : value
         }));
     };
+
+
     const handleDrop = (files: File[],type: string) => {
         console.log(files);
         const fileNames = files.map(file => file.name);
@@ -135,12 +138,14 @@ const AgreementForm: React.FC<AgreementFormProps> = ({setSelectedOption}) => {
             deposit_slip_image: depositSlipFile!}))
         .unwrap()
         .then(() => {
-            setSelectedOption('Tenant Info');
+            setAgreementId(agreement.id);
+            // setSelectedOption('Tenant Info');
             console.log('Lease Created',agreement);
         })
         .catch(() => {
             alert('An error occured');
         });
+        setSelectedOption('Tenant Info');
         console.log("entered data", agreementFile, depositSlipFile);
         
        
