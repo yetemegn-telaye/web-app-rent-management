@@ -4,7 +4,7 @@ import PaymentModal from './PaymentModal';
 import PayModal from './PayModal';
 import SuccessModal from '../../components/SuccesModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faCheckCircle, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faCheckCircle, faEye, faXmarkCircle } from '@fortawesome/free-solid-svg-icons';
 
 interface PaymentRecord {
   invoiceId: string;
@@ -81,25 +81,25 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, onViewClick,userT
       <table className="min-w-full border-collapse">
         <thead>
           <tr className="">
-            <th className="text-left p-2 text-gray-600">Invoice_ID</th>
-            <th className="text-left p-2 text-gray-600">Date</th>
-            <th className="text-left p-2 text-gray-600">Utility</th>
-            <th className="text-left p-2 text-gray-600">Amount</th>
-            <th className="text-left p-2 text-gray-600">Total Amount</th>
-            <th className="text-left p-2 text-gray-600">Status</th>
-            <th className="text-left p-2 text-gray-600">Paid By</th>
-            <th className="p-2"></th>
+            <th className=" p-2 text-gray-600 text-center">Invoice_ID</th>
+            <th className=" p-2 text-gray-600 text-center">Due Date</th>
+            <th className="text-center p-2 text-gray-600">Utility</th>
+            <th className="text-center p-2 text-gray-600">Amount</th>
+            <th className="text-center p-2 text-gray-600">Total Amount</th>
+            <th className="text-center p-2 text-gray-600">Status</th>
+            <th className="text-center  p-2 text-gray-600">Paid By</th>
+            <th className="p-2 text-center"></th>
           </tr>
         </thead>
         <tbody>
           {payments.map((payment, index) => (
             <tr key={index} className={`border-b hover:bg-primary  ${payment.status === 'Delayed' ? 'border border-danger border-opacity-15 rounded-xl bg-red-100 animate-pulse' : ''}`}>
               <td className="p-2 text-center">{payment.status === 'Delayed' ?'-' : payment.invoiceId}</td>
-              <td className="p-2">{payment.date}</td>
-              <td className="p-2">{payment.utility}</td>
-              <td className="p-2">{payment.amount}</td>
-              <td className="p-2">{payment.totalAmount}</td>
-              <td className={`p-2 ${payment.status === 'Delayed' ? 'text-danger font-bold' : 'text-secondary-dark'}`}>
+              <td className="p-2 text-center">{payment.date}</td>
+              <td className="p-2 text-center">{payment.utility}</td>
+              <td className="p-2 text-center">{payment.amount}</td>
+              <td className="p-2 text-center">{payment.totalAmount}</td>
+              <td className={`text-center p-2 ${payment.status === 'Delayed' ? 'text-danger font-bold' : 'text-secondary-dark'}`}>
                 {payment.status}
               </td>
               <td className={`p-2`}>
@@ -123,14 +123,25 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, onViewClick,userT
                   </button>
                 ):
                 payment.status === 'waiting for approval' && userType === 'landlord' ? (
-                  <button 
-                    className="bg-secondary-light flex items-center text-white hover:bg-orange-500 px-2 py-1 rounded-md" 
+                  <div className='flex gap-1'>
+                      <button 
+                    className="bg-success flex items-center text-white hover:bg-primary-dark px-2 py-1 rounded-md" 
                     onClick={() => alert('Payment has been approved successfully!')}
                   >
-                     <FontAwesomeIcon icon={faCheckCircle} className='size-3 mr-2'/>
-                    Approve
+                     <FontAwesomeIcon icon={faCheckCircle} className='size-4'/>
+                  
                    
                   </button>
+                  <button 
+                    className="bg-danger flex items-center text-white hover:bg-red-700 px-2 py-1 rounded-md" 
+                    onClick={() => alert('Payment has been approved successfully!')}
+                  >
+                     <FontAwesomeIcon icon={faXmarkCircle} className='size-4'/>
+                
+                   
+                  </button>
+                  </div>
+                
                 ):
                 (
                   <button 
