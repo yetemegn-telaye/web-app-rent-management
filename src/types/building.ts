@@ -10,6 +10,7 @@ export interface Building {
     total_parking_space: number
     manager_id: number
     elevator: boolean
+    bank_account_number: number
   }
   
   export interface CreateOpenHouseDate {

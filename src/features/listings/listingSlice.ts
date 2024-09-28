@@ -32,7 +32,8 @@ const initialState: ListingState = {
         number_of_rooms: 0,
         space_status: "",
         num_of_views: 0,
-        space_feature_id: 0
+        space_feature_id: 0,
+        listed_date: ''
     },
     feature: {
         id: 0,
@@ -56,7 +57,8 @@ const initialState: ListingState = {
         damage: {
             damage_description: "",
             damage_image: []
-        }
+        },
+        tenant_id: 0
     },
     isLoading: false,
     message: "",

@@ -16,7 +16,7 @@ const Login = () => {
     const [loginFormData, setLoginFormData] = useState<FormData>({ email: '', password: '' });
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
-    const {isLoading, error, user} = useSelector((state: RootState) => state.auth);
+    const {isLoading, error, tenantUser,managerUser} = useSelector((state: RootState) => state.auth);
 
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

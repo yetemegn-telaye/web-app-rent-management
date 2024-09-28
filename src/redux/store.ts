@@ -7,10 +7,20 @@ import paymentReducer from "../features/payment/paymentSlice";
 import maintenanceReducer from "../features/maintenance/maintenanceSlice";
 import baseApi from "../utils/api";
 import { useSelector, TypedUseSelectorHook } from "react-redux";
+import sessionStorage from "redux-persist/es/storage/session";
+import { persistReducer, persistStore } from "redux-persist";
 
-export const store = configureStore({
+const persistConfig = {
+    key: 'root',
+    storage: sessionStorage,
+    whitelist: ['auth']
+}
+
+const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+
+ const store = configureStore({
     reducer:{
-        auth: authReducer,
+        auth: persistedAuthReducer,
         listing: listingReducer,
         agreement: agreementReducer,
         tenant: tenantReducer,
@@ -24,3 +34,5 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+export const persistor = persistStore(store);
+export default store;

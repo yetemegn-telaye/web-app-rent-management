@@ -62,7 +62,7 @@ const BasicDetailForm: React.FC<BasicDetailFormProps> = ({setSelectedOption})=>{
         event.preventDefault();
         const {space_id,size,on_floor,space_purpose,space_status,number_of_rooms,price} = formData;
         console.log('form data',formData, spaceCoverImg, spaceImages);
-        dispatch(addListing({space_id,size,on_floor,space_purpose,space_status,number_of_rooms,price,coverImage:spaceCoverImg,pictures:spaceImages}))
+        dispatch(addListing({space_id,size,on_floor,space_purpose,space_status,number_of_rooms,price,coverImage:spaceCoverImg,pictures:spaceImages,building_id:0}))
         .unwrap()
         .then(() => {
             setSelectedOption('Special Features');

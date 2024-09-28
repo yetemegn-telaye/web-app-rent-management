@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
-    const {user} = useAppSelector(state => state.auth);
+    const {tenantUser, managerUser} = useAppSelector(state => state.auth);
     const dispatch = useDispatch<AppDispatch>();
 
     const toggleMenu = () => {
@@ -47,8 +47,10 @@ export default function Header() {
                         alt="Manager"
                     />
                     <div className='flex flex-col font-light items-start'>
-                    <span className="text-sm text-gray-700 ">{user.name} {user.email}</span>
-                    <span className="text-sm text-gray-700">{user.role}</span> 
+                    <span className="text-sm text-gray-700 ">
+                        {tenantUser.first_name!=='' ? tenantUser.first_name : managerUser.first_name }
+                    </span>
+                    <span className="text-sm text-gray-700">{managerUser.role!=='' ? managerUser.role : tenantUser.role }</span> 
                     </div>
                 </div>
             </div>

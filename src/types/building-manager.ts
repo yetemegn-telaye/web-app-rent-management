@@ -9,7 +9,6 @@ export interface BuildingManager {
     street_address: string
     phone_number: string
     email: string
-    password: string
   }
  
   

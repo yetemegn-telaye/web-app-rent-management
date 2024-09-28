@@ -15,13 +15,14 @@ const initialState: BuildingState = {
     building: {
         id: 0,
         total_spaces: 0,
-        available_spaces: 0,
+        available_spaces:0,
         occupied_spaced: 0,
         total_size: 0,
         tot_num_floors: 0,
         total_parking_space: 0,
         manager_id: 0,
-        elevator: false
+        elevator: false,
+        bank_account_number:0
     },
     isLoading: false,
     error: null,

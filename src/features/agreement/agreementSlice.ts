@@ -24,8 +24,9 @@ const initialState:AgreementState = {
         rent_payment_period: "",
         penalty_amount: 0,
         penalty_waiting_period: 0,
-        lease_image: "",
-        deposit_slip_image: ""
+        lease_image: [],
+        deposit_slip_image: [],
+        space_id: 0
     },
     isLoading: false,
     agreements: [],

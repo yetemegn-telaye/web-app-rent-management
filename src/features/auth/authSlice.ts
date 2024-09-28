@@ -1,46 +1,58 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { User } from "../../types/authentication";
+import { BuildingManagerUser, TenantUser } from "../../types/authentication";
 import { authApi } from "./authApi";
 
-
 interface AuthState {
-  user: User,
-  isLoading: boolean,
-  token: string | null,
-  isAuthenticated: boolean,
-  role: string | null,
-  message: string | null,
-  error: string | null
+  tenantUser: TenantUser;
+  managerUser: BuildingManagerUser;
+  isLoading: boolean;
+  token: string | null;
+  isAuthenticated: boolean;
+  role: string | null;
+  message: string | null;
+  error: string | null;
 }
 
-// Initialize state from localStorage
-const userFromStorage = localStorage.getItem("user");
-const tokenFromStorage = localStorage.getItem("token");
-const roleFromStorage = userFromStorage ? JSON.parse(userFromStorage).role : null;
-
 const initialState: AuthState = {
-  user: userFromStorage ? JSON.parse(userFromStorage) : {
+  tenantUser: {
     id: 0,
-    name: "",
-    email: "",
-    email_verified_at: "",
-    created_at: "",
-    updated_at: "",
-    role: "",
-    location_id: ""
+    first_name: '',
+    middle_name: '',
+    last_name: '',
+    company_name: '',
+    industry: '',
+    national_id_image: '',
+    gender: '',
+    phone_number: '',
+    email: '',
+    business_license_image: '',
+    lease_id: 0,
+    role: '',
+  },
+  managerUser:{
+    id: 0,
+    first_name: '',
+    middle_name: '',
+    last_name: '',
+    national_id: '',
+    city: '',
+    gender: '',
+    street_address: '',
+    phone_number: '',
+    email: '',
+    role: ''
   },
   isLoading: false,
-  isAuthenticated: !!tokenFromStorage, // If token exists, assume user is authenticated
-  role: roleFromStorage || "",
-  token: tokenFromStorage || null,
+  isAuthenticated: false,
+  role: null,
+  token: null,
   message: null,
-  error: null
+  error: null,
 };
 
-// Login action using createAsyncThunk
 export const loginUser = createAsyncThunk(
-  'auth/loginUser',
-  async (credentials: { email: string, password: string }, { dispatch, rejectWithValue }) => {
+  "auth/loginUser",
+  async (credentials: { email: string; password: string }, { dispatch, rejectWithValue }) => {
     try {
       const response = await dispatch(authApi.endpoints.loginUser.initiate(credentials));
       return response.data;
@@ -50,9 +62,9 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-// Logout action using createAsyncThunk
+
 export const logoutUser = createAsyncThunk(
-  'auth/logoutUser',
+  "auth/logoutUser",
   async (token: string, { dispatch, rejectWithValue }) => {
     try {
       const response = await dispatch(authApi.endpoints.logoutUser.initiate(token));
@@ -63,9 +75,8 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
-// Create the auth slice
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -74,9 +85,12 @@ const authSlice = createSlice({
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.isLoading = false;
-      window.localStorage.setItem("token", action.payload.token);
-      window.localStorage.setItem("user", JSON.stringify(action.payload.user));
-      state.user = action.payload.user;
+      if(action.payload.user.role === 'tenant'){
+      state.tenantUser = action.payload.user;
+      }
+      else if(action.payload.user.role === 'building_manager'){
+        state.managerUser = action.payload.user;
+      }
       state.isAuthenticated = true;
       state.role = action.payload.user.role;
       state.token = action.payload.token;
@@ -89,21 +103,24 @@ const authSlice = createSlice({
     builder.addCase(logoutUser.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(logoutUser.fulfilled, (state, action) => {
+    builder.addCase(logoutUser.fulfilled, (state) => {
       state.isLoading = false;
-      window.localStorage.removeItem("token");
-      window.localStorage.removeItem("user");
-      state.user = initialState.user;
+      if(state.role==='tenant'){
+        state.tenantUser = initialState.tenantUser;
+      }
+      else if(state.role==='building_manager'){
+        state.managerUser = initialState.managerUser;
+      }
       state.isAuthenticated = false;
-      state.role = '';
+      state.role = null;
       state.token = null;
-      state.message = action.payload.message;
+      state.message = "Logged out successfully";
     });
     builder.addCase(logoutUser.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload as string | null;
     });
-  }
+  },
 });
 
 export default authSlice.reducer;

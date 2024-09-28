@@ -23,7 +23,7 @@ export const listings: Space[] = [
         id: 1,
         space_id: 'off01',
         size: 233,
-        pictures: [image1,image2,image2],
+        pictures: [image1, image2, image2],
         coverImage: image1,
         on_floor: 2,
         space_purpose: 'office',
@@ -32,12 +32,13 @@ export const listings: Space[] = [
         space_status: 'Occupied',
         num_of_views: 34,
         space_feature_id: 1,
+        listed_date: ""
     },
     {
         id: 2,
         space_id: 'off01',
         size: 233,
-        pictures: [image1,image2,image2],
+        pictures: [image1, image2, image2],
         coverImage: image1,
         on_floor: 2,
         space_purpose: 'office',
@@ -46,12 +47,13 @@ export const listings: Space[] = [
         space_status: 'Occupied',
         num_of_views: 34,
         space_feature_id: 1,
+        listed_date: ""
     },
     {
         id: 3,
         space_id: 'off01',
         size: 233,
-        pictures: [image1,image2,image2],
+        pictures: [image1, image2, image2],
         coverImage: image1,
         on_floor: 2,
         space_purpose: 'office',
@@ -60,12 +62,13 @@ export const listings: Space[] = [
         space_status: 'Occupied',
         num_of_views: 34,
         space_feature_id: 1,
+        listed_date: ""
     },
     {
         id: 4,
         space_id: 'off01',
         size: 233,
-        pictures: [image1,image2,image2],
+        pictures: [image1, image2, image2],
         coverImage: image1,
         on_floor: 2,
         space_purpose: 'office',
@@ -74,6 +77,7 @@ export const listings: Space[] = [
         space_status: 'Occupied',
         num_of_views: 34,
         space_feature_id: 1,
+        listed_date: ""
     },
     {
         id: 5,
@@ -88,6 +92,7 @@ export const listings: Space[] = [
         space_status: 'Occupied',
         num_of_views: 34,
         space_feature_id: 1,
+        listed_date:''
     },
     {
         id: 6,
@@ -102,6 +107,7 @@ export const listings: Space[] = [
         space_status: 'Occupied',
         num_of_views: 34,
         space_feature_id: 1,
+        listed_date:''
     },
 ];
 

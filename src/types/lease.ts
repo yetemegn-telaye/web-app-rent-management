@@ -22,7 +22,8 @@ export interface CreateLease {
     rent_payment_period: string
     penalty_amount: number
     penalty_waiting_period: number
-    lease_image: string
-    deposit_slip_image: string
+    lease_image: string[]
+    deposit_slip_image: string[]
+    space_id: number
   }
   

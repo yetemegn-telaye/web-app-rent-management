@@ -13,6 +13,7 @@ export interface CreateSpaceState {
     id: number
     space_id: number
     lease_id: number
+    tenant_id: number
     space_state_date: string
     current_images: string[]
     damage: {
