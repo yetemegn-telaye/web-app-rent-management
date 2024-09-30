@@ -5,7 +5,7 @@ export const agreementApi = baseApi.injectEndpoints({
     endpoints: (builder)=>({
         createAgreement: builder.mutation({
             query: (agreement: CreateLease)=>({
-                url: '/lease/create',
+                url: '/leases/create',
                 method: 'POST',
                 body: agreement
             }),

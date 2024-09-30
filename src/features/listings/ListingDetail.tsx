@@ -24,10 +24,9 @@ import { getListingById } from './listingSlice';
 
 const ListingDetail: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const space = useSelector((state: RootState) => state.listing.listing);
     const { id } = useParams<{ id: string }>(); 
-    const listingId = id ? parseInt(id) : undefined;
-    const listing = id ? listings.find((listing) => listing.id === listingId) : undefined;
+   
+    const listingId = id ? parseInt(id) : 0;
     const [currentStatus, setCurrentStatus] = useState<string>('');
     const statDropDownOptions = ['open_for_rent', 'occupied','closed'];
 
@@ -35,27 +34,27 @@ const ListingDetail: React.FC = () => {
         { label: 'Document',primary: true  },
         { label: 'Features'},
     ];
+    const defaultSpace = {
+        space_purpose: '',
+        size: '',
+        number_of_views: 0,
+        floor: 0,
+        number_of_rooms: 0,
+        price: 0,
+        space_status: ''
+    };
+    const space = useSelector((state: RootState) => state.listing.listing) || defaultSpace;
 
     useEffect(()=>{
-        if (listingId !== undefined) {
-            dispatch(getListingById(listingId))
-            .then(() => {
-                console.log(' listing',space);
-             })
-             .catch((error) => {
-                 alert(error);
-             });
-        }
-       
-    
-       },[dispatch,listings]);
-   
+        dispatch(getListingById(listingId));
+       },[]);
+
     const handleSelectedStatus = (status: string) => {
         setCurrentStatus(status);
     }
 
     
-    if (listing?.space_status.toLowerCase() === 'occupied') {
+    if (space?.space_status.toLowerCase() === 'occupied') {
         buttonOptions.unshift({ label: 'Maintenance' });
         buttonOptions.unshift({ label: 'Payments' });
        
@@ -64,11 +63,12 @@ const ListingDetail: React.FC = () => {
     const [selectedOption, setSelectedOption] = useState(buttonOptions[0].label);
 
     const renderContent = () => {
+        console.log('space',space,space.id);
         switch (selectedOption) {
             case 'Features':
-                return listingId !== undefined ? <ListingFeatures spaceId={listingId} /> : <div>No Listing ID</div>;
+                return <ListingFeatures spaceId={space.id} />;
             case 'Document':
-                return <Agreement isClosed={listing?.space_status.toLowerCase() === 'occupied'} />; 
+                return <Agreement isClosed={space?.space_status.toLowerCase() === 'occupied'} />; 
             case 'Payments':
                 return <Payment userType='landlord'/>;
          
@@ -77,67 +77,79 @@ const ListingDetail: React.FC = () => {
             default:
                 return <div></div>;
         }
+       
     };
 
     return (
         <LandlordLayout>
-            <div className="flex flex-col lg:flex-row items-center justify-between p-3 my-4 overflow-auto">
-                <div className="flex flex-col items-start justify-between gap-2">
-                    <h1 className="text-xl lg:text-2xl font-semibold text-secondary-dark">{listing?.space_purpose.toUpperCase()} Space</h1>
-                    <span className="text-sm lg:text-base text-gray-500 font-light">Listing detail page for ID: {id}</span>
+<div className="flex flex-col lg:flex-row items-center justify-between p-3 my-4">
+    <div className="flex flex-col items-start justify-between gap-2">
+        <h1 className="text-xl lg:text-2xl font-semibold text-secondary-dark">
+            {space.space_purpose.toUpperCase()} Space
+        </h1>
+        <span className="text-sm lg:text-base text-gray-500 font-light">
+            Listing detail page for ID: {id}
+            
+        </span>
+    </div>
+    <div className="mt-4 lg:mt-0 flex flex-wrap gap-2">
+        <button className="bg-primary-dark px-4 py-1 font-light text-white rounded-md">
+            <FontAwesomeIcon icon={faEdit} /> Edit
+        </button>
+    </div>
+</div>
+
+
+<div className="flex flex-col lg:flex-row gap-4">
+
+    <div className="flex flex-col items-center p-4 w-full lg:w-2/5 bg-white shadow-md rounded-lg">
+        <ImageSlider images={[image1, image2, image3, image1]} />
+        
+        <div className="flex-1 w-full">
+            <div className="flex items-center justify-between px-3 my-4">
+                <p className="text-lg lg:text-xl font-semibold text-primary-dark">{space.space_purpose}</p>
+                <p className="text-secondary-light">{space.number_of_views} views</p>
+            </div>
+
+            <div className="px-4 space-y-2">
+                <hr className="my-4" />
+                <p className="text-gray-500">Area: {space.size} sq ft.</p>
+                <p className="text-gray-500">Floor: {space.floor}</p>
+                <p className="text-gray-500">Furnished: No</p>
+                <p className="text-gray-500">Number of rooms: {space.number_of_rooms}</p>
+                <p className="text-gray-500">Price: {space.price} ETB</p>
+                
+                <div className="py-4">
+                    <label className="text-sm font-semibold text-gray-700">Current Status</label>
+                    <Dropdown label={space.space_status} options={statDropDownOptions} onSelect={handleSelectedStatus} />
                 </div>
-                <div className="space-x-4 mt-4 lg:mt-0">
-                   
-                    <button className="bg-primary-dark px-4 py-1 font-light text-white rounded-md">
-                        <FontAwesomeIcon icon={faEdit} /> Edit
+            </div>
+
+            {space?.space_status.toLowerCase() === 'occupied' && (
+                <div className="mt-4 text-center">
+                    <button className="py-2 px-4 bg-primary-dark hover:bg-secondary-dark text-white rounded-md">
+                        <FontAwesomeIcon icon={faUserAlt} className='mr-3'/>
+                        Contact Tenant
                     </button>
                 </div>
-            </div>
+            )}
+        </div>
+    </div>
 
-            <div className="flex flex-col lg:flex-row gap-4">
-                <div className="flex flex-col items-center p-4 w-full lg:w-2/5 bg-white">
-                    <ImageSlider images={[image1, image2, image3, image1]} />
+ 
+    <div className="flex flex-col w-full lg:w-3/5">
+        <OptionsSection 
+            buttonOptions={buttonOptions} 
+            selectedOption={selectedOption} 
+            onOptionSelected={(label) => setSelectedOption(label)} 
+        />
+        <div className="flex flex-col h-full relative">
+            {renderContent()}
+        </div>
+    </div>
+</div>
 
-                    <div className="flex-1 w-full">
-                        <div className="flex items-center justify-between px-3 my-4">
-                            <p className="text-lg lg:text-xl font-semibold text-primary-dark">{listing?.space_purpose}</p>
-                            <p className="text-secondary-light">{listing?.num_of_views} views</p>
-                        </div>
 
-                        <div className="px-4 space-y-2">
-                            <hr className="my-4" />
-                            <p className="text-gray-500">Area: {listing?.size} sq ft.</p>
-                            <p className="text-gray-500">Floor: {listing?.on_floor} floor</p>
-                            <p className="text-gray-500">Furnished: No</p>
-                            <p className="text-gray-500">Number of rooms: 2</p>
-                            <p className="text-gray-500">Price: {listing?.price} ETB</p>
-                            <div className="py-4">
-                                <label className="text-sm font-semibold text-gray-700">Current Status</label>
-                                <Dropdown label={listing!.space_status} options={statDropDownOptions} onSelect={handleSelectedStatus} />
-                            </div>
-                        </div>
-                        {listing?.space_status.toLowerCase() === 'occupied' && (
-                            <div className="mt-4 text-center">
-                                <button className=" py-2 px-4 bg-primary-dark hover:bg-secondary-dark text-white rounded-md">
-                                    <FontAwesomeIcon icon={faUserAlt} className='mr-3'/>
-                                    Contact Tenant</button>
-                            </div>
-                        )}
-                    </div>
-                   
-                </div>
-
-                <div className="flex flex-col w-full">
-                    <OptionsSection 
-                        buttonOptions={buttonOptions} 
-                        selectedOption={selectedOption} 
-                        onOptionSelected={(label) => setSelectedOption(label)} 
-                    />
-                    <div className="flex flex-col h-full relative">
-                        {renderContent()}
-                    </div>
-                </div>
-            </div>
         </LandlordLayout>
     );
 };

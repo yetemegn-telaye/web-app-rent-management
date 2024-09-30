@@ -22,34 +22,37 @@ const ImageSlider: React.FC<{ images: string[] }> = ({ images }) => {
     };
 
     return (
-        <div className="relative w-full h-72">
-            <div className="w-full h-full flex items-center justify-center overflow-hidden">
-                <img
-                    className="w-full h-full object-cover rounded-lg"
-                    src={images[currentIndex]}
-                    alt={`Slide ${currentIndex}`}
-                />
-            </div>
-            <button
-                onClick={goToPrevious}
-                className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-primary-dark text-white p-2 rounded-full">
-                <FontAwesomeIcon icon={faChevronLeft} />
-            </button>
-            <button
-                onClick={goToNext}
-                className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-primary-dark text-white p-2 rounded-full">
-                <FontAwesomeIcon icon={faChevronRight} />
-            </button>
-            <div className="absolute bottom-4 w-full flex justify-center space-x-2">
-                {images.map((_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => goToSlide(index)}
-                        className={`w-3 h-3 rounded-full ${index === currentIndex ? 'bg-primary-dark' : 'bg-gray-300'}`}>
-                    </button>
-                ))}
-            </div>
+        <div className="relative w-full max-w-screen-lg mx-auto">
+        <div className="w-full aspect-w-16 aspect-h-9 overflow-hidden">
+          
+            <img
+                className="w-full h-full object-cover rounded-lg"
+                src={images[currentIndex]}
+                alt={`Slide ${currentIndex}`}
+            />
         </div>
+        <button
+            onClick={goToPrevious}
+            className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-primary-dark text-white p-2 rounded-full z-10">
+           
+            <FontAwesomeIcon icon={faChevronLeft} />
+        </button>
+        <button
+            onClick={goToNext}
+            className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-primary-dark text-white p-2 rounded-full z-10">
+            <FontAwesomeIcon icon={faChevronRight} />
+        </button>
+        <div className="absolute bottom-4 w-full flex justify-center space-x-2">
+            {images.map((_, index) => (
+                <button
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    className={`w-3 h-3 rounded-full ${index === currentIndex ? 'bg-primary-dark' : 'bg-gray-300'}`}>
+                </button>
+            ))}
+        </div>
+    </div>
+    
     );
 };
 export default ImageSlider;

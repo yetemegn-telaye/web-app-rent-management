@@ -23,19 +23,22 @@ const Login = () => {
         const { name, value } = e.target;
         setLoginFormData({ ...loginFormData, [name]: value });
     }
-    const handleSubmit =  (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const {email,password} = loginFormData;
+        const { email, password } = loginFormData;
         dispatch(loginUser({ email, password }))
-        .unwrap()
-        .then(() => {
-            navigate('/getting-started');
-        })
-        .catch(() => {
-            console.log('An error occured');
-        });
+            .unwrap()
+            .then(() => {
+                console.log('Login successful:');
+                navigate('/getting-started');
+            })
+            .catch((error) => {
+                console.error('Login error:', error);
+            });
+        
+        
     }
-
+    
     return (
         <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
   

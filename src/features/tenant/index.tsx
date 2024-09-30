@@ -35,75 +35,17 @@ const tenants: Tenant[] = [
     tenantEmail: 'samuel@walls.com',
     phoneNumber: '+251911092345'
     },
-    {
-        id: '2',
-        firstName: 'Samuel',
-        middleName: 'Abebe',
-        lastName: 'Daniel',
-        companyName: 'Walls Trading PLC.',
-        industry: 'Construction',
-        spaceType: 'Office',
-        spaceId: '0FFO1',
-        tenantEmail: 'samuel@walls.com',
-        phoneNumber: '+251911092345'
-        },
-        {
-            id: '3',
-            firstName: 'Samuel',
-            middleName: 'Abebe',
-            lastName: 'Daniel',
-            companyName: 'Walls Trading PLC.',
-            industry: 'Construction',
-            spaceType: 'Office',
-            spaceId: '0FFO1',
-            tenantEmail: 'samuel@walls.com',
-            phoneNumber: '+251911092345'
-            },
-            {
-                id: '4',
-                firstName: 'Samuel',
-                middleName: 'Abebe',
-                lastName: 'Daniel',
-                companyName: 'Walls Trading PLC.',
-                industry: 'Construction',
-                spaceType: 'Office',
-                spaceId: '0FFO1',
-                tenantEmail: 'samuel@walls.com',
-                phoneNumber: '+251911092345'
-                },
-                {
-                    id: '4',
-                    firstName: 'Samuel',
-                    middleName: 'Abebe',
-                    lastName: 'Daniel',
-                    companyName: 'Walls Trading PLC.',
-                    industry: 'Construction',
-                    spaceType: 'Office',
-                    spaceId: '0FFO1',
-                    tenantEmail: 'samuel@walls.com',
-                    phoneNumber: '+251911092345'
-                    },
-                    {
-                        id: '4',
-                        firstName: 'Samuel',
-                        middleName: 'Abebe',
-                        lastName: 'Daniel',
-                        companyName: 'Walls Trading PLC.',
-                        industry: 'Construction',
-                        spaceType: 'Office',
-                        spaceId: '0FFO1',
-                        tenantEmail: 'samuel@walls.com',
-                        phoneNumber: '+251911092345'
-                        },
+
 ];
 const AllTenant: React.FC = ()=>{
     const dispatch = useDispatch<AppDispatch>();
     const allTenants = useSelector((state: RootState) => state.tenant.tenants);
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     dispatch(getAllTenants());
-    // },[dispatch,allTenants]);
+    useEffect(() => {
+        dispatch(getAllTenants());
+    },[]);
+
 
 
     return(
@@ -120,8 +62,9 @@ const AllTenant: React.FC = ()=>{
                 </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {tenants.map((tenant) => (
-                    <TenantCard key={tenant.id} {...tenant} />
+              
+                {allTenants.map((tenant) => (
+                    <TenantCard key={tenant.id} tenant={tenant} />
                 ))}
             </div>
       </LandlordLayout>  

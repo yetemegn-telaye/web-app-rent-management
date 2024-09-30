@@ -10,17 +10,17 @@ import { useSelector, TypedUseSelectorHook } from "react-redux";
 import sessionStorage from "redux-persist/es/storage/session";
 import { persistReducer, persistStore } from "redux-persist";
 
-const persistConfig = {
-    key: 'root',
-    storage: sessionStorage,
-    whitelist: ['auth']
-}
+// const persistConfig = {
+//     key: 'root',
+//     storage: sessionStorage,
+//     whitelist: ['auth']
+// }
 
-const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+// const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 
  const store = configureStore({
     reducer:{
-        auth: persistedAuthReducer,
+        auth: authReducer,
         listing: listingReducer,
         agreement: agreementReducer,
         tenant: tenantReducer,
@@ -28,11 +28,16 @@ const persistedAuthReducer = persistReducer(persistConfig, authReducer);
         maintenance: maintenanceReducer,
         [baseApi.reducerPath]: baseApi.reducer
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseApi.middleware)
-});
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck:
+            {
+                ignoredActions: ['persist/PERSIST'],
+            },
+        }),});
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
-export const persistor = persistStore(store);
+// export const persistor = persistStore(store);
 export default store;

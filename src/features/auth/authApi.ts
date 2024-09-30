@@ -4,7 +4,14 @@ export const authApi = baseApi.injectEndpoints({
     endpoints: (builder)=>({
         loginUser: builder.mutation({
             query: (credentials:{email:string,password:string})=>({
-                url: '/login',
+                url: '/authentication/building_manager/login',
+                method: 'POST',
+                body: credentials
+            }),
+        }),
+        loginTenant: builder.mutation({
+            query: (credentials:{email:string,password:string})=>({
+                url: '/authentication/tenant/login',
                 method: 'POST',
                 body: credentials
             }),

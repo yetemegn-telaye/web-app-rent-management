@@ -4,39 +4,46 @@ import { getLCP } from "web-vitals";
 import { CreateSpace } from "../../types/space";
 import { CreateSpaceFeature } from "../../types/space-features";
 import { CreateSpaceState } from "../../types/current-space-state";
+import { getAllListings } from "./listingSlice";
 
 export const listingApi = baseApi.injectEndpoints({
     endpoints: (builder)=>({
         addListing: builder.mutation({
             query: (listing:CreateSpace)=>({
-                url: '/listings',
+                url: '/spaces/create',
                 method: 'POST',
                 body: listing
             }),
         }),
         addListingFeature: builder.mutation({
             query: (features:CreateSpaceFeature)=>({
-                url: '/features',
+                url: '/space_features/create',
                 method: 'POST',
                 body: features
             }),
         }),
         getAllListings: builder.query({
             query: ()=>({
-                url: '/all_spaces',
+                url: '/spaces/all_spaces',
                 method: 'GET'
             }),
         }),
 
         getListingById: builder.query({
             query: (id:number)=>({
-                url: `/space/${id}`,
+                url: `/spaces/${id}`,
+                method: 'GET'
+            }),
+        }),
+        getAllListingFeatures: builder.query({
+            query: ()=>({
+                url: '/space_features/all_space_features',
                 method: 'GET'
             }),
         }),
         getListingFeatures: builder.query({
             query: (id:number)=>({
-                url: `/features/${id}`,
+                url: `/space_features/${id}`,
                 method: 'GET'
             }),
         }),
@@ -68,7 +75,7 @@ export const listingApi = baseApi.injectEndpoints({
        
         createSpaceState: builder.mutation({
             query: (spaceState:CreateSpaceState)=>({
-                url: '/create/space_state',
+                url: '/space_states/create',
                 method: 'POST',
                 body: spaceState
             }),

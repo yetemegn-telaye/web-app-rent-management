@@ -98,7 +98,7 @@ const tenantSlice = createSlice({
         });
         builder.addCase(getAllTenants.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.tenants = action.payload.data;
+            state.tenants = action.payload;
             state.message = action.payload.message;
         });
         builder.addCase(getAllTenants.rejected, (state, action) => {

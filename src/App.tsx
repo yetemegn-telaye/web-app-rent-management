@@ -24,6 +24,20 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
 
+        <Route path="/getting-started" element={<OnboardingScreen />} />
+        <Route path="/dashboard" element={<Dashboard/>}/>
+        <Route path="/property" element={<Property />} />
+        <Route path="/add-listing" element={<AddListing/>}/>
+        <Route path="/all-payments" element={<AllPayment/>} />
+        <Route path="/add-tenant" element={<AddTenant/>} />
+        <Route path="/all-tenants" element={<AllTenant/>}/>
+        <Route path="/settings" element={<Settings/>}/>
+        <Route path="/all-listing" element={<Listings/>} />
+        <Route path="/listing-detail/:id" element={<ListingDetail/>} />
+        <Route path="/notifications" element={<Notifications />}/>
+        <Route path="/my-rents" element={<MyRent/>}/>
+
+
         <Route element={<PrivateRoute allowedRoles={['admin']} />} >
         <Route path="/getting-started" element={<OnboardingScreen />} />
         <Route path="/dashboard" element={<Dashboard/>}/>

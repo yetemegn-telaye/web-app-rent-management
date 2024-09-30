@@ -1,19 +1,21 @@
-import { BaseQueryFn, createApi, EndpointBuilder, EndpointDefinitions, FetchArgs, fetchBaseQuery, FetchBaseQueryError, FetchBaseQueryMeta, RootState } from '@reduxjs/toolkit/query/react';
-import { get } from 'http';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+import type { RootState } from '../redux/store'; 
 
 const baseApi = createApi({
+    reducerPath: 'baseApi', 
     baseQuery: fetchBaseQuery({
-        baseUrl: 'https://top2.natnaelghirma.com/api',
-        prepareHeaders: (headers,{getState}) => {
-            // const token = (getState() as RootState>).auth.token;
-          const token = localStorage.getItem('token');
-            if(token){
-                headers.set('authorization',`Bearer ${token}`);
+        baseUrl: 'http://188.245.149.154:3000',
+        prepareHeaders: (headers, { getState }) => {
+            // const token = (getState() as RootState).auth.token;
+            const token = localStorage.getItem('token');  
+            if (token) {
+                headers.set('Authorization', `Bearer ${token}`);
             }
             return headers;
         }
     }),
-    endpoints: () => ({}),
+    endpoints: (builder) => ({}),  
 });
 
 export default baseApi;

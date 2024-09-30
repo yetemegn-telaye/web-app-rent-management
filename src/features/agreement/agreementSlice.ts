@@ -84,8 +84,8 @@ const agreementSlice = createSlice({
         });
         builder.addCase(createAgreement.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.agreement = action.payload.data;
-            state.message = action.payload.message;
+            state.agreement = action.payload;
+            // state.message = action.payload.message;
         });
         builder.addCase(createAgreement.rejected, (state, action) => {
             state.isLoading = false;
@@ -98,7 +98,7 @@ const agreementSlice = createSlice({
         });
         builder.addCase(getAllAgreements.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.agreements = action.payload.data;
+            state.agreements = action.payload;
             state.message = action.payload.message;
         });
         builder.addCase(getAllAgreements.rejected, (state, action) => {
@@ -112,8 +112,8 @@ const agreementSlice = createSlice({
         });
         builder.addCase(getAgreementById.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.agreement = action.payload.data;
-            state.message = action.payload.message;
+            state.agreement = action.payload;
+       
         });
         builder.addCase(getAgreementById.rejected, (state, action) => {
             state.isLoading = false;

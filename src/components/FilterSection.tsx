@@ -26,12 +26,21 @@ const FilterSection: React.FC = () => {
   }
 
   return (
-    <div className="flex space-x-4 items-center justify-center my-8">
-      <Dropdown label="Area Sq ft." options={areaOptions}  onSelect={handleSelectArea} />
-      <Dropdown label="Floor" options={floorOptions} onSelect={handleSelectFloor} />
-      <Dropdown label="Type" options={typeOptions} onSelect={handleSelectType} />
-      <Dropdown label="Price" options={priceOptions} onSelect={handleSelectPrice} />
+    <div className="flex flex-wrap gap-4 justify-center my-8">
+    <div className="w-full sm:w-auto">
+        <Dropdown label="Area Sq ft." options={areaOptions} onSelect={handleSelectArea} />
     </div>
+    <div className="w-full sm:w-auto">
+        <Dropdown label="Floor" options={floorOptions} onSelect={handleSelectFloor} />
+    </div>
+    <div className="w-full sm:w-auto">
+        <Dropdown label="Type" options={typeOptions} onSelect={handleSelectType} />
+    </div>
+    <div className="w-full sm:w-auto">
+        <Dropdown label="Price" options={priceOptions} onSelect={handleSelectPrice} />
+    </div>
+</div>
+
   );
 };
 

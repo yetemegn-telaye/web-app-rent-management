@@ -12,7 +12,7 @@ const ListingCard: React.FC<ListingCardProps> = ({listing}) => {
   return (
     <div className="bg-white shadow-lg rounded-xl overflow-hidden p-4">
       <div className="relative">
-        <img src={listing.coverImage} alt={listing.space_purpose} className="w-full h-48 object-cover rounded-md " />
+        <img src={listing.cover_image[0]} alt={listing.space_purpose} className="w-full h-48 object-cover rounded-md " />
         <div
           className={`absolute top-2 right-2 bg-white text-xs font-semibold py-1 px-2 rounded ${
             listing.space_status.toLowerCase() === 'closed' ? 'text-red-600' : listing.space_status.toLowerCase()==='occupied'? 'text-secondary-light' :'text-teal-600 animate-pulse'
@@ -26,12 +26,12 @@ const ListingCard: React.FC<ListingCardProps> = ({listing}) => {
           <h3 className="font-medium text-secondary-dark text-lg">
             {listing.space_purpose}
           </h3>
-          <span className="text-secondary-light">{listing.num_of_views} <FontAwesomeIcon icon={faEye}/></span>
+          <span className="text-secondary-light">{listing.number_of_views} <FontAwesomeIcon icon={faEye}/></span>
         </div>
         <hr className='my-2'/>
         <div className="flex justify-between items-center mt-2 text-gray-700 text-sm">
         <div className="flex flex-col justify-between mt-2 text-gray-500 text-sm">
-          <span>FLOOR: {listing.on_floor}nd</span>
+          <span>FLOOR: {listing.floor}nd</span>
           <span>Area: {listing.size} sq ft</span>
         </div>
         

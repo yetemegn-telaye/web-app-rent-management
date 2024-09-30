@@ -19,13 +19,12 @@ export interface BuildingManagerUser{
     first_name: string
     middle_name: string
     last_name: string
-    national_id: string
-    city: string
+   building_id: number
     gender: string
-    street_address: string
     phone_number: string
     email: string
     role: string
+    access_token: string
 }
   
   

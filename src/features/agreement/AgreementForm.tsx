@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Dropdown from "../../components/Dropdown";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import { RootState } from "../../redux/store";
 import { createAgreement } from "./agreementSlice";
+import { getAllListings } from "../listings/listingSlice";
 
 type AgreementFormProps = {
     setSelectedOption: (option: string) => void; 
@@ -19,14 +20,15 @@ type AgreementFormProps = {
 const AgreementForm: React.FC<AgreementFormProps> = ({setAgreementId ,setSelectedOption}) => {
     const dispatch = useDispatch<AppDispatch>();
     const agreement = useSelector((state: RootState) => state.agreement.agreement);
-    const contractPeriodOptions: string[] = ['3 months', '6 months', '1 year', '2 year'];
+    const spaces = useSelector((state: RootState) => state.listing.listings);
+    const contractPeriodOptions: string[] = ['monthly', 'quarterly', 'semester', 'yearly'];
     const paymentScheduleOptions: string[] = ['Every 1 month', 'Every 3 months', 'Every 6 months', 'Every year', 'Every 2 Years'];
-    const spaceTypeOptions = ['Office 00F01, 2nd Floor', 'Commercial CM001, 1st Floor', 'Commercial CM002, 1st Floor'];
-    const spaceIdOptions = ['0FFO1','0FF02','OFF03','0FFO1','0FF02','OFF03'];
+    const spaceTypeOptions = [''];
+
 
     const initialState = {
         spaceType: '',
-        space_id: 0,
+        space_id: '',
         rent_payment_period: '',
         rent_price: 0,
         penalty_amount: 0,
@@ -37,6 +39,7 @@ const AgreementForm: React.FC<AgreementFormProps> = ({setAgreementId ,setSelecte
         rent_payment_date: new Date(),
     };
 
+
     
     const [formData, setFormData] = useState(initialState);
     const [agreementFile, setAgreementFile] = useState<string[] | null>(null);
@@ -45,14 +48,31 @@ const AgreementForm: React.FC<AgreementFormProps> = ({setAgreementId ,setSelecte
     const [endDateFilled,setEndDateFilled] = useState(false);
     const [updateDateFilled,setUpdateDateFilled] = useState(false);
 
-   
+
+
+    useEffect(() => {
+        dispatch(getAllListings());
+        // setSelectedOption('Tenant Info');
+    });
+
+   useEffect(() => {
+    if(spaces.length>0){
+    spaces.map((space) => {
+        spaceTypeOptions.push(space.space_purpose + ' ' + space.space_id + ', ' + space.floor  + ', ' + space.id);
+    }
+    );
+}
+},[]);
+
     const handleChange = (name: string, value: any) => {
         setFormData(prevState => ({
             ...prevState,
-            [name] : value
+           
+            [name]: name === 'spaceType' ? value.split(',')[2] : value
         }));
+   
     };
-
+   
 
     const handleDrop = (files: File[],type: string) => {
         console.log(files);
@@ -82,12 +102,33 @@ const AgreementForm: React.FC<AgreementFormProps> = ({setAgreementId ,setSelecte
             );
           }
     };
+    function formatDate(date: Date) {
+        let d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+    
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+    
+        return [year, month, day].join('-');
+    }
 
     const handleDateChange = (name: string) => (date: Date | null) => {
-        handleChange(name, date);
+
+        if (date) {
+        const formattedDate = formatDate(date);  // Function to format date
+        handleChange(name, formattedDate);
+    } else {
+        handleChange(name, null);
+    }
         if(name==='lease_start_date'){
             setSignedDateFilled(true);
             console.log('signed date', signedDateFilled);
+            console.log(formData.lease_start_date);
+            
         }
         else if(name==='lease_end_date'){
             setEndDateFilled(true);
@@ -107,17 +148,11 @@ const AgreementForm: React.FC<AgreementFormProps> = ({setAgreementId ,setSelecte
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();  
 
-        const uploadData = new FormData();
-        Object.entries(formData).forEach(([key, value]) => {
-            
-                uploadData.append(key, value.toString());
-            
-        });
-
-    
-
+        // const uploadData = new FormData();
+       
         const {lease_start_date,
             space_id,
+            spaceType,
             lease_end_date,
             lease_update_date,
             rent_price,
@@ -125,12 +160,15 @@ const AgreementForm: React.FC<AgreementFormProps> = ({setAgreementId ,setSelecte
             rent_payment_period,
             penalty_amount,
             penalty_waiting_period} = formData;
-        dispatch(createAgreement({lease_start_date: lease_start_date.toString(),
-            space_id,
-            lease_end_date:lease_end_date.toString(),
-            lease_update_date:lease_update_date.toString(),
+          
+            
+        dispatch(createAgreement({
+            lease_start_date: formatDate(lease_start_date),
+            space_id:parseInt(spaceType),
+            lease_end_date:formatDate(lease_end_date),
+            lease_update_date:formatDate(lease_update_date),
             rent_price,
-            rent_payment_date:rent_payment_date.toString(),
+            rent_payment_date:formatDate(lease_start_date),
             rent_payment_period,
             penalty_amount,
             penalty_waiting_period,
@@ -138,25 +176,27 @@ const AgreementForm: React.FC<AgreementFormProps> = ({setAgreementId ,setSelecte
             deposit_slip_image: depositSlipFile!}))
         .unwrap()
         .then(() => {
-            setAgreementId(agreement.id);
-            // setSelectedOption('Tenant Info');
-            console.log('Lease Created',agreement);
+            // setAgreementId(agreement.id);
+            setSelectedOption('Tenant Info');
+            console.log('Lease Created');
         })
         .catch(() => {
             alert('An error occured');
         });
-        setSelectedOption('Tenant Info');
-        console.log("entered data", agreementFile, depositSlipFile);
+    
+        console.log("entered data", formData);
         
        
     };
     return(
        <form className="text-secondary-dark flex flex-col gap-4" onSubmit={handleSubmit}>
-              <div className="flex justify-between items-center">
+              <div className="flex gap-2 items-center">
               <div className="flex flex-col w-1/3 items-start gap-2">
                 <label className="font-medium text-sm">Space</label>
                 <Dropdown label="Select Space Type" options={spaceTypeOptions} onSelect={(value)=> handleChange('spaceType',value)} />
-                </div>
+            </div>
+
+      
               </div>
               {formData.spaceType !=='' ? 
                   <div className="flex items-center gap-2">
@@ -167,7 +207,7 @@ const AgreementForm: React.FC<AgreementFormProps> = ({setAgreementId ,setSelecte
                       <DatePicker
                           selected={formData.lease_start_date}
                           onChange={handleDateChange('lease_start_date')}
-                          dateFormat="MMMM d, yyyy"
+                          dateFormat="YYYY MM, dd"
                           className={`w-full px-4 py-2 border border-gray-300 rounded-md ${signedDateFilled ? 'text-gray-600' : 'text-gray-400'} `}
                       />
                        <FontAwesomeIcon icon={faCalendarAlt} className="text-secondary absolute bottom-3 left-80" />

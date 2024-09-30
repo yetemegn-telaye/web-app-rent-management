@@ -2,11 +2,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Dropdown from "../../components/Dropdown";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import ImageUploader from "../../components/ImageUploader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import ImageDropzone from "../../components/ImageDropzone";
 import { createTenant } from "./tenantSlice";
+import { getAllAgreements } from "../agreement/agreementSlice";
 
 
 type TenantProfileFormProps = {
@@ -19,10 +20,12 @@ type TenantProfileFormProps = {
 const TenantProfileForm: React.FC<TenantProfileFormProps> = ({ setTenantId,agreementId,setSelectedOption}) => {
     const dispatch = useDispatch<AppDispatch>();
     const tenant = useSelector((state: RootState) => state.tenant.tenant);
+    const all_lease = useSelector((state: RootState) => state.agreement.agreements) || [{}];
 
-    const industryOptions = ['Construction', 'Media', 'Politics', 'Technology', 'Mining'];
+    const industryOptions = ['finance', 'Media', 'Politics', 'Technology', 'Mining'];
     const spaceTypeOptions = ['Office 00F01, 2nd Floor', 'Commercial CM001, 1st Floor', 'Commercial CM002, 1st Floor'];
     const spaceIdOptions = ['0FFO1','0FF02','OFF03','0FFO1','0FF02','OFF03'];
+    const genderOptions = ['male','female'];
 
     const initialState = {
         firstName: '',
@@ -42,11 +45,22 @@ const TenantProfileForm: React.FC<TenantProfileFormProps> = ({ setTenantId,agree
     const [businessLicenseFile, setBusinessLicenseFile] = useState<string[] | null>(null);
     const [tenantIdFile, setTenantIdFile] = useState<string[] | null>(null);
 
+        
+ const lease_id = all_lease[all_lease.length-1]?.id;
 
+
+
+    useEffect(() => {
+        dispatch(getAllAgreements());
+    });
+
+ 
+
+   console.log(lease_id);
     const handleChange = (name: string, value: any)=>{
         setFormData(prevState=>({
             ...prevState,
-            [name]: value
+            [name]: name === 'leaseId' ? all_lease[all_lease.length-1].id : value
         }));
     }
 
@@ -85,10 +99,10 @@ const TenantProfileForm: React.FC<TenantProfileFormProps> = ({ setTenantId,agree
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();  
 
-        const uploadData = new FormData();
-        Object.entries(formData).forEach(([key, value]) => {
-                uploadData.append(key, value.toString());
-        });
+        // const uploadData = new FormData();
+        // Object.entries(formData).forEach(([key, value]) => {
+        //         uploadData.append(key, value.toString());
+        // });
         const {
             firstName,
             middleName,
@@ -105,16 +119,16 @@ const TenantProfileForm: React.FC<TenantProfileFormProps> = ({ setTenantId,agree
             last_name: lastName,
             company_name: companyName,
             industry: industry,
-            gender,
+            gender: 'female',
             phone_number: phoneNumber,
             email: tenantEmail, 
             national_id_image: tenantIdFile || [], 
             business_license_image: businessLicenseFile || [], 
-            lease_id: agreementId || 0
+            lease_id:lease_id
         }))
         .unwrap()
         .then(() => {
-            //setSelectedOption('Current State of Listing');
+            setSelectedOption('Current State of Listing');
             setTenantId(tenant.id);
             console.log('Lease Created',tenant);
         })
@@ -125,7 +139,7 @@ const TenantProfileForm: React.FC<TenantProfileFormProps> = ({ setTenantId,agree
 
 
         console.log("Entered data",formData,businessLicenseFile,tenantIdFile);
-        setSelectedOption('Current State of Listing');
+        
        
     };
 

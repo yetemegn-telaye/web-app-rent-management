@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ImageUploader from '../../components/ImageUploader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import { createSpaceState } from './listingSlice';
 import { useNavigate } from 'react-router-dom';
+import { getAllTenants } from '../tenant/tenantSlice';
 
 
 type CurrentStateFormProps = {
@@ -16,7 +17,8 @@ type CurrentStateFormProps = {
 
 const CurrentStateForm: React.FC<CurrentStateFormProps> = ({tenant_id,agreement_id}) => {
     const dispatch = useDispatch<AppDispatch>();
-    const current_space_state = useSelector((state: RootState) => state.listing.current_space_state);
+    const all_tenant = useSelector((state: RootState) => state.tenant.tenants) || [{}];
+    
     const initialStateFiles: string[] = [];
     const initialDamageFile: string[] | undefined = undefined;
     const initialDamageTag: string = '';
@@ -25,7 +27,16 @@ const CurrentStateForm: React.FC<CurrentStateFormProps> = ({tenant_id,agreement_
     const [damageImageFile, setDamageImageFile] = useState<string[] | undefined>(initialDamageFile);
     const [damageTag, setDamageTag] = useState<string>(initialDamageTag);
     const navigate = useNavigate();
+    const new_tenant_id =  all_tenant[all_tenant.length-1]?.id;
+    const new_lease_id = all_tenant[all_tenant.length-1]?.lease_id;
 
+    useEffect(()=>{
+        dispatch(getAllTenants());
+    });
+    
+  
+ console.log(new_lease_id);
+    
 
     const handleDrop = (files: File[],type: string) => {
         console.log(files);
@@ -67,8 +78,8 @@ const CurrentStateForm: React.FC<CurrentStateFormProps> = ({tenant_id,agreement_
         console.log('Damage Image with Tag', damageImageFile, damageTag);
         
         dispatch(createSpaceState( {
-            tenant_id: tenant_id || 0,
-            lease_id: agreement_id || 0,
+            tenant_id: new_tenant_id || 0,
+            lease_id: new_lease_id|| 0,
             current_images: currentSpaceStateFiles,
             damage: {
               damage_description: damageTag,
@@ -77,8 +88,8 @@ const CurrentStateForm: React.FC<CurrentStateFormProps> = ({tenant_id,agreement_
         }))
         .unwrap()
         .then(() => {
-            // navigate('/all-tenants');
-            console.log('Space State Created',current_space_state);
+            navigate('/all-tenants');
+            console.log('Space State Created');
         })
         .catch(() => {
             alert('An error occured');

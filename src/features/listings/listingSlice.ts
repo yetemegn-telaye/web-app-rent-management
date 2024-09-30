@@ -13,6 +13,7 @@ interface ListingState {
    listing: Space,
    current_space_state: SpaceState,
    feature: SpaceFeature,
+   all_features: SpaceFeature[],
    isLoading: boolean,
    message: string| null,
    error: string | null
@@ -20,20 +21,21 @@ interface ListingState {
 
 const initialState: ListingState = {
     listings: [],
+    all_features: [],
     listing: {
         id: 0,
         space_id: "",
         size: 0,
-        pictures: [],
-        coverImage: "",
-        on_floor: 0,
+        listed_date: '',
+        space_images: [],
+        cover_image: [],
+        floor: 0,
         space_purpose: "",
         price: 0,
         number_of_rooms: 0,
         space_status: "",
-        num_of_views: 0,
-        space_feature_id: 0,
-        listed_date: ''
+        number_of_views: 0,
+        building_id: 0,
     },
     feature: {
         id: 0,
@@ -41,7 +43,7 @@ const initialState: ListingState = {
         previous_use: "",
         balcony: false,
         furnished: false,
-        natural_light: false,
+        natural_lighting: false,
         high_ceiling: false,
         wall_paint: "",
         position_on_building: "",
@@ -69,9 +71,8 @@ export const addListing = createAsyncThunk(
     'listing/addListing',
     async (listing: CreateSpace , {dispatch,rejectWithValue}) => {
         try{
-            
+            console.log(listing);
             const response = await dispatch(listingApi.endpoints.addListing.initiate(listing));
-            console.log(response);
             return response.data;
         } catch (error:any) {
             return rejectWithValue(error.response.data);
@@ -83,8 +84,6 @@ export const addListingFeature = createAsyncThunk(
     'listing/addListingFeature',
     async (feature: CreateSpaceFeature, {dispatch,rejectWithValue}): Promise<any> => {
         try{
-            // const [logoutUserMutation] = useLogoutUserMutation();
-            // const response = await logoutUserMutation(token).unwrap();
             const response = await dispatch(listingApi.endpoints.addListingFeature.initiate(feature));
             return response.data;
         } catch (error:any) {
@@ -122,6 +121,7 @@ export const getAllListings = createAsyncThunk(
     async (_, {dispatch,rejectWithValue}) => {
         try{
             const response = await dispatch(listingApi.endpoints.getAllListings.initiate(_));
+       
             return response.data;
         } catch (error:any) {
             return rejectWithValue(error.response.data);
@@ -141,12 +141,24 @@ export const getListingById = createAsyncThunk(
     }
 );
 
+export const getAllListingFeatures = createAsyncThunk(
+    'listing/getAllListingFeatures',
+    async(_, {dispatch,rejectWithValue}) => {
+        try{
+            const response = await dispatch(listingApi.endpoints.getAllListingFeatures.initiate(_));
+            return response.data;
+        } catch (error:any) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
 
 export const getListingFeatures = createAsyncThunk(
     'listing/getListingFeatures',
     async(id:number,{dispatch,rejectWithValue})=>{
         try{
             const response = await dispatch(listingApi.endpoints.getListingFeatures.initiate(id));
+            console.log(response.data);
             return response.data;
         } catch (error: any){
             return rejectWithValue(error.response.data);
@@ -165,20 +177,20 @@ const listingSlice = createSlice({
         });
         builder.addCase(addListing.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.listing = action.payload.user;
             state.message = action.payload.message;
         });
         builder.addCase(addListing.rejected, (state, action) => {
             state.isLoading = false;
             state.error = action.payload as string;
         });
+
+
         builder.addCase(addListingFeature.pending, (state, action: any) => {
             state.isLoading = true;
-            state.listing.space_id = action.payload.space_id;
+            
         });
         builder.addCase(addListingFeature.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.feature = action.payload.data;
             state.message = action.payload.message;
         });
         builder.addCase(addListingFeature.rejected, (state, action) => {
@@ -192,22 +204,21 @@ const listingSlice = createSlice({
         });
         builder.addCase(getAllListings.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.listings = action.payload.data;
-            state.message = action.payload.message;
+            state.listings = action.payload;
+           
         });
         builder.addCase(getAllListings.rejected, (state, action) => {
             state.isLoading = false;
             state.error = action.payload as string | null;
         });
 
-        //get listing by id
         builder.addCase(getListingById.pending, (state) => {
             state.isLoading = true;
         });
         builder.addCase(getListingById.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.listing = action.payload.data;
-            state.message = action.payload.message;
+            state.listing = action.payload;
+           
         });
         builder.addCase(getListingById.rejected,(state,action)=>{
             state.isLoading= false;
@@ -215,13 +226,27 @@ const listingSlice = createSlice({
         });
  
         //get listing feature
+        builder.addCase(getAllListingFeatures.pending,(state)=>{
+            state.isLoading = true;
+        });
+        builder.addCase(getAllListingFeatures.fulfilled,(state,action)=>{
+            state.isLoading = false;
+            state.all_features = action.payload;
+        });
+        builder.addCase(getAllListingFeatures.rejected,(state,action)=>{
+            state.isLoading = false;
+            state.error = action.payload as string | null;
+        });
+
+
         builder.addCase(getListingFeatures.pending,(state)=>{
             state.isLoading = true;
         });
         builder.addCase(getListingFeatures.fulfilled,(state,action)=>{
             state.isLoading=false;
             state.feature = action.payload;
-            state.message = action.payload.message;
+            console.log(action.payload);
+            // state.message = action.payload.message;
         });
         builder.addCase(getListingFeatures.rejected,(state,action)=>{
             state.isLoading=false;

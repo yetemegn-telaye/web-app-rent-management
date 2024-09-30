@@ -18,7 +18,7 @@ export interface SpaceFeature {
     previous_use: string
     balcony: boolean
     furnished: boolean
-    natural_light: boolean
+    natural_lighting: boolean
     high_ceiling: boolean
     wall_paint: string
     position_on_building: string
