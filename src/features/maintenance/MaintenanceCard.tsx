@@ -34,6 +34,8 @@ const MaintenanceCard: React.FC<MaintenanceCardProps> = ({ request}) => {
     const handleStartRequest = () => {
         dispatch(startMaintenance(request.id));
     };
+
+   
   const handleOpenSlider = () => {
     setIsSliderOpen(true);
   };
@@ -91,8 +93,10 @@ const MaintenanceCard: React.FC<MaintenanceCardProps> = ({ request}) => {
             </button>
           </div>
         ):null}
+       
+  
 
-        {request.status === "waiting_for_approval" && (
+        {request.status === "waiting_for_approval" || request.status==='ongoing' ? (
           <div className={`justify-between gap-3 `}>
             <button
               onClick={handleOpenSlider}
@@ -101,7 +105,7 @@ const MaintenanceCard: React.FC<MaintenanceCardProps> = ({ request}) => {
               <FontAwesomeIcon icon={faEye} />
             </button>
           </div>
-        )}
+        ):null}
         {isSliderOpen && <RequestViewModal requestId={request.id} images={images} onClose={handleCloseSlider} />}
       </div>
     </div>
