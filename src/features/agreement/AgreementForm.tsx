@@ -176,9 +176,9 @@ const AgreementForm: React.FC<AgreementFormProps> = ({setAgreementId ,setSelecte
             deposit_slip_image: depositSlipFile!}))
         .unwrap()
         .then(() => {
-            // setAgreementId(agreement.id);
+            alert('Lease Created');
             setSelectedOption('Tenant Info');
-            console.log('Lease Created');
+            
         })
         .catch(() => {
             alert('An error occured');

@@ -22,7 +22,7 @@ const TenantProfileForm: React.FC<TenantProfileFormProps> = ({ setTenantId,agree
     const tenant = useSelector((state: RootState) => state.tenant.tenant);
     const all_lease = useSelector((state: RootState) => state.agreement.agreements) || [{}];
 
-    const industryOptions = ['finance', 'Media', 'Politics', 'Technology', 'Mining'];
+    const industryOptions = ['finance', 'health_care', 'real_estate', 'law_firm', 'agriculture'];
     const spaceTypeOptions = ['Office 00F01, 2nd Floor', 'Commercial CM001, 1st Floor', 'Commercial CM002, 1st Floor'];
     const spaceIdOptions = ['0FFO1','0FF02','OFF03','0FFO1','0FF02','OFF03'];
     const genderOptions = ['male','female'];
@@ -99,10 +99,7 @@ const TenantProfileForm: React.FC<TenantProfileFormProps> = ({ setTenantId,agree
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();  
 
-        // const uploadData = new FormData();
-        // Object.entries(formData).forEach(([key, value]) => {
-        //         uploadData.append(key, value.toString());
-        // });
+       
         const {
             firstName,
             middleName,
@@ -113,7 +110,7 @@ const TenantProfileForm: React.FC<TenantProfileFormProps> = ({ setTenantId,agree
             phoneNumber,
             tenantEmail,  
         } = formData;
-        // national_id_image: tenantIdFile, business_license_image: string  lease_id: number
+   
         dispatch(createTenant( {first_name: firstName,
             middle_name: middleName,
             last_name: lastName,
@@ -128,9 +125,10 @@ const TenantProfileForm: React.FC<TenantProfileFormProps> = ({ setTenantId,agree
         }))
         .unwrap()
         .then(() => {
+            alert('Tenant Created Successfully!');
             setSelectedOption('Current State of Listing');
             setTenantId(tenant.id);
-            console.log('Lease Created',tenant);
+           
         })
         .catch(() => {
             alert('An error occured');

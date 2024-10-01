@@ -15,7 +15,7 @@ const SpecialFeatureForm : React.FC = ()=>{
     const industryOptions = ['finance', 'health_care', 'real_estate', 'law_firm', 'agriculture'];
     const commonOptions = ['Availabe','Not Available'];
     const viewOptions = ['City View','Nature View'];
-    const positionOptions = ['Corner', 'Front', 'Coridor'];
+    const positionOptions = ['corner', 'front', 'coridor','on the east wing'];
 
   
 
@@ -49,7 +49,6 @@ const SpecialFeatureForm : React.FC = ()=>{
         console.log(spaces);
      }
 
-        console.log("Set value for", name, "to", finalValue);
         setFormData(prevState => ({
             ...prevState,
             [name]: finalValue
@@ -84,7 +83,7 @@ const SpecialFeatureForm : React.FC = ()=>{
             space_id}))
         .unwrap()
         .then(() => {
-            alert('listing feature added');
+            alert('listing feature successfully added');
             navigate('/all-listing');
         })
         .catch(() => {

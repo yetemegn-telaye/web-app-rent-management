@@ -88,8 +88,9 @@ const CurrentStateForm: React.FC<CurrentStateFormProps> = ({tenant_id,agreement_
         }))
         .unwrap()
         .then(() => {
+            alert('Space State Created');
             navigate('/all-tenants');
-            console.log('Space State Created');
+            
         })
         .catch(() => {
             alert('An error occured');

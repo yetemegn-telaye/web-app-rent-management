@@ -3,13 +3,14 @@ import mangerPic from '../../assets/images/profilePic.webp';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
 const ManagerProfile: React.FC = () => {
+    const managerInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
     return (
         <div className="bg-white w-full h-full">
             <div className="flex items-center justify-between p-6 px-8">
                 <div className="flex items-center">
                     <img src={mangerPic} alt="profile" className="w-20 h-20 rounded-full" />
                     <div className="ml-4">
-                        <h1 className="text-lg font-semibold text-primary-dark">Abebe Daniel</h1>
+                        <h1 className="text-lg font-semibold text-primary-dark">{managerInfo.first_name} {managerInfo.last_name}</h1>
                         <p className="text-sm text-gray-500 font-light">Manager</p>
                     </div>
                     </div>
@@ -26,11 +27,11 @@ const ManagerProfile: React.FC = () => {
                         <div className="flex flex-col gap-4">
                             <div>
                                 <p className="text-sm text-gray-500 font-light">Phone</p>
-                                <p className="text-sm text-gray-700 font-light">+251 911 111 111</p>
+                                <p className="text-sm text-gray-700 font-light">{managerInfo.phone_number}</p>
                             </div>
                             <div>
                                 <p className="text-sm text-gray-500 font-light">Email</p>
-                                <p className="text-sm text-gray-700 font-light">abebe@ambassador.com</p>
+                                <p className="text-sm text-gray-700 font-light">{managerInfo.email}</p>
                             </div>
                             </div>
                     </div>
@@ -39,7 +40,7 @@ const ManagerProfile: React.FC = () => {
                         <div className="flex flex-col gap-4">
                             <div>
                                 <p className="text-sm text-gray-500 font-light">Username</p>
-                                <p className="text-sm text-gray-700 font-light">abebe-manager</p>
+                                <p className="text-sm text-gray-700 font-light">{managerInfo.email}</p>
                             </div>
                             <div>
                                 <p className="text-sm text-gray-500 font-light">Password</p>
@@ -54,11 +55,11 @@ const ManagerProfile: React.FC = () => {
                         <div className="flex flex-col gap-4">
                             <div>
                                 <p className="text-sm text-gray-500 font-light">Phone</p>
-                                <p className="text-sm text-gray-700 font-light">+251 911 111 111</p>
+                                <p className="text-sm text-gray-700 font-light">{managerInfo.phone_number}</p>
                             </div>
                             <div>
                                 <p className="text-sm text-gray-500 font-light">Email</p>
-                                <p className="text-sm text-gray-700 font-light">abebe@ambassador.com</p>
+                                <p className="text-sm text-gray-700 font-light">{managerInfo.email}</p>
                             </div>
                             </div>
                     </div>
@@ -67,7 +68,7 @@ const ManagerProfile: React.FC = () => {
                         <div className="flex flex-col gap-4">
                             <div>
                                 <p className="text-sm text-gray-500 font-light">Username</p>
-                                <p className="text-sm text-gray-700 font-light">abebe-manager</p>
+                                <p className="text-sm text-gray-700 font-light">{managerInfo.email}</p>
                             </div>
                             <div>
                                 <p className="text-sm text-gray-500 font-light">Password</p>

@@ -21,6 +21,7 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, totalPayment, onV
   const [selectedInvoice, setSelectedInvoice] = useState<number | null>(null);
   const [selectedPayment, setSelectedPayment] = useState<IPayment | null>(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const role = window.localStorage.getItem('role');
 
   const itemsPerPage = 5;
   const totalPages = Math.ceil(payments.length / itemsPerPage);
@@ -83,21 +84,21 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, totalPayment, onV
                 <td className={`text-center p-2 ${payment.status === 'Delayed' ? 'text-danger font-bold' : 'text-secondary-dark'}`}>{payment.status}</td>
                 <td className="p-2 text-center">{payment.paid_by}</td>
                 <td className="p-2">
-                  {payment.status === 'Delayed' && userType === 'tenant' ? (
+                  {payment.status === 'delayed' && role === 'tenant' ? (
                     <button 
                       className="bg-danger text-white hover:bg-red-600 px-4 py-1 rounded-md" 
                       onClick={() => handlePayClick(payment.invoice_id)}
                     >
                       Pay
                     </button>
-                  ) : payment.status === 'Delayed' && userType === 'landlord' ? (
+                  ) : payment.status === 'delayed' && role === 'building_manager' ? (
                     <button 
                       className="bg-danger text-white hover:bg-red-600 px-4 py-1 rounded-md" 
                       onClick={() => alert('Tenant has been alerted successfully!')}
                     >
                       Alert 
                     </button>
-                  ) : payment.status === 'waiting for approval' && userType === 'landlord' ? (
+                  ) : payment.status === 'waiting_for_approval' && role === 'building_manager' ? (
                     <div className='flex gap-1'>
                       <button 
                         className="bg-success flex items-center text-white hover:bg-primary-dark px-2 py-1 rounded-md" 

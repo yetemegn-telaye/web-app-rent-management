@@ -94,13 +94,14 @@ const BasicDetailForm: React.FC<BasicDetailFormProps> = ({setSelectedOption})=>{
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>)=>{
         event.preventDefault();
         const {space_id,size,floor,space_purpose,space_status,number_of_rooms,price} = formData;
-        console.log('form data',formData);
+        
         
         dispatch(addListing({space_id,size,floor,space_purpose,space_status,number_of_rooms,price,cover_image:spaceCoverImg[0],space_images:spaceImages,building_id:2}))
         .unwrap()
-        .then((response) => {
+        .then(() => {
+            alert('listing added Successfully');
             setSelectedOption('Special Features');
-            console.log('listing added',response);
+            
         })
         .catch(() => {
             alert('An error occured');
