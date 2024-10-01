@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import LandlordLayout from '../../layout/LandlordLayout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,6 +16,9 @@ import Maintenance from '../maintenance';
 import Agreement from '../agreement';
 import { Link } from 'react-router-dom';
 import Reminders from './Reminders';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../redux/store';
+import { getPaymentByTenant } from '../payment/paymentSlice';
 
 interface Listing {
     id: string;
@@ -121,9 +124,11 @@ const tenants: Tenant[] = [
 
 const MyRent: React.FC = () => {
     // const { id } = useParams<{ id: string }>(); 
+    const dispatch = useDispatch<AppDispatch>();
     const id = '1';
     const tenant = tenants.find((tenant)=> tenant.id === id);
     const listing = listings.find((listing) => listing.id === tenant?.rentedSpaceId);
+    const all_payments =  useSelector((state: RootState) => state.payment.payments);
     const [currentStatus, setCurrentStatus] = useState<string>('');
     const statDropDownOptions = ['Open for rent', 'Closed'];
     const userType = 'tenant';
@@ -135,6 +140,10 @@ const MyRent: React.FC = () => {
         { label: 'Maintenance' },
         { label: 'Special Features' },
     ];
+
+    useEffect(()=>{
+        dispatch(getPaymentByTenant(parseInt(tenant?.id || '0')));
+    },[]);
    
     const handleSelectedStatus = (status: string) => {
         setCurrentStatus(status);
@@ -155,7 +164,7 @@ const MyRent: React.FC = () => {
             case 'Document':
                 return <Agreement isClosed={true} />;  {/* Pass isClosed prop */}
             case 'Payments':
-                return <Payment userType = {userType}/>;
+                return <Payment userType = {userType} all_payments={[]} />;
             case 'Maintenance':
                 return <Maintenance userType='tenant' />;
             case 'Special Features':

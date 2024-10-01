@@ -84,7 +84,7 @@ const tenantSlice = createSlice({
         builder.addCase(createTenant.fulfilled, (state, action) => {
             state.isLoading = false;
             state.tenant = action.payload.data;
-            state.message = action.payload.message;
+           
         });
         builder.addCase(createTenant.rejected, (state, action) => {
             state.isLoading = false;
@@ -99,7 +99,7 @@ const tenantSlice = createSlice({
         builder.addCase(getAllTenants.fulfilled, (state, action) => {
             state.isLoading = false;
             state.tenants = action.payload;
-            state.message = action.payload.message;
+      
         });
         builder.addCase(getAllTenants.rejected, (state, action) => {
             state.isLoading = false;
@@ -113,7 +113,7 @@ const tenantSlice = createSlice({
         builder.addCase(getTenantById.fulfilled, (state, action) => {
             state.isLoading = false;
             state.tenant = action.payload.data;
-            state.message = action.payload.message;
+            
         });
         builder.addCase(getTenantById.rejected, (state, action) => {
             state.isLoading = false;

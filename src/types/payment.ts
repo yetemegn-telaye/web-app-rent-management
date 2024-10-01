@@ -20,17 +20,17 @@ export interface getTotalPaymentBySpace{
   total_rent_amount: number
 }
 
-export interface Payment {
+export interface IPayment {
     id: number
-    invoice_id: string
-    invoice_image: string
+    invoice_id: number
+    invoice_image: string[]
     status: string
     due_date: string
     paid_date: string
     payment_price: number
     utility_price: number
     total_rent_price: number
-    paid_by: string
+    paid_by: number
     space_id: number
     tenant_id: number
     lease_id: number

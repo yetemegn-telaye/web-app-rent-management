@@ -19,14 +19,31 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
 import { RootState } from '../../redux/store';
 import { getListingById } from './listingSlice';
+import { getAllTenants } from '../tenant/tenantSlice';
+import { getPaymentByTenant } from '../payment/paymentSlice';
 
 
 
 const ListingDetail: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { id } = useParams<{ id: string }>(); 
-   
+    const all_lease= useSelector((state: RootState) => state.agreement.agreements);
+    
     const listingId = id ? parseInt(id) : 0;
+    const current_lease = all_lease.find((lease) => lease.space_id === listingId);
+    const defaultTenant = {
+        id: 0,
+        first_name: '',
+        middle_name: '',
+        last_name: '',
+        company_name: '',
+        industry: '',
+        email: '',
+        phone_number: '',
+        lease_id: 0
+    }
+    const current_tenant = (useSelector((state: RootState) => state.tenant.tenants))?.find((tenant) => tenant.lease_id === current_lease?.id) || defaultTenant;
+    const payments = useSelector((state: RootState) => state.payment.payments);
     const [currentStatus, setCurrentStatus] = useState<string>('');
     const statDropDownOptions = ['open_for_rent', 'occupied','closed'];
 
@@ -47,7 +64,16 @@ const ListingDetail: React.FC = () => {
 
     useEffect(()=>{
         dispatch(getListingById(listingId));
-       },[]);
+        dispatch(getAllTenants());
+       });
+
+       useEffect(()=>{
+            dispatch(getPaymentByTenant(current_tenant!.id));
+       },[current_tenant]);
+
+
+
+
 
     const handleSelectedStatus = (status: string) => {
         setCurrentStatus(status);
@@ -70,7 +96,7 @@ const ListingDetail: React.FC = () => {
             case 'Document':
                 return <Agreement isClosed={space?.space_status.toLowerCase() === 'occupied'} />; 
             case 'Payments':
-                return <Payment userType='landlord'/>;
+                return <Payment userType='landlord' all_payments={payments}/>;
          
             case 'Maintenance':
                 return <Maintenance userType='landlord'/>;

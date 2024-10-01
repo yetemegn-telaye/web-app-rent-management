@@ -1,31 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FilterPayment from './FilterPayment';
 import PaymentTable from './PaymentTable';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
+import { IPayment }  from '../../types/payment';
 
 
-const payments = [
-  { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'Delayed',paid_by:'abebe' },
-  { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid',paid_by:'abebe' },
-  { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid',paid_by:'abebe' },
-  { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid',paid_by:'abebe' },
-  { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid',paid_by:'abebe' },
-  { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid',paid_by:'abebe' },
-    { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid',paid_by:'abebe' },
-    { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid',paid_by:'abebe' },
-    { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'paid',paid_by:'abebe' },
-    { invoiceId: '#505524082', date: '6-12-2023', utility: '3,000 birr', amount: '45,000', totalAmount: '48,000 birr', status: 'waiting for approval',paid_by:'abebe' },
-];
+
 
 type PaymentProps = {
     userType: 'landlord' | 'tenant';
+    all_payments: IPayment[];
 }
 
-const Payment: React.FC<PaymentProps> = ({userType}) => {
+const Payment: React.FC<PaymentProps> = ({userType,all_payments}) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filter, setFilter] = useState<string | null>(null);
-  
+
+   useEffect(()=>{
+    console.log(all_payments);
+    },[]);
 
     const handleViewClick = (invoiceId: string) => {
         console.log(`View details for ${invoiceId}`);
@@ -39,9 +33,9 @@ const Payment: React.FC<PaymentProps> = ({userType}) => {
         setFilter(filter);
     };
 
-    const filteredPayments = payments.filter(payment => {
+    const filteredPayments = all_payments.filter(payment => {
         return (
-            payment.invoiceId.includes(searchTerm) &&
+            payment.invoice_id.toString().includes(searchTerm) &&
             (!filter || payment.status.toLowerCase() === filter)
         );
     });

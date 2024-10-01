@@ -15,14 +15,17 @@ const initialState: BuildingState = {
     building: {
         id: 0,
         total_spaces: 0,
-        available_spaces:0,
-        occupied_spaced: 0,
+        available_spaces: 0,
+        occupied_spaces: 0,
         total_size: 0,
         tot_num_floors: 0,
         total_parking_space: 0,
         manager_id: 0,
         elevator: false,
-        bank_account_number:0
+        bank_account_number: 0,
+        open_house_start_time: '',
+        open_house_end_time: '',
+        repeat: []
     },
     isLoading: false,
     error: null,
@@ -51,7 +54,7 @@ const initialState: BuildingState = {
             });
             builder.addCase(getBuildingById.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.building = action.payload.data;
+                state.building = action.payload;
             });
             builder.addCase(getBuildingById.rejected, (state, action) => {
                 state.isLoading = false;

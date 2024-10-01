@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { ApprovePayment, MakePayment, Payment } from "../../types/payment";
+import { ApprovePayment, MakePayment, IPayment } from "../../types/payment";
 import { paymentApi } from "./paymentApi";
 
 
@@ -8,8 +8,9 @@ import { paymentApi } from "./paymentApi";
 
 
 interface PaymentState {
-   payments: Payment[],
-   payment: Payment,
+   payments: IPayment[],
+   payment: IPayment,
+   total_payment_all_space: [],
    isLoading: boolean,
    message: string| null,
    error: string | null
@@ -18,20 +19,21 @@ interface PaymentState {
 const initialState:PaymentState = {
   payment: {
     id: 0,
-    invoice_id: "",
-    invoice_image: "",
+    invoice_id: 0,
+    invoice_image: [],
     status: "",
     due_date: "",
     paid_date: "",
     payment_price: 0,
     utility_price: 0,
     total_rent_price: 0,
-    paid_by: "",
+    paid_by: 0,
     space_id: 0,
     tenant_id: 0,
     lease_id: 0
     },
     isLoading: false,
+    total_payment_all_space: [],
     payments: [],
     message: "",
     error: null
@@ -73,6 +75,18 @@ export const getAllPayments = createAsyncThunk(
     }
 );
 
+export const getTotalPaymentAllSpace = createAsyncThunk(
+    'payment/getTotalPaymentAllSpace',
+    async (_, {dispatch,rejectWithValue}) => {
+        try{ 
+            const response = await dispatch(paymentApi.endpoints.getTotalPaymentAllSpace.initiate(_));
+            return response.data;
+        } catch (error:any) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
 export const getPaymentById = createAsyncThunk(
     'payment/getPaymentById',
     async (id: number, {dispatch,rejectWithValue}) => {
@@ -85,6 +99,17 @@ export const getPaymentById = createAsyncThunk(
     }
 )
 
+export const getPaymentByTenant = createAsyncThunk(
+    'payment/getPaymentByTenant',
+    async (tenant_id: number, {dispatch,rejectWithValue}) => {
+        try{ 
+            const response = await dispatch(paymentApi.endpoints.getPaymentByTenant.initiate(tenant_id));
+            return response.data;
+        } catch (error:any) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
 
 
 
@@ -127,10 +152,28 @@ const paymentSlice = createSlice({
         });
         builder.addCase(getAllPayments.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.payments = action.payload.data;
-            state.message = action.payload.message;
+            state.payments = action.payload;
+            console.log(action.payload);
+     
         });
         builder.addCase(getAllPayments.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload as string;
+        });
+
+
+
+        builder.addCase(getTotalPaymentAllSpace.pending, (state) => {
+            state.isLoading = true;
+        });
+        builder.addCase(getTotalPaymentAllSpace.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.total_payment_all_space = action.payload;
+            console.log(action.payload);
+    
+     
+        });
+        builder.addCase(getTotalPaymentAllSpace.rejected, (state, action) => {
             state.isLoading = false;
             state.error = action.payload as string;
         });
@@ -145,6 +188,19 @@ const paymentSlice = createSlice({
             state.message = action.payload.message;
         });
         builder.addCase(getPaymentById.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload as string;
+        });
+
+
+        builder.addCase(getPaymentByTenant.pending, (state) => {
+            state.isLoading = true;
+        });
+        builder.addCase(getPaymentByTenant.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.payments = action.payload;
+        });
+        builder.addCase(getPaymentByTenant.rejected, (state, action) => {
             state.isLoading = false;
             state.error = action.payload as string;
         });

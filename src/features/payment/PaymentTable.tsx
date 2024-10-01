@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Pagination from '../../components/Pagination';
 import PaymentModal from './PaymentModal';
 import PayModal from './PayModal';
 import SuccessModal from '../../components/SuccesModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faCheckCircle, faEye, faXmarkCircle } from '@fortawesome/free-solid-svg-icons';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../redux/store';
+import { IPayment } from '../../types/payment';
+import { get } from 'http';
+import { getTotalPaymentAllSpace } from './paymentSlice';
 
 interface PaymentRecord {
   invoiceId: string;
@@ -19,21 +22,29 @@ interface PaymentRecord {
 }
 
 interface PaymentTableProps {
-  payments: PaymentRecord[];
+  payments: IPayment[];
   onViewClick: (invoiceId: string) => void;
   userType: 'landlord' | 'tenant';
 }
 
 const PaymentTable: React.FC<PaymentTableProps> = ({ payments, onViewClick,userType }) => {
+  const dispatch = useDispatch<AppDispatch>();
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPayModalOpen, setIsPayModalOpen] = useState(false);
-  const [selectedInvoice, setSelectedInvoice] = useState<string | null>(null);
-  const [selectedPayment, setSelectedPayment] = useState<PaymentRecord | null>(null);
+  const [selectedInvoice, setSelectedInvoice] = useState<number | null>(null);
+  const [selectedPayment, setSelectedPayment] = useState<IPayment | null>(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const role = useSelector((state:RootState)=>state.auth.role);
+  const total_payment_all_space = useSelector((state: RootState) => {
+    const totalPaymentData = state.payment.total_payment_all_space;
+    return Array.isArray(totalPaymentData) ? { totalPayment: 0 } : totalPaymentData;
+  }) as { totalPayment: number };
 
 
+  useEffect(() => {
+    dispatch(getTotalPaymentAllSpace());
+  });
 
   const itemsPerPage = 5;
 
@@ -50,7 +61,7 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, onViewClick,userT
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-  const handleViewClick = (payment: PaymentRecord) => {
+  const handleViewClick = (payment: IPayment) => {
     setSelectedPayment(payment);
     setIsModalOpen(true);
   };
@@ -65,10 +76,10 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, onViewClick,userT
     setSelectedPayment(null);
   };
 
-  const handlePayClick = (invoiceId: string) => {
-    setSelectedInvoice(invoiceId);
+  const handlePayClick = (invoice_id: number) => {
+    setSelectedInvoice(invoice_id);
     setIsPayModalOpen(true);
-    console.log("Pay clicked for", invoiceId);
+    console.log("Pay clicked for", invoice_id);
     
   };
   const handleConfirmPayment = (file: File | null) => {
@@ -97,18 +108,18 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, onViewClick,userT
             <tbody>
                 {payments.map((payment, index) => (
                     <tr key={index} className={`border-b hover:bg-primary ${payment.status === 'Delayed' ? 'border border-danger border-opacity-15 rounded-xl bg-red-100 animate-pulse' : ''}`}>
-                        <td className="p-2 text-center">{payment.invoiceId}</td>
-                        <td className="p-2 text-center">{payment.date}</td>
-                        <td className="p-2 text-center">{payment.utility}</td>
-                        <td className="p-2 text-center">{payment.amount}</td>
-                        <td className="p-2 text-center">{payment.totalAmount}</td>
+                        <td className="p-2 text-center">{payment.invoice_id}</td>
+                        <td className="p-2 text-center">{payment.due_date}</td>
+                        <td className="p-2 text-center">{payment.utility_price}</td>
+                        <td className="p-2 text-center">{payment.payment_price}</td>
+                        <td className="p-2 text-center">{payment.status}</td>
                         <td className={`text-center p-2 ${payment.status === 'Delayed' ? 'text-danger font-bold' : 'text-secondary-dark'}`}>{payment.status}</td>
                         <td className="p-2 text-center">{payment.paid_by}</td>
                         <td className="p-2">
                 {payment.status === 'Delayed' && role === 'tenant' ? (
                   <button 
                     className="bg-danger text-white hover:bg-red-600 px-4 py-1 rounded-md" 
-                    onClick={() => handlePayClick(payment.invoiceId)}
+                    onClick={() => handlePayClick(payment.invoice_id)}
                   >
                     Pay
                   </button>
@@ -153,8 +164,8 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, onViewClick,userT
               </td>
                     </tr>
                 ))}
-                <tr className="bg-gray-100 rounded-xl font-bold">
-            <td colSpan={8} className="text-right text-lg px-4 py-4"><span className='text-gray-400 font-light mr-2'>Total Rent:</span> 988,0998 ETB</td>
+            <tr className="bg-gray-100 rounded-xl font-bold">
+            <td colSpan={8} className="text-right text-lg px-4 py-4"><span className='text-gray-400 font-light mr-2'>Total Rent:</span>{total_payment_all_space.totalPayment}ETB</td>
             <td ></td>
           </tr>
             </tbody>

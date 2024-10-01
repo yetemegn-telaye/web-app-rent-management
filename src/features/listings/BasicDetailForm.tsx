@@ -20,7 +20,7 @@ const BasicDetailForm: React.FC<BasicDetailFormProps> = ({setSelectedOption})=>{
     const listing = useSelector((state: RootState) => state.listing);
     const navigate = useNavigate();
     const spaceTypeOptions = ['Office', 'Retail'];
-    const spaceIdOptions = ['SP323600','SP323601','SP323602','SP323603','SP323604','SP323605'];
+    const spaceIdOptions = ['SP323600','SP323601','SP323602','SP323603','SP323604','SP323605','SP323606','SP323607','SP323607'];
     const floorOptions = ['1', '2','3','4','5','6','7','8','9'];
 
     const initialStateFiles: File[] = [];

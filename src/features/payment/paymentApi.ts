@@ -22,7 +22,14 @@ export const paymentApi = baseApi.injectEndpoints({
         
         getAllPayments: builder.query({
             query: ()=>({
-                url: '/payments/get_all',
+                url: '/payment/all_payments',
+                method: 'GET'
+            }),
+        }),
+
+        getTotalPaymentAllSpace: builder.query({
+            query: ()=>({
+                url: '/payment/total_payment',
                 method: 'GET'
             }),
         }),
@@ -30,6 +37,14 @@ export const paymentApi = baseApi.injectEndpoints({
         getPaymentById: builder.query({
             query: (id:number)=>({
                 url: `/payments/${id}`,
+                method: 'GET'
+            }),
+
+           
+        }),
+        getPaymentByTenant: builder.query({
+            query: (tenant_id:number)=>({
+                url: `/payment/by_tenant/${tenant_id}`,
                 method: 'GET'
             }),
         }),
