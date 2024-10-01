@@ -44,7 +44,7 @@ const initialState: BuildingState = {
         }
     );
 
-    export const buildingSlice = createSlice({
+ const buildingSlice = createSlice({
         name: 'building',
         initialState,
         reducers: {},
@@ -62,3 +62,5 @@ const initialState: BuildingState = {
             });
         }
     });
+
+export default buildingSlice.reducer;

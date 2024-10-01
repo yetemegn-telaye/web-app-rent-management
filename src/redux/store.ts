@@ -7,6 +7,7 @@ import paymentReducer from "../features/payment/paymentSlice";
 import maintenanceReducer from "../features/maintenance/maintenanceSlice";
 import baseApi from "../utils/api";
 import { useSelector, TypedUseSelectorHook } from "react-redux";
+import buildingReducer from "../features/property/buildingSlice";
 import sessionStorage from "redux-persist/es/storage/session";
 import { persistReducer, persistStore } from "redux-persist";
 
@@ -26,6 +27,7 @@ import { persistReducer, persistStore } from "redux-persist";
         tenant: tenantReducer,
         payment: paymentReducer,
         maintenance: maintenanceReducer,
+        building: buildingReducer,
         [baseApi.reducerPath]: baseApi.reducer
     },
     middleware: (getDefaultMiddleware) =>

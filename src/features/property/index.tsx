@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LandlordLayout from '../../layout/LandlordLayout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faMapPin } from '@fortawesome/free-solid-svg-icons';
@@ -6,9 +6,13 @@ import Calendar from '../../components/Calendar';
 import OptionsSection from '../../components/OptionsSection';
 import SetOpenDate from './SetOpenDate';
 import ManagerProfile from './ManagerProfile';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../redux/store';
+import { getBuildingById } from './buildingSlice';
 
 const Property: React.FC = () => {
-    
+    const dispatch = useDispatch<AppDispatch>();
+    const buildingInfo = useSelector((state:RootState)=>state.building.building) || [{}];
     const buttonOptions = [
         { label: 'Set Open House Date' },
         { label: 'View Manager' },
@@ -16,6 +20,11 @@ const Property: React.FC = () => {
     ];
 
     const [selectedOption, setSelectedOption] = useState(buttonOptions[0].label);
+
+
+    useEffect(()=>{
+        dispatch(getBuildingById(2));
+    });
 
     const renderContent = () => {
         switch (selectedOption) {
@@ -84,11 +93,11 @@ const Property: React.FC = () => {
 
                         <div className='px-4 space-y-2'>
                             <hr className='my-4' />
-                            <p className="text-gray-500">Total Spaces: 50 spaces</p>
-                            <p className="text-gray-500">Available Spaces: 20</p>
-                            <p className="text-gray-500">Area: 1000 Sq ft.</p>
+                            <p className="text-gray-500">Total Spaces: {buildingInfo.total_spaces}</p>
+                            <p className="text-gray-500">Available Spaces: {buildingInfo.available_spaces}</p>
+                            <p className="text-gray-500">Area: {buildingInfo.total_size} Sq ft.</p>
                             <p className="text-gray-500">Floors: 8 Floors</p>
-                            <p className="text-gray-500">Total Parking Spaces: 30 parking spaces</p>
+                            <p className="text-gray-500">Total Parking Spaces: {buildingInfo.total_parking_space} parking spaces</p>
                             <div className="mt-8">
                                 <label className="text-sm font-semibold text-gray-700">Current Manager</label>
                                 <input

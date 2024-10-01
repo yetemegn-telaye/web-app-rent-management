@@ -38,7 +38,7 @@ export const listings: Space[] = [
 
 const Listings: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const allListings = useSelector((state:RootState)=>state.listing.listings);
+    const allListings = useSelector((state:RootState)=>state.listing.listings)||[{}];
     const [isFilterVisible, setIsFilterVisible] = useState(false);
     const dropDownOptions = ['All', 'Available', 'Rented'];
     const [selectedTypeOption, setSelectedTypeOption] = useState('All');
