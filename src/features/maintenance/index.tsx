@@ -1,69 +1,25 @@
 import { Link } from "react-router-dom";
 import LandlordLayout from "../../layout/LandlordLayout";
 import MaintenanceCard from "./MaintenanceCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RequestWorkOrder from "./RequestWorkOrder";
 import plumbingImg from '../../assets/images/plumbing.webp';
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import { getAllMaintenance } from "./maintenanceSlice";
 
-
-const maintainanceRequests = [
-  {
-      id: 1,
-      spaceId: 'OFF01',
-      spaceType: 'Office',
-      damageType: 'Plumbing Fix',
-      imageUrl: plumbingImg,
-      status: 'Pending',
-      requestDate: '2 days ago',
-      acceptDate: 'sept 14 2024',
-      startDate: 'sept 15 2024',
-      finishDate: 'sept 16 2024',
-  },
-  {
-      id: 2,
-      spaceId: 'OFF01',
-      spaceType: 'Commercial',
-      damageType: 'Plumbing Fix',
-      imageUrl: plumbingImg,
-      status: 'waiting for approval',
-      requestDate: '2 days ago',
-      acceptDate: 'sept 14 2024',
-      startDate: 'sept 15 2024',
-      finishDate: 'sept 16 2024',
-  },
-  {
-      id: 3,
-      spaceId: 'OFF01',
-      spaceType: 'Commercial',
-      damageType: 'Plumbing Fix',
-      imageUrl: plumbingImg,
-      status: 'waiting to be started',
-      requestDate: '2 days ago',
-      acceptDate: 'sept 14 2024',
-      startDate: 'sept 15 2024',
-      finishDate: 'sept 16 2024',
-  },
-  {
-      id: 4,
-      spaceId: 'OFF01',
-      spaceType: 'Commercial',
-      damageType: 'Plumbing Fix',
-      imageUrl: plumbingImg,
-      status: 'Canceled',
-      requestDate: '2 days ago',
-      acceptDate: 'sept 14 2024',
-      startDate: 'sept 15 2024',
-      finishDate: 'sept 16 2024',
-  }
-
-];
 
 type MaintenanceProps = {
-  userType : 'landlord' | 'tenant';
-}
-
-const Maintenance: React.FC<MaintenanceProps> = ({userType}) => {
+  spaceId: number;
+};
+const Maintenance: React.FC<MaintenanceProps> = ({spaceId}) => {
   const [showForm, setShowForm] = useState(false);
+  const all_maintenance = useSelector((state: RootState) => state.maintenance.all_maintenance) || [{}];
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(getAllMaintenance());
+  },[]);
 
   const handleCreateNewClick = () => {
     setShowForm(true); 
@@ -77,16 +33,16 @@ const Maintenance: React.FC<MaintenanceProps> = ({userType}) => {
               Create New Request
             </button>
           </div>
-          {maintainanceRequests.map((request) => (
+          {all_maintenance.map((request) => (
             <MaintenanceCard
               key={request.id}
               request={request}
-              userType={userType}
+             
             />
           ))}
         </>
       ) : (
-        <RequestWorkOrder />
+        <RequestWorkOrder spaceId={spaceId} />
       )}
       
       </div>

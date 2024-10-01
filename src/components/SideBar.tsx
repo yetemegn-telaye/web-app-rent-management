@@ -8,7 +8,6 @@ const Sidebar = () => {
   const [role, setRole] = useState<string | null>(null);
 
   useEffect(() => {
-    // Retrieve the role from localStorage
     const storedRole = window.localStorage.getItem('role');
     setRole(storedRole);
 
@@ -16,7 +15,7 @@ const Sidebar = () => {
       if (window.innerWidth < 768) {
         setIsCollapsed(true);
       } else {
-        setIsCollapsed(false); // Expand on larger screens
+        setIsCollapsed(false); 
       }
     };
 
@@ -55,7 +54,7 @@ const Sidebar = () => {
               <FontAwesomeIcon icon={faList} />
               <span className={`ml-3 ${isCollapsed ? 'hidden' : ''}`}>All Listings</span>
             </Link>
-            <Link to="/my-rents" className={`flex items-center p-2 hover:bg-gray-200 rounded ${role === 'manager' ? 'hidden' : ''}`}>
+            <Link to="/my-rents" className={`flex items-center p-2 hover:bg-gray-200 rounded ${role === 'building_manager' ? 'hidden' : ''}`}>
               <FontAwesomeIcon icon={faBuilding} />
               <span className={`ml-3 ${isCollapsed ? 'hidden' : ''}`}>My Rent</span>
             </Link>

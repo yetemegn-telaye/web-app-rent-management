@@ -12,10 +12,9 @@ export const maintenanceApi = baseApi.injectEndpoints({
         }),
 
         startMaintenance: builder.mutation({
-            query: (maintenanceRequest: StartMaintenanceFix)=>({
-                url: '/maintenance_request/start',
-                method: 'POST',
-                body: maintenanceRequest
+            query: (id: number)=>({
+                url: `/maintenance_requests/started/${id}`,
+                method: 'PATCH',
             }),
         }),
 
@@ -29,7 +28,7 @@ export const maintenanceApi = baseApi.injectEndpoints({
         
         getAllMaintenance: builder.query({
             query: ()=>({
-                url: '/maintenance_requests/get_all',
+                url: '/maintenance_requests/all_requests',
                 method: 'GET'
             }),
         }),

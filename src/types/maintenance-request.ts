@@ -4,7 +4,7 @@ export interface CreateMaintenanceRequest {
     description: string
     maintenance_type: string
     status: string
-    user_id: number
+    tenant_id: number
     space_id: number
   }
   
@@ -12,11 +12,14 @@ export interface CreateMaintenanceRequest {
   export interface Maintenance {
     id: number
     pictures: string[]
+    estimated_price: number | null
     priority: string
     description: string
+    maintenance_team: string | null
     maintenance_type: string
     status: string
-    user_id: number
+    created_at: string
+    tenant_id: number
     space_id: number
   }
 

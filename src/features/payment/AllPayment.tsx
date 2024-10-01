@@ -43,7 +43,7 @@ const AllPayment: React.FC = ()=>{
     useEffect(()=>{
         dispatch(getAllPayments());
         dispatch(getTotalPaymentAllSpace());
-    });
+    },[dispatch]);
 
     const handleViewClick = (invoiceId: string) => {
         console.log(`View details for ${invoiceId}`);

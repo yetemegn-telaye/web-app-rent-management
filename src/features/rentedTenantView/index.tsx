@@ -166,7 +166,7 @@ const MyRent: React.FC = () => {
             case 'Payments':
                 return <Payment userType = {userType} totalPayment={0} all_payments={[]} />;
             case 'Maintenance':
-                return <Maintenance userType='tenant' />;
+                return listing ? <Maintenance spaceId={parseInt(listing.id)} /> : <div>Listing not found</div>;
             case 'Special Features':
                     return <ListingFeatures spaceId={0}/>;
             default:

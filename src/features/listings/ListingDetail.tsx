@@ -18,6 +18,7 @@ import { AppDispatch, RootState } from '../../redux/store';
 import { getListingById } from './listingSlice';
 import { getAllTenants } from '../tenant/tenantSlice';
 import { getPaymentByTenant, getTotalPaymentBySpace } from '../payment/paymentSlice';
+import { getAllAgreements } from '../agreement/agreementSlice';
 
 const ListingDetail: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -25,14 +26,14 @@ const ListingDetail: React.FC = () => {
   const listingId = id ? parseInt(id) : 0;
   const [role, setRole] = useState<string | null>(null);  // New state for role
 
-  // Retrieve role from localStorage
+
   useEffect(() => {
     const storedRole = window.localStorage.getItem('role');
     setRole(storedRole);
   }, []);
 
-  const all_lease = useSelector((state: RootState) => state.agreement.agreements);
-  const current_lease = all_lease.find((lease) => lease.space_id === listingId);
+
+
   const total_payment_by_space = useSelector((state: RootState) => {
     const totalPaymentData = state.payment.total_payment_by_space;
     return Array.isArray(totalPaymentData) ? { totalPayment: 0 } : totalPaymentData;
@@ -66,7 +67,10 @@ const ListingDetail: React.FC = () => {
     lease_id: 0,
   }];
   
-  const current_tenant = (useSelector((state: RootState) => state.tenant.tenants))?.find((tenant) => tenant.lease_id === current_lease?.id) || defaultTenant;
+  const all_lease = useSelector((state: RootState) => state.agreement.agreements);
+  const current_lease = all_lease.find((lease) => lease.space_id === listingId);
+  const all_tenant = useSelector((state: RootState) => state.tenant.tenants);
+  const current_tenant = all_tenant.find((tenant) => tenant.lease_id === current_lease?.id) || defaultTenant;
   const payments = useSelector((state: RootState) => state.payment.payments) || defaultPayment;
   const [currentStatus, setCurrentStatus] = useState<string>('');
   const statDropDownOptions = ['open_for_rent', 'occupied', 'closed'];
@@ -93,18 +97,19 @@ const ListingDetail: React.FC = () => {
   useEffect(() => {
     dispatch(getListingById(listingId));
     dispatch(getAllTenants());
-  }, [dispatch, listingId]);
+    dispatch(getAllAgreements());
+  },[dispatch, listingId]);
 
   useEffect(() => {
-    dispatch(getPaymentByTenant(current_tenant.id));
+    dispatch(getPaymentByTenant(current_tenant!.id));
+    
     dispatch(getTotalPaymentBySpace(listingId));
-  }, [dispatch, current_tenant.id, listingId]);
+  }, [dispatch,current_tenant]);
 
   const handleSelectedStatus = (status: string) => {
     setCurrentStatus(status);
   };
 
-  // Updated Condition: Check if space is occupied AND the role is 'manager'
   if (space?.space_status.toLowerCase() === 'occupied' && role === 'manager') {
     buttonOptions.unshift({ label: 'Maintenance' });
     buttonOptions.unshift({ label: 'Payments' });
@@ -121,7 +126,7 @@ const ListingDetail: React.FC = () => {
       case 'Payments':
         return <Payment userType='landlord' totalPayment={total_payment_by_space.totalPayment} all_payments={payments} />;
       case 'Maintenance':
-        return <Maintenance userType='landlord' />;
+        return <Maintenance spaceId={listingId} />;
       default:
         return <div></div>;
     }

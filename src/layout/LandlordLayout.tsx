@@ -1,20 +1,26 @@
 import { Link } from "react-router-dom";
 import Sidebar from "../components/SideBar";
 import Header from "../components/Header";
-import TenantSidebar from "../components/TenantSideBar";
+
 
 const LandlordLayout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div className="max-h-screen bg-primary">
+        <div className=" min-h-screen flex flex-col bg-primary">
         <Header />
-        <div className="flex bg-primary text-sm"> 
+        <div className="flex flex-1 bg-primary text-sm"> 
             <Sidebar />
-            {/* <TenantSidebar/> */}
-            <main className="flex-1 p-6">
+
+            <main className="flex-1 flex flex-col justify-between p-6">
+                <div className="flex-1">
                 {children}
-                <p className="text-center my-4 text-sm text-gray-500">
-              Copyright © 2024 XPProperty
+                </div>
+               
+       
+                <footer className="mt-6 py-4">
+        <p className="text-center text-sm text-gray-500">
+          Copyright © 2024 XPProperty
         </p>
+      </footer>
             </main>
        
         </div>

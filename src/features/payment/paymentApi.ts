@@ -43,11 +43,12 @@ export const paymentApi = baseApi.injectEndpoints({
            
         }),
         getPaymentByTenant: builder.query({
-            query: (tenant_id:number)=>({
-                url: `/payment/by_tenant/${tenant_id}`,
-                method: 'GET'
+            query: (tenant_id: number) => ({
+              url: `/payment/by_tenant`,
+              method: 'GET',
+              params: { tenant_id }, 
             }),
-        }),
+          }),
 
         getTotalPaymentBySpace: builder.query({
             query: (space_id:number)=>({

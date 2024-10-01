@@ -43,7 +43,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, payment })
               <p className="text-gray-600"><strong>Amount:</strong> {payment.payment_price} ETB</p>
               <p className="text-gray-600"><strong>Utility Payment:</strong> {payment.utility_price} ETB</p>
               <p className="text-gray-600"><strong>Total Amount:</strong> {payment.total_rent_price} ETB</p>
-              <p className="text-gray-600"><strong>Paid by:</strong>Camco Trading PLC. </p>
+              <p className="text-gray-600"><strong>Paid by:</strong>{payment.paid_by} </p>
             </div>
            
           </div>

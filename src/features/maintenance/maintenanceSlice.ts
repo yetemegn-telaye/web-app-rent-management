@@ -15,11 +15,14 @@ const initialState:MaintenanceRequestState = {
     maintenance: {
         id: 0,
         pictures:[],
+        estimated_price: 0,
         priority: '',
         description: '',
         maintenance_type: '',
+        maintenance_team: '',
         status: '',
-        user_id: 0,
+        created_at: '',
+        tenant_id: 0,
         space_id: 0
     },
     isLoading: false,
@@ -90,7 +93,6 @@ const maintenanceSlice = createSlice({
         });
         builder.addCase(createMaintenanceRequest.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.maintenance = action.payload.data;
             state.message = action.payload.message;
         });
         builder.addCase(createMaintenanceRequest.rejected, (state, action) => {
@@ -118,8 +120,7 @@ const maintenanceSlice = createSlice({
         });
         builder.addCase(getAllMaintenance.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.all_maintenance = action.payload.data;
-            state.message = action.payload.message;
+            state.all_maintenance = action.payload;
         });
         builder.addCase(getAllMaintenance.rejected, (state, action) => {
             state.isLoading = false;
@@ -132,8 +133,7 @@ const maintenanceSlice = createSlice({
         });
         builder.addCase(getMaintenaceById.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.maintenance = action.payload.data;
-            state.message = action.payload.message;
+            state.maintenance = action.payload;
         });
         builder.addCase(getMaintenaceById.rejected, (state, action) => {
             state.isLoading = false;

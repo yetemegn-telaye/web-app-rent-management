@@ -1,28 +1,74 @@
 import { useState } from "react";
 import ImageUploader from "../../components/ImageUploader";
+import { CreateMaintenanceRequest } from "../../types/maintenance-request";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/store";
+import ImageDropzone from "../../components/ImageDropzone";
+import { createMaintenanceRequest } from "./maintenanceSlice";
 
-const RequestWorkOrder : React.FC = ()=>{
 
-    const initialState = {
-      damageType: '',
-      priority: '',
-      description: ''
+type RequestWorkOrderProps = {
+    spaceId: number;
+};
+
+const RequestWorkOrder : React.FC<RequestWorkOrderProps> = ({spaceId})=>{
+    const dispatch = useDispatch<AppDispatch>();
+    const tenantInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+    const tenantId = tenantInfo.role==='tenant' ? tenantInfo.id : 3;
+
+    const initialState= {
+        pictures: [],
+        priority: '',
+        description: '',
+        maintenance_type: '',
+        status: '',
+      
+     
     };
     const [formData, setFormData] = useState(initialState);
-    const [damageImageFile,setDamageImageFile] = useState<File | null>(null);
+    const [damageImageFile,setDamageImageFile] = useState<string[]>([]);
+
     const handleChange = (name: string, value: any)=>{
         setFormData(prevState=>({
             ...prevState,
             [name]: value
         }));
     }
-    const handleFileUpload = (name: string) => (file: File | null) => {
-       setDamageImageFile(file);
+   
+
+
+    const handleDrop = (files: File[],type: string) => {
+        console.log(files);
+        const fileNames = files.map(file => file.name);
+        if (type === 'damageImages') {
+            fileNames.map((fileName) => {
+                setDamageImageFile((prevState) => {
+                    if (prevState) {
+                        return [...prevState, fileName];
+                    } else {
+                        return [fileName];
+                    }
+                });
+            }
+            );
+          }
     };
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>)=>{
         event.preventDefault();
         console.log('request sent', formData, damageImageFile);
+        const {priority,description,maintenance_type,status} = formData;
+    
+        dispatch(createMaintenanceRequest({priority,description,maintenance_type,status,tenant_id:tenantId,space_id:spaceId,pictures:damageImageFile}))
+        .unwrap()
+        .then(() => {
+            
+            alert('Request Created Successfully');
+        })
+        .catch(() => {
+            alert('An error occured');
+        });
+
     }
 
 
@@ -32,7 +78,7 @@ const RequestWorkOrder : React.FC = ()=>{
             <div className="flex justify-between items-center gap-8">
             <div className="flex flex-col items-start gap-2 w-1/2">
                 <label className="font-medium text-sm">Damage Type</label>
-                <input type="text" className="w-full py-2 px-4 border border-gray-300 rounded-md" onChange={(e) => handleChange('damageType', e.target.value)}  placeholder="First Name"  />
+                <input type="text" className="w-full py-2 px-4 border border-gray-300 rounded-md" onChange={(e) => handleChange('maintenance_type', e.target.value)}  placeholder="First Name"  />
             </div>
             <div className="flex flex-col items-start gap-2 w-1/2">
                 <label className="font-medium text-sm">Priority</label>
@@ -48,7 +94,8 @@ const RequestWorkOrder : React.FC = ()=>{
         </div>
         <div className="flex flex-col justify-center items-center gap-2 w-full">
         <label className="font-medium text-sm">Upload Image of the damage</label>
-        <ImageUploader label="Upload Or Drag Request Image" onImageUpload={handleFileUpload('damageImageFile')} />
+        
+        <ImageDropzone onDropImages={handleDrop} type="damageImages" />
         </div>
         <div className='flex items-center justify-center'>
             <button className="p-2 w-1/3 bg-primary-dark text-white rounded-md shadow-md" type="submit">Create</button>
