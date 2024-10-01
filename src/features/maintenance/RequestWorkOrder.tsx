@@ -9,12 +9,13 @@ import { createMaintenanceRequest } from "./maintenanceSlice";
 
 type RequestWorkOrderProps = {
     spaceId: number;
+    setShowForm: (showForm: boolean) => void;
 };
 
-const RequestWorkOrder : React.FC<RequestWorkOrderProps> = ({spaceId})=>{
+const RequestWorkOrder : React.FC<RequestWorkOrderProps> = ({spaceId,setShowForm})=>{
     const dispatch = useDispatch<AppDispatch>();
     const tenantInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-    const tenantId = tenantInfo.role==='tenant' ? tenantInfo.id : 3;
+    const tenantId = tenantInfo.role==='tenant' ? tenantInfo.id : 10;
 
     const initialState= {
         priority: '',
@@ -56,11 +57,11 @@ const RequestWorkOrder : React.FC<RequestWorkOrderProps> = ({spaceId})=>{
         console.log('request sent', formData, damageImageFile);
         const {priority,description,maintenance_type,status} = formData;
     
-        dispatch(createMaintenanceRequest({priority,description,maintenance_type,status:'ongoing',tenant_id:tenantId,space_id:spaceId,pictures:damageImageFile}))
+        dispatch(createMaintenanceRequest({pictures:damageImageFile,priority,description,maintenance_type,status:'ongoing',tenant_id:tenantId,space_id:spaceId?spaceId:3}))
         .unwrap()
         .then(() => {
-            
             alert('Request Created Successfully');
+            setShowForm(false);
         })
         .catch(() => {
             alert('An error occured');

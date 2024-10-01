@@ -42,7 +42,7 @@ const Maintenance: React.FC<MaintenanceProps> = ({spaceId}) => {
           ))}
         </>
       ) : (
-        <RequestWorkOrder spaceId={spaceId} />
+        <RequestWorkOrder spaceId={spaceId} setShowForm={setShowForm} />
       )}
       
       </div>
