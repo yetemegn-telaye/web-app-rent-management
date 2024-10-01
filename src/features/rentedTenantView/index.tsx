@@ -123,7 +123,7 @@ const MyRent: React.FC = () => {
             case 'Reminders':
                 return <Reminders/>;
             case 'Document':
-                return <Agreement isClosed={true} />;  {/* Pass isClosed prop */}
+                return <Agreement isClosed={true}  />;  
             case 'Payments':
                 return <Payment userType = {userType} totalPayment={0} all_payments={all_payments} />;
             case 'Maintenance':

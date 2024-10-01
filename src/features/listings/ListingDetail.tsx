@@ -79,8 +79,8 @@ const ListingDetail: React.FC = () => {
   const buttonOptions = [
     { label: 'Document', primary: true },
     { label: 'Features' },
-    { label: 'Payments' },
-    { label: 'Maintenance' },
+    // { label: 'Payments' },
+    // { label: 'Maintenance' },
   ];
   
   const defaultSpace = {
@@ -111,7 +111,7 @@ const ListingDetail: React.FC = () => {
     setCurrentStatus(status);
   };
 
-  if (space?.space_status.toLowerCase() === 'occupied' && role === 'manager') {
+  if (space?.space_status.toLowerCase() === 'occupied' && role === 'building_manager') {
     buttonOptions.unshift({ label: 'Maintenance' });
     buttonOptions.unshift({ label: 'Payments' });
   }
