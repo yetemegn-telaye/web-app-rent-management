@@ -35,11 +35,15 @@ const Login = () => {
     dispatch(loginThunk({ email, password }))
       .unwrap()
       .then(() => {
-        alert("Login successfu!!");
-        navigate("/my-rents");
+        alert("Login successful!");
+        if (userType === "manager") {
+            navigate("/getting-started");
+          } else if (userType === "tenant") {  
+            navigate("/my-rents");
+          }
       })
       .catch((error) => {
-        alert("Login error:" + error);
+        console.log("Login error:" , error);
       });
   };
 

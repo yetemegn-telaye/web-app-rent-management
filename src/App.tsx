@@ -23,7 +23,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
-
+{/* 
         <Route path="/getting-started" element={<OnboardingScreen />} />
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/property" element={<Property />} />
@@ -35,10 +35,10 @@ function App() {
         <Route path="/all-listing" element={<Listings/>} />
         <Route path="/listing-detail/:id" element={<ListingDetail/>} />
         <Route path="/notifications" element={<Notifications />}/>
-        <Route path="/my-rents" element={<MyRent/>}/>
+        <Route path="/my-rents" element={<MyRent/>}/> */}
 
 
-        <Route element={<PrivateRoute allowedRoles={['admin']} />} >
+        <Route element={<PrivateRoute allowedRoles={['building_manager']} />} >
         <Route path="/getting-started" element={<OnboardingScreen />} />
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/property" element={<Property />} />
@@ -49,13 +49,13 @@ function App() {
         <Route path="/settings" element={<Settings/>}/>
         </Route>
 
-        <Route element={<PrivateRoute allowedRoles={['admin','user']} />} >
+        <Route element={<PrivateRoute allowedRoles={['building_manager','tenant']} />} >
         <Route path="/all-listing" element={<Listings/>} />
         <Route path="/listing-detail/:id" element={<ListingDetail/>} />
         <Route path="/notifications" element={<Notifications />}/>
         </Route>
 
-        <Route element={<PrivateRoute allowedRoles={['admin','user']} />} >
+        <Route element={<PrivateRoute allowedRoles={['tenant']} />} >
         <Route path="/my-rents" element={<MyRent/>}/>
         </Route>
        

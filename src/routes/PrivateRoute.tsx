@@ -9,7 +9,9 @@ interface PrivateRouteProps {
 
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ allowedRoles }) => {
-  const { isAuthenticated, role } = useSelector((state: RootState) => state.auth);
+  const  isAuthenticated = window.localStorage.getItem('token');
+  const role = window.localStorage.getItem('role');
+ console.log(isAuthenticated,role);
 
   if (!isAuthenticated) {
    
