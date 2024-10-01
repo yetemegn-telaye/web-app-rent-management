@@ -3,6 +3,9 @@ import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import RequestViewModal from "./RequestViewModal";
 import { Maintenance } from "../../types/maintenance-request";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/store";
+import { startMaintenance } from "./maintenanceSlice";
 
 
 
@@ -13,7 +16,7 @@ type MaintenanceCardProps = {
 
 const MaintenanceCard: React.FC<MaintenanceCardProps> = ({ request}) => {
 
-
+ const dispatch = useDispatch<AppDispatch>();
   const [isSliderOpen, setIsSliderOpen] = useState(false);
   const [role, setRole] = useState<string | null>(null);
 
@@ -28,11 +31,9 @@ const MaintenanceCard: React.FC<MaintenanceCardProps> = ({ request}) => {
     { url: request.pictures[1], description: "Fix image 3 description" },
   ];
 
-  const handleApprove = () => {
-    console.log("Request Approved:");
-
-  };
-
+    const handleStartRequest = () => {
+        dispatch(startMaintenance(request.id));
+    };
   const handleOpenSlider = () => {
     setIsSliderOpen(true);
   };
@@ -66,31 +67,33 @@ const MaintenanceCard: React.FC<MaintenanceCardProps> = ({ request}) => {
       <div className="flex flex-col items-end gap-10">
         <p
           className={`font-bold  ${
-            request.status === "Canceled"
+            request.status === "canceled"
               ? "text-red-700"
-              : request.status === "Pending"
+              : request.status === "pending"
               ? "text-secondary-light"
               : "text-primary-dark"
           }`}
         >
           {request.status}{" "}
         </p>
-        {request.status === "Pending" && role === "tenant" && (
-          <p className="text-gray-400 font-light">waiting to be started</p>
+        {request.status === "waiting_to_be_started" && role === "tenant" && (
+          <p className="text-gray-400 font-light">{request.status}</p>
         )}
-        {role === "landlord" && (
-          <div className={`justify-between gap-3 ${request.status === "Pending" ? "flex" : "hidden"}`}>
-            <button className="text-secondary-dark border border-secondary bg-white p-2 rounded-lg hover:bg-secondary-dark hover:bg-opacity-15">
-              Accept
+        {role === "building_manager" && request.status==="wainting_to_be_started" ? (
+          <div className={`justify-between gap-3`}>
+            <button className="text-secondary-dark border border-secondary bg-white p-2 rounded-lg hover:bg-secondary-dark hover:bg-opacity-15"
+            onClick={handleStartRequest}
+            >
+              Start Fix
             </button>
             <button className="bg-white text-red-600 border border-red-600 hover:bg-red-100 p-2 rounded-lg">
               Cancel
             </button>
           </div>
-        )}
+        ):null}
 
-        {request.status === "waiting for approval" && (
-          <div className={`justify-between gap-3 ${request.status === "waiting for approval" ? "flex" : "hidden"}`}>
+        {request.status === "waiting_for_approval" && (
+          <div className={`justify-between gap-3 `}>
             <button
               onClick={handleOpenSlider}
               className="text-secondary-dark border border-secondary bg-white p-2 rounded-lg hover:bg-secondary-dark hover:bg-opacity-15"
@@ -99,7 +102,7 @@ const MaintenanceCard: React.FC<MaintenanceCardProps> = ({ request}) => {
             </button>
           </div>
         )}
-        {isSliderOpen && <RequestViewModal images={images} onClose={handleCloseSlider} />}
+        {isSliderOpen && <RequestViewModal requestId={request.id} images={images} onClose={handleCloseSlider} />}
       </div>
     </div>
   );

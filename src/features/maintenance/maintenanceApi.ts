@@ -19,10 +19,10 @@ export const maintenanceApi = baseApi.injectEndpoints({
         }),
 
         approveMaintenance: builder.mutation({
-            query: (maintenanceRequest: ApproveMaintenanceRequest)=>({
-                url: '/maintenance_request/approve',
-                method: 'POST',
-                body: maintenanceRequest
+            query: (id: number)=>({
+                url: `maintenance_requests/completed/${id}`,
+                method: 'PATCH',
+               
             }),
         }),
         

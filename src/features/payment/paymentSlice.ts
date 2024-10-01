@@ -138,8 +138,8 @@ const paymentSlice = createSlice({
         });
         builder.addCase(makePayment.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.payment = action.payload.data;
-            state.message = action.payload.message;
+            state.payment = action.payload;
+      
         });
         builder.addCase(makePayment.rejected, (state, action) => {
             state.isLoading = false;
@@ -152,8 +152,8 @@ const paymentSlice = createSlice({
         });
         builder.addCase(approvePayment.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.payment = action.payload.data;
-            state.message = action.payload.message;
+            state.payment = action.payload;
+       
         });
         builder.addCase(approvePayment.rejected, (state, action) => {
             state.isLoading = false;
@@ -167,7 +167,7 @@ const paymentSlice = createSlice({
         builder.addCase(getAllPayments.fulfilled, (state, action) => {
             state.isLoading = false;
             state.payments = action.payload;
-            console.log(action.payload);
+        
      
         });
         builder.addCase(getAllPayments.rejected, (state, action) => {
@@ -196,7 +196,7 @@ const paymentSlice = createSlice({
         builder.addCase(getTotalPaymentBySpace.fulfilled, (state, action) => {
             state.isLoading = false;
             state.total_payment_by_space = action.payload;
-            console.log(action.payload);
+            
         });
         builder.addCase(getTotalPaymentBySpace.rejected, (state, action) => {
             state.isLoading = false;
@@ -210,8 +210,8 @@ const paymentSlice = createSlice({
         });
         builder.addCase(getPaymentById.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.payment = action.payload.data;
-            state.message = action.payload.message;
+            state.payment = action.payload;
+            
         });
         builder.addCase(getPaymentById.rejected, (state, action) => {
             state.isLoading = false;

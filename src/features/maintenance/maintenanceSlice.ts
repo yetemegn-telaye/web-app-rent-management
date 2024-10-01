@@ -7,7 +7,7 @@ interface MaintenanceRequestState {
    all_maintenance: Maintenance[],
    maintenance: Maintenance,
    isLoading: boolean,
-   message: string| null,
+   message: string | null,
    error: string | null
 }
 
@@ -43,11 +43,25 @@ export const createMaintenanceRequest = createAsyncThunk(
     }
 );
 
+export const startMaintenance = createAsyncThunk(
+    'maintenance/startMaintenance',
+    async (id: number, {dispatch,rejectWithValue}) => {
+        try{ 
+            const response = await dispatch(maintenanceApi.endpoints.startMaintenance.initiate(id));
+            alert('Maintenance Started Successfully');
+            return response.data;
+        } catch (error:any) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
 export const approveMaintenance = createAsyncThunk(
     'maintenance/approveMaintenance',
-    async (maintenanceRequest: ApproveMaintenanceRequest, {dispatch,rejectWithValue}) => {
+    async (id:number, {dispatch,rejectWithValue}) => {
         try{ 
-            const response = await dispatch(maintenanceApi.endpoints.approveMaintenance.initiate(maintenanceRequest));
+            const response = await dispatch(maintenanceApi.endpoints.approveMaintenance.initiate(id));
+            alert('Maintenance Completed Successfully');
             return response.data;
         } catch (error:any) {
             return rejectWithValue(error.response.data);
@@ -93,7 +107,7 @@ const maintenanceSlice = createSlice({
         });
         builder.addCase(createMaintenanceRequest.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.message = action.payload.message;
+            // state.message = action.payload.message;
         });
         builder.addCase(createMaintenanceRequest.rejected, (state, action) => {
             state.isLoading = false;
@@ -106,10 +120,24 @@ const maintenanceSlice = createSlice({
         });
         builder.addCase(approveMaintenance.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.maintenance = action.payload.data;
-            state.message = action.payload.message;
+            // state.message = action.payload.message;
+           
         });
         builder.addCase(approveMaintenance.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload as string;
+        });
+
+
+        builder.addCase(startMaintenance.pending, (state) => {
+            state.isLoading = true;
+        });
+        builder.addCase(startMaintenance.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.maintenance = action.payload;
+           
+        });
+        builder.addCase(startMaintenance.rejected, (state, action) => {
             state.isLoading = false;
             state.error = action.payload as string;
         });

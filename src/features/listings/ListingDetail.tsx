@@ -39,7 +39,7 @@ const ListingDetail: React.FC = () => {
     return Array.isArray(totalPaymentData) ? { totalPayment: 0 } : totalPaymentData;
   }) as { totalPayment: number };
 
-  const defaultTenant = {
+  const defaultTenant = [{
     id: 0,
     first_name: '',
     middle_name: '',
@@ -49,7 +49,7 @@ const ListingDetail: React.FC = () => {
     email: '',
     phone_number: '',
     lease_id: 0,
-  };
+  }];
 
   const defaultPayment = [{
     id: 0,
@@ -66,11 +66,12 @@ const ListingDetail: React.FC = () => {
     tenant_id: 0,
     lease_id: 0,
   }];
+
   
   const all_lease = useSelector((state: RootState) => state.agreement.agreements);
   const current_lease = all_lease.find((lease) => lease.space_id === listingId);
-  const all_tenant = useSelector((state: RootState) => state.tenant.tenants);
-  const current_tenant = all_tenant.find((tenant) => tenant.lease_id === current_lease?.id) || defaultTenant;
+  const all_tenant = useSelector((state: RootState) => state.tenant.tenants) || defaultTenant;
+  const current_tenant = all_tenant.find((tenant) => tenant.lease_id === current_lease?.id) || defaultTenant[0];
   const payments = useSelector((state: RootState) => state.payment.payments) || defaultPayment;
   const [currentStatus, setCurrentStatus] = useState<string>('');
   const statDropDownOptions = ['open_for_rent', 'occupied', 'closed'];
@@ -101,7 +102,7 @@ const ListingDetail: React.FC = () => {
   },[dispatch, listingId]);
 
   useEffect(() => {
-    dispatch(getPaymentByTenant(current_tenant!.id));
+    dispatch(getPaymentByTenant(current_tenant.id));
     
     dispatch(getTotalPaymentBySpace(listingId));
   }, [dispatch,current_tenant]);
@@ -194,5 +195,8 @@ const ListingDetail: React.FC = () => {
     </LandlordLayout>
   );
 };
+
+
+  
 
 export default ListingDetail;

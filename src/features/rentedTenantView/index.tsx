@@ -18,117 +18,72 @@ import { Link } from 'react-router-dom';
 import Reminders from './Reminders';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
-import { getPaymentByTenant } from '../payment/paymentSlice';
+import { getPaymentByTenant, getTotalPaymentBySpace } from '../payment/paymentSlice';
+import { Lease } from '../../types/lease';
+import { getAllAgreements } from '../agreement/agreementSlice';
+import { Tenant } from '../../types/tenant';
+import { TenantUser } from '../../types/authentication';
+import { Space } from '../../types/space';
+import { getAllListings } from '../listings/listingSlice';
 
-interface Listing {
-    id: string;
-    spaceId: string;
-    spaceType: string;
-    floor: number;
-    area: number;
-    priceRange: string;
-    status: 'Open for rent' | 'Closed';
-    views: number;
-    imageUrl: string;
-}
 
-interface Tenant {
-        id: string,
-        firstName: string,
-        middleName: string,
-        lastName: string,
-        companyName: string,
-        industry: string,
-        spaceType: string,
-        spaceId: string,
-        tenantEmail: string,
-        phoneNumber: string,
-        rentedSpaceId: string
-    }
 
-const listings: Listing[] = [
-    {
-        id: '1',
-        spaceId: 'OFF001',
-        spaceType: 'Office',
-        floor: 2,
-        area: 50,
-        priceRange: '25,000 - 33,000',
-        status: 'Open for rent',
-        views: 10,
-        imageUrl: image1,
-    },
-    {
-        id: '2',
-        spaceId: 'CM001',
-        spaceType: 'Office',
-        floor: 2,
-        area: 50,
-        priceRange: '25,000 - 33,000',
-        status: 'Open for rent',
-        views: 12,
-        imageUrl: image2,
-    },
-    {
-        id: '3',
-        spaceId: 'OFF002',
-        spaceType: 'Office',
-        floor: 3,
-        area: 100,
-        priceRange: '33,000',
-        status: 'Closed',
-        views: 22,
-        imageUrl: image3,
-    },
-    {
-        id: '4',
-        spaceId: 'CM002',
-        spaceType: 'Commercial',
-        floor: 1,
-        area: 50,
-        priceRange: '25,000 - 33,000',
-        status: 'Open for rent',
-        views: 42,
-        imageUrl: image2,
-    },
-];
-
-const tenants: Tenant[] = [
-    {
-    id: '1',
-    firstName: 'Samuel',
-    middleName: 'Abebe',
-    lastName: 'Daniel',
-    companyName: 'Walls Trading PLC.',
-    industry: 'Construction',
-    spaceType: 'Office',
-    spaceId: '0FFO1',
-    tenantEmail: 'samuel@walls.com',
-    phoneNumber: '+251911092345',
-    rentedSpaceId: '1'
-    },
-    {
-        id: '2',
-        firstName: 'Samuel',
-        middleName: 'Abebe',
-        lastName: 'Daniel',
-        companyName: 'Walls Trading PLC.',
-        industry: 'Construction',
-        spaceType: 'Office',
-        spaceId: '0FFO1',
-        tenantEmail: 'samuel@walls.com',
-        phoneNumber: '+251911092345',
-        rentedSpaceId: '2'
-        },
-];
 
 const MyRent: React.FC = () => {
-    // const { id } = useParams<{ id: string }>(); 
     const dispatch = useDispatch<AppDispatch>();
-    const id = '1';
-    const tenant = tenants.find((tenant)=> tenant.id === id);
-    const listing = listings.find((listing) => listing.id === tenant?.rentedSpaceId);
-    const all_payments =  useSelector((state: RootState) => state.payment.payments);
+    const defaultPayment = [{
+        id: 0,
+        invoice_id: 0,
+        invoice_image: [],
+        status: "-",
+        due_date: "-",
+        paid_date: "-",
+        payment_price: 0,
+        utility_price: 0,
+        total_rent_price: 0,
+        paid_by: 0,
+        space_id: 0,
+        tenant_id: 0,
+        lease_id: 0,
+      }];
+
+      const defaultLease =[{
+        id: 0,
+        lease_start_date: '',
+        lease_end_date: '',
+        lease_update_date: '',
+        rent_price: '',
+        rent_payment_date: '',
+        rent_payment_period: '',
+        penalty_amount: 0,
+        penalty_waiting_period: 0,
+        lease_image: [],
+        deposit_slip_image: [],
+        space_id: 0
+      }];
+      const defaultSpace: Space = {
+        id:0 ,
+        listed_date: '',
+        space_images: [],
+        cover_image: [],
+        building_id: 0,
+        space_purpose: '',
+        space_id: '',
+        size: 0,
+        number_of_views: 0,
+        floor: 0,
+        number_of_rooms: 0,
+        price: 0,
+        space_status: '',
+      };
+    
+    
+
+    const tenant = window.localStorage.getItem('userInfo') ? JSON.parse(window.localStorage.getItem('userInfo') || '{}') : null;
+    const lease = (useSelector((state: RootState) => state.agreement.agreements).find((lease) => lease.id === tenant.lease_id)) || defaultLease[0];
+    const listing = useSelector((state: RootState) => state.listing.listings).find((listing) => listing.id === lease.space_id) || defaultSpace;
+
+    const all_payments =  useSelector((state: RootState) => state.payment.payments) || defaultPayment;
     const [currentStatus, setCurrentStatus] = useState<string>('');
     const statDropDownOptions = ['Open for rent', 'Closed'];
     const userType = 'tenant';
@@ -142,15 +97,21 @@ const MyRent: React.FC = () => {
     ];
 
     useEffect(()=>{
-        dispatch(getPaymentByTenant(parseInt(tenant?.id || '0')));
-    },[]);
+        dispatch(getAllAgreements());
+        dispatch(getAllListings());
+        dispatch(getPaymentByTenant(tenant.id));
+    },[dispatch]);
+
+    useEffect(() => {
+        dispatch(getTotalPaymentBySpace(listing.id));
+    },[dispatch,listing]);
    
     const handleSelectedStatus = (status: string) => {
         setCurrentStatus(status);
     }
 
     
-    if (listing?.status === 'Closed') {
+    if (listing?.space_status === 'Closed') {
         buttonOptions.push({ label: 'Payments' });
         buttonOptions.push({ label: 'Maintenance' });
     }
@@ -164,9 +125,9 @@ const MyRent: React.FC = () => {
             case 'Document':
                 return <Agreement isClosed={true} />;  {/* Pass isClosed prop */}
             case 'Payments':
-                return <Payment userType = {userType} totalPayment={0} all_payments={[]} />;
+                return <Payment userType = {userType} totalPayment={0} all_payments={all_payments} />;
             case 'Maintenance':
-                return listing ? <Maintenance spaceId={parseInt(listing.id)} /> : <div>Listing not found</div>;
+                return listing ? <Maintenance spaceId={listing.id} /> : <div>Listing not found</div>;
             case 'Special Features':
                     return <ListingFeatures spaceId={0}/>;
             default:
@@ -178,7 +139,7 @@ const MyRent: React.FC = () => {
         <LandlordLayout>
             <div className="flex flex-col lg:flex-row items-center justify-between p-3 my-4 overflow-auto">
                 <div className="flex flex-col items-start justify-between gap-2">
-                    <h1 className="text-xl lg:text-2xl font-semibold text-secondary-dark">{listing?.spaceType} {listing?.spaceId}</h1>
+                    <h1 className="text-xl lg:text-2xl font-semibold text-secondary-dark">{listing.space_purpose} {listing.space_id}</h1>
                     <span className="text-sm lg:text-base text-gray-500 font-light">Rented space view</span>
                 </div>
             
@@ -190,17 +151,17 @@ const MyRent: React.FC = () => {
 
                     <div className="flex-1 w-full">
                         <div className="flex items-center justify-between px-3 my-4">
-                            <p className="text-lg lg:text-xl font-semibold text-primary-dark">{listing?.spaceType}</p>
-                            <p className="text-secondary-light">{listing?.views} views</p>
+                            <p className="text-lg lg:text-xl font-semibold text-primary-dark">{listing?.space_purpose}</p>
+                            <p className="text-secondary-light">{listing?.number_of_views} views</p>
                         </div>
 
                         <div className="px-4 space-y-2">
                             <hr className="my-4" />
-                            <p className="text-gray-500">Area: {listing?.area} sq ft.</p>
+                            <p className="text-gray-500">Area: {listing?.size} sq ft.</p>
                             <p className="text-gray-500">Floor: {listing?.floor} floor</p>
                             <p className="text-gray-500">Furnished: No</p>
                             <p className="text-gray-500">Number of rooms: 2</p>
-                            <p className="text-gray-500">Price: {listing?.priceRange} ETB</p>
+                            <p className="text-gray-500">Price: {listing?.price} ETB</p>
                              <div className="py-4">
                                 <button className='text-secondary-light font-bold'>View More</button>
                             </div> 

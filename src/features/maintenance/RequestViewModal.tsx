@@ -1,14 +1,19 @@
 import { faCheckCircle, faChevronCircleLeft, faChevronCircleRight, faClose, faXmarkCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
+import { approveMaintenance } from './maintenanceSlice';
 
 type RequestViewModalProps = {
   images: { url: string; description: string }[];
   onClose: () => void;
+  requestId: number;
 };
 
-const RequestViewModal: React.FC<RequestViewModalProps> = ({ images, onClose }) => {
+const RequestViewModal: React.FC<RequestViewModalProps> = ({ images, onClose,requestId }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
@@ -20,6 +25,11 @@ const RequestViewModal: React.FC<RequestViewModalProps> = ({ images, onClose }) 
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
+  };
+  
+  const handleApprove = () => {
+    dispatch(approveMaintenance(requestId));
+    onClose(); 
   };
 
   return (
@@ -56,9 +66,9 @@ const RequestViewModal: React.FC<RequestViewModalProps> = ({ images, onClose }) 
        
         <div className='flex justify-center gap-4 mt-5'>
         
-        <button className='bg-success hover:bg-green-600 text-white font-bold p-3 rounded-lg shadow-md'>
+        <button className='bg-success hover:bg-green-600 text-white font-bold p-3 rounded-lg shadow-md' onClick={handleApprove}>
         <FontAwesomeIcon icon={faCheckCircle} className='mr-2' />Approve</button>
-        <button className='bg-danger hover:bg-red-600 text-white font-bold p-3 rounded-lg shadow-md'> 
+        <button className='bg-danger hover:bg-red-600 text-white font-bold p-3 rounded-lg shadow-md' onClick={()=>onClose()}> 
           <FontAwesomeIcon icon={faXmarkCircle} className='mr-2' />
           Reject</button>
         </div>

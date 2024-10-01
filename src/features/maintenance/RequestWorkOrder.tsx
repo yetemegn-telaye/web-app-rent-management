@@ -17,13 +17,10 @@ const RequestWorkOrder : React.FC<RequestWorkOrderProps> = ({spaceId})=>{
     const tenantId = tenantInfo.role==='tenant' ? tenantInfo.id : 3;
 
     const initialState= {
-        pictures: [],
         priority: '',
         description: '',
         maintenance_type: '',
-        status: '',
-      
-     
+        status: '',  
     };
     const [formData, setFormData] = useState(initialState);
     const [damageImageFile,setDamageImageFile] = useState<string[]>([]);
@@ -59,7 +56,7 @@ const RequestWorkOrder : React.FC<RequestWorkOrderProps> = ({spaceId})=>{
         console.log('request sent', formData, damageImageFile);
         const {priority,description,maintenance_type,status} = formData;
     
-        dispatch(createMaintenanceRequest({priority,description,maintenance_type,status,tenant_id:tenantId,space_id:spaceId,pictures:damageImageFile}))
+        dispatch(createMaintenanceRequest({priority,description,maintenance_type,status:'ongoing',tenant_id:tenantId,space_id:spaceId,pictures:damageImageFile}))
         .unwrap()
         .then(() => {
             

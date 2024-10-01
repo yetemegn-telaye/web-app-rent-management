@@ -8,6 +8,7 @@ import { RootState } from "../../redux/store";
 import { addListing, getAllListings } from "./listingSlice";
 import { useNavigate } from "react-router-dom";
 import ImageDropzone from "../../components/ImageDropzone";
+import { generateSpaceIds } from "../../hooks/generateIds";
 
 
 
@@ -19,13 +20,16 @@ const BasicDetailForm: React.FC<BasicDetailFormProps> = ({setSelectedOption})=>{
     const dispatch = useDispatch<AppDispatch>();
     const listing = useSelector((state: RootState) => state.listing);
     const navigate = useNavigate();
+    const [availableSpaceIds, setAvailableSpaceIds] = useState<string[]>([]);
     const spaceTypeOptions = ['Office', 'Retail'];
     const spaceIdOptions = ['SP323600','SP323601','SP323602','SP323603','SP323604','SP323605','SP323606','SP323607','SP323607'];
     const floorOptions = ['1', '2','3','4','5','6','7','8','9'];
 
-    const initialStateFiles: File[] = [];
-    const [key, setKey] = useState<number>(0);
 
+    useEffect(() => {
+        const generatedIds = generateSpaceIds("SP", 10); 
+        setAvailableSpaceIds(generatedIds);
+      }, []);
 
 
 
@@ -78,7 +82,12 @@ const BasicDetailForm: React.FC<BasicDetailFormProps> = ({setSelectedOption})=>{
             ...prevState,
             [name]: (name === 'floor' || name==='number_of_rooms' || name==='size' || name==='price') ? parseInt(value) : value
         }));
+
+        if (name === "space_id") {
+            setAvailableSpaceIds((prevState) => prevState.filter((id) => id !== value));
+          }
     }
+
 
 
 
@@ -122,7 +131,7 @@ const BasicDetailForm: React.FC<BasicDetailFormProps> = ({setSelectedOption})=>{
     <div className="flex flex-col md:flex-row justify-between items-center gap-8">
       <div className="w-full md:w-1/3 flex flex-col items-start gap-2">
         <label className="font-medium text-sm">Space Number</label>
-        <Dropdown label="Select Office or Commercial Number" options={spaceIdOptions} onSelect={(value) => handleChange('space_id', value)} />
+        <Dropdown label="Select Office or Commercial Number" options={availableSpaceIds} onSelect={(value) => handleChange("space_id", value)} />
       </div>
     </div>
   )}
