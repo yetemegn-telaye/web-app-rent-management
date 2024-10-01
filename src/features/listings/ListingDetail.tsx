@@ -19,6 +19,7 @@ import { getListingById } from './listingSlice';
 import { getAllTenants } from '../tenant/tenantSlice';
 import { getPaymentByTenant, getTotalPaymentBySpace } from '../payment/paymentSlice';
 import { getAllAgreements } from '../agreement/agreementSlice';
+import { Lease } from '../../types/lease';
 
 const ListingDetail: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -51,6 +52,21 @@ const ListingDetail: React.FC = () => {
     lease_id: 0,
   }];
 
+  const defaultLease : Lease = {
+    id: 0,
+    lease_start_date: '',
+    lease_end_date: '',
+    lease_update_date: '',
+    rent_price: 0,
+    rent_payment_date: '',
+    rent_payment_period: '',
+    penalty_amount: 0,
+    penalty_waiting_period: 0,
+    lease_image: [],
+    deposit_slip_image: [],
+    space_id: 0
+  };
+
   const defaultPayment = [{
     id: 0,
     invoice_id: 0,
@@ -69,7 +85,7 @@ const ListingDetail: React.FC = () => {
 
   
   const all_lease = useSelector((state: RootState) => state.agreement.agreements);
-  const current_lease = all_lease.find((lease) => lease.space_id === listingId);
+  const current_lease = all_lease.find((lease) => lease.space_id === listingId) || defaultLease;
   const all_tenant = useSelector((state: RootState) => state.tenant.tenants) || defaultTenant;
   const current_tenant = all_tenant.find((tenant) => tenant.lease_id === current_lease?.id) || defaultTenant[0];
   const payments = useSelector((state: RootState) => state.payment.payments) || defaultPayment;
@@ -123,7 +139,7 @@ const ListingDetail: React.FC = () => {
       case 'Features':
         return <ListingFeatures spaceId={space.id} />;
       case 'Document':
-        return <Agreement isClosed={space?.space_status.toLowerCase() === 'occupied'} />; 
+        return <Agreement isClosed={space?.space_status.toLowerCase() === 'occupied'} agreement={current_lease} />; 
       case 'Payments':
         return <Payment userType='landlord' totalPayment={total_payment_by_space.totalPayment} all_payments={payments} />;
       case 'Maintenance':

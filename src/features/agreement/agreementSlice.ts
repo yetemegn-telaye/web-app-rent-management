@@ -85,7 +85,7 @@ const agreementSlice = createSlice({
         builder.addCase(createAgreement.fulfilled, (state, action) => {
             state.isLoading = false;
             state.agreement = action.payload;
-            // state.message = action.payload.message;
+           
         });
         builder.addCase(createAgreement.rejected, (state, action) => {
             state.isLoading = false;

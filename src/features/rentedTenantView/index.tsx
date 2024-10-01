@@ -47,12 +47,12 @@ const MyRent: React.FC = () => {
         lease_id: 0,
       }];
 
-      const defaultLease =[{
+      const defaultLease : Lease = {
         id: 0,
         lease_start_date: '',
         lease_end_date: '',
         lease_update_date: '',
-        rent_price: '',
+        rent_price: 0,
         rent_payment_date: '',
         rent_payment_period: '',
         penalty_amount: 0,
@@ -60,7 +60,7 @@ const MyRent: React.FC = () => {
         lease_image: [],
         deposit_slip_image: [],
         space_id: 0
-      }];
+      };
       const defaultSpace: Space = {
         id:0 ,
         listed_date: '',
@@ -80,7 +80,7 @@ const MyRent: React.FC = () => {
     
 
     const tenant = window.localStorage.getItem('userInfo') ? JSON.parse(window.localStorage.getItem('userInfo') || '{}') : null;
-    const lease = (useSelector((state: RootState) => state.agreement.agreements).find((lease) => lease.id === tenant.lease_id)) || defaultLease[0];
+    const lease = (useSelector((state: RootState) => state.agreement.agreements).find((lease) => lease.id === tenant.lease_id)) || defaultLease;
     const listing = useSelector((state: RootState) => state.listing.listings).find((listing) => listing.id === lease.space_id) || defaultSpace;
 
     const all_payments =  useSelector((state: RootState) => state.payment.payments) || defaultPayment;
@@ -111,10 +111,7 @@ const MyRent: React.FC = () => {
     }
 
     
-    if (listing?.space_status === 'Closed') {
-        buttonOptions.push({ label: 'Payments' });
-        buttonOptions.push({ label: 'Maintenance' });
-    }
+  
 
     const [selectedOption, setSelectedOption] = useState(buttonOptions[0].label);
 
@@ -123,7 +120,7 @@ const MyRent: React.FC = () => {
             case 'Reminders':
                 return <Reminders/>;
             case 'Document':
-                return <Agreement isClosed={true}  />;  
+                return <Agreement isClosed={true} agreement={lease}  />;  
             case 'Payments':
                 return <Payment userType = {userType} totalPayment={0} all_payments={all_payments} />;
             case 'Maintenance':
@@ -152,16 +149,16 @@ const MyRent: React.FC = () => {
                     <div className="flex-1 w-full">
                         <div className="flex items-center justify-between px-3 my-4">
                             <p className="text-lg lg:text-xl font-semibold text-primary-dark">{listing?.space_purpose}</p>
-                            <p className="text-secondary-light">{listing?.number_of_views} views</p>
+                            <p className="text-secondary-light">{listing.number_of_views} views</p>
                         </div>
 
                         <div className="px-4 space-y-2">
                             <hr className="my-4" />
-                            <p className="text-gray-500">Area: {listing?.size} sq ft.</p>
-                            <p className="text-gray-500">Floor: {listing?.floor} floor</p>
-                            <p className="text-gray-500">Furnished: No</p>
+                            <p className="text-gray-500">Area: {listing.size} sq ft.</p>
+                            <p className="text-gray-500">Floor: {listing.floor} floor</p>
+                            <p className="text-gray-500"> </p>
                             <p className="text-gray-500">Number of rooms: 2</p>
-                            <p className="text-gray-500">Price: {listing?.price} ETB</p>
+                            <p className="text-gray-500">Price: {listing.price} ETB</p>
                              <div className="py-4">
                                 <button className='text-secondary-light font-bold'>View More</button>
                             </div> 
