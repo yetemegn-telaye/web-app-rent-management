@@ -15,7 +15,7 @@ const SpecialFeatureForm : React.FC = ()=>{
     const industryOptions = ['finance', 'health_care', 'real_estate', 'law_firm', 'agriculture'];
     const commonOptions = ['Availabe','Not Available'];
     const viewOptions = ['City View','Nature View'];
-    const positionOptions = ['corner', 'front', 'coridor','on the east wing'];
+    const positionOptions = ['on the east wing'];
 
   
 
