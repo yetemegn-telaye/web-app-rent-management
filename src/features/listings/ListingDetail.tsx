@@ -20,7 +20,7 @@ import { AppDispatch } from '../../redux/store';
 import { RootState } from '../../redux/store';
 import { getListingById } from './listingSlice';
 import { getAllTenants } from '../tenant/tenantSlice';
-import { getPaymentByTenant } from '../payment/paymentSlice';
+import { getPaymentByTenant, getTotalPaymentBySpace } from '../payment/paymentSlice';
 
 
 
@@ -31,6 +31,11 @@ const ListingDetail: React.FC = () => {
     
     const listingId = id ? parseInt(id) : 0;
     const current_lease = all_lease.find((lease) => lease.space_id === listingId);
+    const total_payment_by_space = useSelector((state: RootState) => {
+        const totalPaymentData = state.payment.total_payment_by_space;
+        return Array.isArray(totalPaymentData) ? { totalPayment: 0 } : totalPaymentData;
+      }) as { totalPayment: number };
+
     const defaultTenant = {
         id: 0,
         first_name: '',
@@ -42,14 +47,32 @@ const ListingDetail: React.FC = () => {
         phone_number: '',
         lease_id: 0
     }
+
+    const defaultPayment = [{
+        id: 0,
+        invoice_id: 0,
+        invoice_image: [],
+        status: "-",
+        due_date: "-",
+        paid_date: "-",
+        payment_price: 0,
+        utility_price: 0,
+        total_rent_price: 0,
+        paid_by: 0,
+        space_id: 0,
+        tenant_id: 0,
+        lease_id: 0
+    }];
     const current_tenant = (useSelector((state: RootState) => state.tenant.tenants))?.find((tenant) => tenant.lease_id === current_lease?.id) || defaultTenant;
-    const payments = useSelector((state: RootState) => state.payment.payments);
+    const payments = useSelector((state: RootState) => state.payment.payments) || defaultPayment;
     const [currentStatus, setCurrentStatus] = useState<string>('');
     const statDropDownOptions = ['open_for_rent', 'occupied','closed'];
 
     const buttonOptions = [
         { label: 'Document',primary: true  },
         { label: 'Features'},
+        { label: 'Payments' },
+        { label: 'Maintenance' }
     ];
     const defaultSpace = {
         space_purpose: '',
@@ -68,8 +91,9 @@ const ListingDetail: React.FC = () => {
        });
 
        useEffect(()=>{
-            dispatch(getPaymentByTenant(current_tenant!.id));
-       },[current_tenant]);
+            dispatch(getPaymentByTenant(current_tenant.id));
+            dispatch(getTotalPaymentBySpace(listingId));
+       });
 
 
 
@@ -96,7 +120,7 @@ const ListingDetail: React.FC = () => {
             case 'Document':
                 return <Agreement isClosed={space?.space_status.toLowerCase() === 'occupied'} />; 
             case 'Payments':
-                return <Payment userType='landlord' all_payments={payments}/>;
+                return <Payment userType='landlord' totalPayment={total_payment_by_space.totalPayment} all_payments={payments}/>;
          
             case 'Maintenance':
                 return <Maintenance userType='landlord'/>;

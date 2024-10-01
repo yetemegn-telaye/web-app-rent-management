@@ -11,9 +11,10 @@ import { IPayment }  from '../../types/payment';
 type PaymentProps = {
     userType: 'landlord' | 'tenant';
     all_payments: IPayment[];
+    totalPayment: number;
 }
 
-const Payment: React.FC<PaymentProps> = ({userType,all_payments}) => {
+const Payment: React.FC<PaymentProps> = ({userType,all_payments,totalPayment}) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filter, setFilter] = useState<string | null>(null);
 
@@ -53,7 +54,7 @@ const Payment: React.FC<PaymentProps> = ({userType,all_payments}) => {
             }
         </div>
         <FilterPayment onSearchChange={handleSearchChange} onFilterClick={handleFilterClick} />
-        <PaymentTable payments={filteredPayments} userType={userType} onViewClick={handleViewClick} />
+        <PaymentTable payments={filteredPayments} totalPayment={totalPayment} userType={userType} onViewClick={handleViewClick} />
     </div>
     
     );

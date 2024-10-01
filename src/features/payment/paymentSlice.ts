@@ -11,6 +11,7 @@ interface PaymentState {
    payments: IPayment[],
    payment: IPayment,
    total_payment_all_space: [],
+   total_payment_by_space: [],
    isLoading: boolean,
    message: string| null,
    error: string | null
@@ -34,6 +35,7 @@ const initialState:PaymentState = {
     },
     isLoading: false,
     total_payment_all_space: [],
+    total_payment_by_space: [],
     payments: [],
     message: "",
     error: null
@@ -80,6 +82,18 @@ export const getTotalPaymentAllSpace = createAsyncThunk(
     async (_, {dispatch,rejectWithValue}) => {
         try{ 
             const response = await dispatch(paymentApi.endpoints.getTotalPaymentAllSpace.initiate(_));
+            return response.data;
+        } catch (error:any) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const getTotalPaymentBySpace = createAsyncThunk(
+    'payment/getTotalPaymentBySpace',
+    async (space_id: number, {dispatch,rejectWithValue}) => {
+        try{ 
+            const response = await dispatch(paymentApi.endpoints.getTotalPaymentBySpace.initiate(space_id));
             return response.data;
         } catch (error:any) {
             return rejectWithValue(error.response.data);
@@ -169,14 +183,26 @@ const paymentSlice = createSlice({
         builder.addCase(getTotalPaymentAllSpace.fulfilled, (state, action) => {
             state.isLoading = false;
             state.total_payment_all_space = action.payload;
-            console.log(action.payload);
-    
-     
         });
         builder.addCase(getTotalPaymentAllSpace.rejected, (state, action) => {
             state.isLoading = false;
             state.error = action.payload as string;
         });
+
+
+        builder.addCase(getTotalPaymentBySpace.pending, (state) => {
+            state.isLoading = true;
+        });
+        builder.addCase(getTotalPaymentBySpace.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.total_payment_by_space = action.payload;
+            console.log(action.payload);
+        });
+        builder.addCase(getTotalPaymentBySpace.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload as string;
+        });
+
 
 
         builder.addCase(getPaymentById.pending, (state) => {

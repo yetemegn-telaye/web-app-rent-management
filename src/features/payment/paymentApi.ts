@@ -48,6 +48,13 @@ export const paymentApi = baseApi.injectEndpoints({
                 method: 'GET'
             }),
         }),
+
+        getTotalPaymentBySpace: builder.query({
+            query: (space_id:number)=>({
+                url: `/payment/total_payment_by_space/${space_id}`,
+                method: 'GET'
+            }),
+        }),
     }),
    
 });

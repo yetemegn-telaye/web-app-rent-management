@@ -164,7 +164,7 @@ const MyRent: React.FC = () => {
             case 'Document':
                 return <Agreement isClosed={true} />;  {/* Pass isClosed prop */}
             case 'Payments':
-                return <Payment userType = {userType} all_payments={[]} />;
+                return <Payment userType = {userType} totalPayment={0} all_payments={[]} />;
             case 'Maintenance':
                 return <Maintenance userType='tenant' />;
             case 'Special Features':
