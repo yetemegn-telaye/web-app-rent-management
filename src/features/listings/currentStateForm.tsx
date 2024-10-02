@@ -17,7 +17,7 @@ type CurrentStateFormProps = {
 
 const CurrentStateForm: React.FC<CurrentStateFormProps> = ({tenant_id,agreement_id}) => {
     const dispatch = useDispatch<AppDispatch>();
-    const all_tenant = useSelector((state: RootState) => state.tenant.tenants) || [{}];
+    const all_tenant = useSelector((state: RootState) => state.tenant.tenants) || [];
     
     const initialStateFiles: string[] = [];
     const initialDamageFile: string[] | undefined = undefined;

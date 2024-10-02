@@ -39,7 +39,7 @@ const tenants: Tenant[] = [
 ];
 const AllTenant: React.FC = ()=>{
     const dispatch = useDispatch<AppDispatch>();
-    const allTenants = useSelector((state: RootState) => state.tenant.tenants);
+    const allTenants = useSelector((state: RootState) => state.tenant.tenants) || [];
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -62,10 +62,16 @@ const AllTenant: React.FC = ()=>{
                 </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              
-                {allTenants.map((tenant) => (
+               {
+                allTenants.length >0 ? 
+                allTenants.map((tenant) => (
                     <TenantCard key={tenant.id} tenant={tenant} />
-                ))}
+                )):
+                <div className="flex justify-center items-center h-64">
+                    <p className="text-danger">No tenants found</p>
+                </div>
+               }
+                
             </div>
       </LandlordLayout>  
     )

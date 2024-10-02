@@ -76,10 +76,15 @@ const Listings: React.FC = () => {
 {isFilterVisible && <FilterSection />}
 
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-   
-    {sortedListings.map((listing) => (
-        <ListingCard key={listing.id} listing={listing} />
-    ))}
+   {sortedListings.length>0 ? 
+   sortedListings.map((listing) => (
+    <ListingCard key={listing.id} listing={listing} />
+    )): 
+    <div className="flex justify-center items-center h-64">
+        <p className="text-danger">No listings found</p>
+    </div>
+    }
+    
 </div>
 
             

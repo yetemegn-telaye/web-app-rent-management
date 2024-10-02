@@ -9,14 +9,26 @@ import UpcomingPaymentsCard from "./UpcomingPaymentsCard";
 import PaymentsThisWeekCard from "./PaymentsThisWeekCard";
 import NewsCard from "./NewsCard";
 import PieChart from "../../components/PieChart";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import { useEffect } from "react";
+import { getBuildingById } from "../property/buildingSlice";
 
 const Dashboard: React.FC = ()=>{
+    const dispatch = useDispatch<AppDispatch>();
+    const buildingInfo = useSelector((state: RootState) => state.building.building);
+    const manager = JSON.parse(localStorage.getItem('user') || '{}');
     const payments = [
         { amount: 500, status: 'upcoming', date: '12/12/2021', spaceType: 'office', spaceId: '00FF01' },
         { amount: 1000, status: 'upcoming', date: '12/12/2021', spaceType: 'office', spaceId: '00FF01' },
         { amount: 2000, status: 'delayed', date: '12/12/2021', spaceType: 'office', spaceId: '00FF01' },
        
     ];
+
+    useEffect(()=>{
+        dispatch(getBuildingById(manager.building_id));
+    },[]);
+   
     return(
         <LandlordLayout>
          <div className='flex items-center justify-between p-3 my-4 md:px-5 lg:px-10 overflow-auto'>
@@ -29,7 +41,7 @@ const Dashboard: React.FC = ()=>{
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-4">
         <TotalListingsCard total={30} offices={20} commercial={10} />
         <OccupancyRateCard rate={62} />
-        <div className="md:row-span-2 lg:row-span-1">
+        <div className="md:row-span-2 lg:row-span-2">
             <TotalEarningsCard officeRents={40} commercialRents={60} />
         </div>
         

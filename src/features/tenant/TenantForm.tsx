@@ -20,7 +20,7 @@ type TenantProfileFormProps = {
 const TenantProfileForm: React.FC<TenantProfileFormProps> = ({ setTenantId,agreementId,setSelectedOption}) => {
     const dispatch = useDispatch<AppDispatch>();
     const tenant = useSelector((state: RootState) => state.tenant.tenant);
-    const all_lease = useSelector((state: RootState) => state.agreement.agreements) || [{}];
+    const all_lease = useSelector((state: RootState) => state.agreement.agreements) || [];
 
     const industryOptions = ['finance', 'health_care', 'real_estate', 'law_firm', 'agriculture'];
     const spaceTypeOptions = ['Office 00F01, 2nd Floor', 'Commercial CM001, 1st Floor', 'Commercial CM002, 1st Floor'];
@@ -46,7 +46,7 @@ const TenantProfileForm: React.FC<TenantProfileFormProps> = ({ setTenantId,agree
     const [tenantIdFile, setTenantIdFile] = useState<string[] | null>(null);
 
         
- const lease_id = all_lease[all_lease.length-1]?.id;
+ const lease_id = all_lease.length > 0 ? all_lease[all_lease.length-1].id : 0;
 
 
 
