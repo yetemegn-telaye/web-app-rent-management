@@ -169,7 +169,7 @@ const ListingDetail: React.FC = () => {
 
       <div className="flex flex-col lg:flex-row gap-4">
         <div className="flex flex-col items-center p-4 w-full lg:w-2/5 bg-white shadow-md rounded-lg">
-          <ImageSlider images={[image1, image2, image3, image1]} />
+          <ImageSlider images={space.space_images} />
           <div className="flex-1 w-full">
             <div className="flex items-center justify-between px-3 my-4">
               <p className="text-lg lg:text-xl font-semibold text-primary-dark">{space.space_purpose}</p>

@@ -38,34 +38,14 @@ const CurrentStateForm: React.FC<CurrentStateFormProps> = ({tenant_id,agreement_
  console.log(new_lease_id);
     
 
-    const handleDrop = (files: File[],type: string) => {
-        console.log(files);
-        const fileNames = files.map(file => file.name);
-        if (type === 'spaceState') {
-           
-            fileNames.map((fileName) => {
-                setCurrentSpaceStateFiles((prevState) => {
-                    if (prevState) {
-                        return [...prevState, fileName];
-                    } else {
-                        return [fileName];
-                    }
-                });
-            }
-            );
-          } else if (type === 'spaceDamage') {
-            fileNames.map((fileName) => {
-                setDamageImageFile((prevState) => {
-                    if (prevState) {
-                        return [...prevState, fileName];
-                    } else {
-                        return [fileName];
-                    }
-                });
-            }
-            );
-          }
-    };
+ const handleDrop = (urls: string[], type: string) => {
+    if (type === "spaceState") {
+        setCurrentSpaceStateFiles((prevState) => (prevState ? [...prevState, ...urls] : urls));
+    } else if (type === "spaceDamage") {
+        setDamageImageFile((prevState) => (prevState ? [...prevState, ...urls] : urls));
+    }
+  };
+
 
     const handleDamageTag = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setDamageTag(event.target.value);

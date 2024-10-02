@@ -33,34 +33,13 @@ const BasicDetailForm: React.FC<BasicDetailFormProps> = ({setSelectedOption})=>{
 
 
 
-    const handleDrop = (files: File[],type: string) => {
-        console.log(files);
-        const fileNames = files.map(file => file.name);
-        if (type === 'spaceImages') {
-           
-            fileNames.map((fileName) => {
-                setSpaceImagesFiles((prevState) => {
-                    if (prevState) {
-                        return [...prevState, fileName];
-                    } else {
-                        return [fileName];
-                    }
-                });
-            }
-            );
-          } else if (type === 'coverImage') {
-            fileNames.map((fileName) => {
-                setSpaceCoverImg((prevState) => {
-                    if (prevState) {
-                        return [...prevState, fileName];
-                    } else {
-                        return [fileName];
-                    }
-                });
-            }
-            );
-          }
-    };
+    const handleDrop = (urls: string[], type: string) => {
+        if (type === "spaceImages") {
+            setSpaceImagesFiles((prevState) => (prevState ? [...prevState, ...urls] : urls));
+        } else if (type === "coverImage") {
+            setSpaceCoverImg((prevState) => (prevState ? [...prevState, ...urls] : urls));
+        }
+      };
 
     const initialState = {
         space_id: '',

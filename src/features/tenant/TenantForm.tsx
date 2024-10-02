@@ -64,35 +64,14 @@ const TenantProfileForm: React.FC<TenantProfileFormProps> = ({ setTenantId,agree
         }));
     }
 
-
-    const handleDrop = (files: File[],type: string) => {
-        console.log(files);
-        const fileNames = files.map(file => file.name);
-        if (type === 'tenantNationalId') {
-           
-            fileNames.map((fileName) => {
-                setTenantIdFile((prevState) => {
-                    if (prevState) {
-                        return [...prevState, fileName];
-                    } else {
-                        return [fileName];
-                    }
-                });
-            }
-            );
-          } else if (type === 'businessLicense') {
-            fileNames.map((fileName) => {
-                setBusinessLicenseFile((prevState) => {
-                    if (prevState) {
-                        return [...prevState, fileName];
-                    } else {
-                        return [fileName];
-                    }
-                });
-            }
-            );
-          }
-    };
+    const handleDrop = (urls: string[], type: string) => {
+        if (type === "tenantNationalId") {
+            setTenantIdFile((prevState) => (prevState ? [...prevState, ...urls] : urls));
+        } else if (type === "businessLicense") {
+            setBusinessLicenseFile((prevState) => (prevState ? [...prevState, ...urls] : urls));
+        }
+      };
+    
 
  
 

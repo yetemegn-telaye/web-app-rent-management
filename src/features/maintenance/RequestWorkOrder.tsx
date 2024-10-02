@@ -33,24 +33,13 @@ const RequestWorkOrder : React.FC<RequestWorkOrderProps> = ({spaceId,setShowForm
         }));
     }
    
+    const handleDrop = (urls: string[], type: string) => {
+        if (type === "damageImages") {
+            setDamageImageFile((prevState) => (prevState ? [...prevState, ...urls] : urls));
+        } 
+      };
+    
 
-
-    const handleDrop = (files: File[],type: string) => {
-        console.log(files);
-        const fileNames = files.map(file => file.name);
-        if (type === 'damageImages') {
-            fileNames.map((fileName) => {
-                setDamageImageFile((prevState) => {
-                    if (prevState) {
-                        return [...prevState, fileName];
-                    } else {
-                        return [fileName];
-                    }
-                });
-            }
-            );
-          }
-    };
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>)=>{
         event.preventDefault();

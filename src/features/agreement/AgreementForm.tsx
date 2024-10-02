@@ -74,34 +74,15 @@ const AgreementForm: React.FC<AgreementFormProps> = ({setAgreementId ,setSelecte
     };
    
 
-    const handleDrop = (files: File[],type: string) => {
-        console.log(files);
-        const fileNames = files.map(file => file.name);
-        if (type === 'agreement') {
-           
-            fileNames.map((fileName) => {
-                setAgreementFile((prevState) => {
-                    if (prevState) {
-                        return [...prevState, fileName];
-                    } else {
-                        return [fileName];
-                    }
-                });
-            }
-            );
-          } else if (type === 'depositSlip') {
-            fileNames.map((fileName) => {
-                setDepositSlipFile((prevState) => {
-                    if (prevState) {
-                        return [...prevState, fileName];
-                    } else {
-                        return [fileName];
-                    }
-                });
-            }
-            );
-          }
-    };
+    const handleDrop = (urls: string[], type: string) => {
+        if (type === "agreement") {
+          setAgreementFile((prevState) => (prevState ? [...prevState, ...urls] : urls));
+        } else if (type === "depositSlip") {
+          setDepositSlipFile((prevState) => (prevState ? [...prevState, ...urls] : urls));
+        }
+      };
+
+      
     function formatDate(date: Date) {
         let d = new Date(date),
             month = '' + (d.getMonth() + 1),

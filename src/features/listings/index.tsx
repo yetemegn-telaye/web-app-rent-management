@@ -18,23 +18,7 @@ import { Space } from "../../types/space";
 
 
 
-export const listings: Space[] = [
-    {
-        id: 1,
-        space_id: 'off01',
-        size: 233,
-        space_images: [image1, image2, image2],
-        cover_image: [image1],
-        floor: 2,
-        space_purpose: 'office',
-        price: 30000,
-        number_of_rooms: 2,
-        space_status: 'Occupied',
-        number_of_views: 34,
-        building_id: 2,
-        listed_date: ""
-    }
-];
+
 
 const Listings: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -53,6 +37,11 @@ const Listings: React.FC = () => {
     const toggleFilter = () => {
         setIsFilterVisible(!isFilterVisible);
     };
+
+    const sortedListings = allListings
+    .filter((listing: any) => listing.listed_date)
+    .sort((a: any, b: any) => new Date(b.listed_date).getTime() - new Date(a.listed_date).getTime());
+
 
     return (
         <LandlordLayout>
@@ -87,10 +76,8 @@ const Listings: React.FC = () => {
 {isFilterVisible && <FilterSection />}
 
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {/* {listings.map((listing) => (
-        <ListingCard key={listing.id} listing={listing} />
-    ))} */}
-    {allListings.map((listing) => (
+   
+    {sortedListings.map((listing) => (
         <ListingCard key={listing.id} listing={listing} />
     ))}
 </div>
