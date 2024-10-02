@@ -66,7 +66,7 @@ const AllPayment: React.FC = ()=>{
     return(
         <LandlordLayout>
             <FilterPayment onSearchChange={handleSearchChange} onFilterClick={handleFilterClick} />
-            <PaymentTable payments={filteredPayments} userType="landlord" totalPayment={total_payment_all_space.totalPayment} onViewClick={handleViewClick} />
+            <PaymentTable payments={filteredPayments} userType="landlord" totalPayment={total_payment_all_space!==undefined ? total_payment_all_space.totalPayment:0} onViewClick={handleViewClick} />
         </LandlordLayout>
     )
 }

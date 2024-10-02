@@ -141,7 +141,7 @@ const ListingDetail: React.FC = () => {
       case 'Document':
         return <Agreement isClosed={space?.space_status.toLowerCase() === 'occupied'} agreement={current_lease} />; 
       case 'Payments':
-        return <Payment userType='landlord' totalPayment={total_payment_by_space.totalPayment} all_payments={payments} />;
+        return <Payment userType='landlord' totalPayment={total_payment_by_space !==undefined ? total_payment_by_space.totalPayment :0} all_payments={payments} />;
       case 'Maintenance':
         return <Maintenance spaceId={listingId} />;
       default:

@@ -59,6 +59,7 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, totalPayment, onV
 
   return (
     <div className="p-6 bg-white rounded-md shadow-md">
+    
       <div className="overflow-x-auto">
         <table className="min-w-full">
           <thead>
@@ -74,7 +75,8 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, totalPayment, onV
             </tr>
           </thead>
           <tbody>
-            {currentPayments.map((payment, index) => (
+            {currentPayments.length>0 ?
+            currentPayments.map((payment, index) => (
               <tr key={index} className={`border-b hover:bg-primary ${payment.status === 'Delayed' ? 'border border-danger border-opacity-15 rounded-xl bg-red-100 animate-pulse' : ''}`}>
                 <td className="p-2 text-center">{payment.invoice_id}</td>
                 <td className="p-2 text-center">{payment.due_date}</td>
@@ -123,7 +125,11 @@ const PaymentTable: React.FC<PaymentTableProps> = ({ payments, totalPayment, onV
                   )}
                 </td>
               </tr>
-            ))}
+            )):
+            <div className="flex justify-center items-center h-64">
+            <p className="text-danger">No tenants found</p>
+         </div>
+          }
             <tr className="bg-gray-100 rounded-xl font-bold">
               <td colSpan={8} className="text-right text-lg px-4 py-4">
                 <span className='text-gray-400 font-light mr-2'>Total Rent:</span>
