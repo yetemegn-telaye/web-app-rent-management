@@ -3,8 +3,7 @@ import Dropdown from "../../components/Dropdown";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAreaChart, faCalendarAlt, faChartColumn, faChevronDown, faMoneyBill1Wave } from "@fortawesome/free-solid-svg-icons";
-import ImageUploader from "../../components/ImageUploader";
+import {faCalendarAlt,faMoneyBill1Wave } from "@fortawesome/free-solid-svg-icons";
 import ImageDropzone from "../../components/ImageDropzone";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../redux/store";
@@ -274,8 +273,7 @@ const AgreementForm: React.FC<AgreementFormProps> = ({setAgreementId ,setSelecte
         <div className="flex flex-col gap-4 mt-8 w-1/3">
         <h3 className="text-secondary-dark font-bold text-lg">Add Agreement Document</h3>
         <div className="flex w-full items-center gap-3">
-        {/* <ImageUploader label="Upload Or Drag Agreement Image" onImageUpload={handleFileUpload('agreementFile')} />*/}
-        
+
         <ImageDropzone onDropImages={handleDrop} type="agreement" /> 
         </div>
         <p className="text-secondary-light font-light text-sm">Each image should not exceed a maximum size of 10 MB.</p>
@@ -284,8 +282,6 @@ const AgreementForm: React.FC<AgreementFormProps> = ({setAgreementId ,setSelecte
         <div className="flex flex-col gap-4 mt-8 w-1/3">
         <h3 className="text-secondary-dark font-bold text-lg">Add Deposit Slip Image</h3>
         <div className="flex w-full items-center gap-3">
-        {/* <ImageUploader label="Upload Or Drag Deposit Slip Image" onImageUpload={handleFileUpload('depositSlipFile')} />
-         */}
          <ImageDropzone onDropImages={handleDrop} type="depositSlip" /> 
         </div>
         <p className="text-secondary-light font-light text-sm">Each image should not exceed a maximum size of 10 MB.</p>

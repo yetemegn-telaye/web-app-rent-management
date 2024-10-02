@@ -140,28 +140,32 @@ const BasicDetailForm: React.FC<BasicDetailFormProps> = ({setSelectedOption})=>{
       </div>
     </div>
   )}
-
+  
+  {formData.price !== 0 && 
+  <div className="flex items-center justify-between gap-12">
   <div className="flex flex-col md:flex-row gap-4 mt-8 w-full md:w-1/2">
     <div className="w-full flex flex-col gap-4">
       <h3 className="text-secondary-dark font-bold text-md">Add Cover Image of Space</h3>
-      <div className="flex items-center gap-3">
+      
       <ImageDropzone onDropImages={handleDrop} type="coverImage" /> 
-        <button><FontAwesomeIcon icon={faCirclePlus} className='text-3xl text-secondary-light hover:text-orange-600' /></button>
-      </div>
+        {/* <button><FontAwesomeIcon icon={faCirclePlus} className='text-3xl text-secondary-light hover:text-orange-600' /></button> */}
+     
       <p className="text-secondary-light font-light text-sm">Please Upload a minimum of 2 images with high quality, should not exceed a max size of 10MB.</p>
     </div>
   </div>
 
   <div className="flex flex-col md:flex-row gap-4 mt-8 w-full md:w-1/2">
-    <div className="w-full flex flex-col items-center gap-3">
+    <div className="w-full flex flex-col gap-3">
       <h3 className="text-secondary-dark font-bold text-md">Add Multiple Images of Space</h3>
      
       <ImageDropzone onDropImages={handleDrop} type="spaceImages" /> 
-      <button><FontAwesomeIcon icon={faCirclePlus} className='text-3xl text-secondary-light hover:text-orange-600' /></button>
+      {/* <button><FontAwesomeIcon icon={faCirclePlus} className='text-3xl text-secondary-light hover:text-orange-600' /></button> */}
       <p className="text-secondary-light font-light text-sm">Please Upload a minimum of 4 images, should not exceed a max size of 10MB.</p>
     </div>
   </div>
-
+ </div>
+  }
+ 
   <div className="flex justify-end mt-4 md:mt-8">
     <button type="submit" className="text-white bg-primary-dark w-24 py-1 rounded-md font-bold">Next</button>
   </div>

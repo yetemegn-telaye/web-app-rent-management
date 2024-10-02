@@ -168,16 +168,18 @@ const Login = () => {
       </div>
 
 
-      <div className="lg:w-1/2 hidden lg:block relative">
-        <div
-          className="absolute inset-0 transform -skew-x-12 origin-bottom-left"
-          style={{
-            backgroundImage: `url(${buildingImg})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        ></div>
-      </div>
+      <div className="lg:w-1/2 hidden lg:block relative overflow-hidden">
+  <div
+    className="absolute inset-0"
+    style={{
+      backgroundImage: `url(${buildingImg})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      clipPath: "polygon(20% 0, 100% 0, 100% 100%, 0% 100%)", // Slant adjusted further to the right for a sharper angle
+    }}
+  ></div>
+</div>
+
     </div>
   );
 };

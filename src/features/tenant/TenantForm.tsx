@@ -171,20 +171,23 @@ const TenantProfileForm: React.FC<TenantProfileFormProps> = ({ setTenantId,agree
         }
 
        
+       {formData.companyName !== '' && formData.industry !== '' ? 
+          ( <div className="flex justify-start items-center gap-2">
+           <div className="flex flex-col gap-4 mt-8 w-1/3">
+           <h3 className="text-secondary-dark font-bold text-lg">Add Tenant Identfication</h3>
+            <ImageDropzone onDropImages={handleDrop} type="tenantNationalId" />
+           <p className="text-secondary-light font-light text-sm">Each image should not exceed a maximum size of 10 MB.</p>
+         </div>
+         <div className="flex flex-col gap-4 mt-8 w-1/3">
+           <h3 className="text-secondary-dark font-bold text-lg">Add Business Licence</h3>
+           
+            <ImageDropzone onDropImages={handleDrop} type="businessLicense" />
+           <p className="text-secondary-light font-light text-sm">Each image should not exceed a maximum size of 10 MB.</p>
+         </div>
+           </div>) : null
+       }
      
-        <div className="flex justify-start items-center gap-2">
-        <div className="flex flex-col gap-4 mt-8 w-1/3">
-        <h3 className="text-secondary-dark font-bold text-lg">Add Tenant Identfication</h3>
-         <ImageDropzone onDropImages={handleDrop} type="tenantNationalId" />
-        <p className="text-secondary-light font-light text-sm">Each image should not exceed a maximum size of 10 MB.</p>
-      </div>
-      <div className="flex flex-col gap-4 mt-8 w-1/3">
-        <h3 className="text-secondary-dark font-bold text-lg">Add Business Licence</h3>
-        
-         <ImageDropzone onDropImages={handleDrop} type="businessLicense" />
-        <p className="text-secondary-light font-light text-sm">Each image should not exceed a maximum size of 10 MB.</p>
-      </div>
-        </div>
+    
         
       <div className="flex justify-end">
       <button type="submit" className="text-white bg-primary-dark w-24 py-1 rounded-md font-bold">Create</button>

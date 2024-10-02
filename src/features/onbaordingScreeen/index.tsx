@@ -29,7 +29,7 @@ const OnboardingScreen = () => {
             </div>
             <div className="flex flex-col items-center gap-4 bg-gradient-to-b from-slate-100 to-primary p-6 rounded-xl shadow-2xl border border-primary-dark border-opacity-20 ">
                 <img src={startIcon} alt="start icon" className="w-16 h-16"/>
-                <h2 className="text-secondary-light font-bold text-xl">Step 1</h2>
+                <h2 className="text-secondary-light font-bold text-xl">Step 3</h2>
                 <p className="font-light text-gray-500">Add Spaces for Rent</p>
             </div>
         </div>
