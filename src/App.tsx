@@ -23,8 +23,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
-{/* 
-        <Route path="/getting-started" element={<OnboardingScreen />} />
+
+        {/* <Route path="/getting-started" element={<OnboardingScreen />} />
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/property" element={<Property />} />
         <Route path="/add-listing" element={<AddListing/>}/>

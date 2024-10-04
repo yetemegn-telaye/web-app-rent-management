@@ -111,7 +111,8 @@ const BasicDetailForm: React.FC<BasicDetailFormProps> = ({setSelectedOption})=>{
     <div className="flex flex-col md:flex-row justify-between items-center gap-8">
       <div className="w-full md:w-1/3 flex flex-col items-start gap-2">
         <label className="font-medium text-sm">Space Number</label>
-        <Dropdown label="Select Office or Commercial Number" options={availableSpaceIds} onSelect={(value) => handleChange("space_id", value)} />
+        <input type="text" className="w-full py-2 px-4 border border-gray-300 rounded-md" onChange={(e) => handleChange('space_id', e.target.value)} placeholder="Enter Space Number" />
+        {/* <Dropdown label="Select Office or Commercial Number" options={availableSpaceIds} onSelect={(value) => handleChange("space_id", value)} /> */}
       </div>
     </div>
   )}
