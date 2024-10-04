@@ -3,7 +3,7 @@ import { useDropzone } from "react-dropzone";
 
 interface ImageDropzoneProps {
   onDropImages: (urls: string[], type: string) => void;
-  type: string; // 'agreement' or 'depositSlip' or any other type you want to pass
+  type: string;
 }
 
 const ImageDropzone: React.FC<ImageDropzoneProps> = ({ onDropImages, type }) => {
