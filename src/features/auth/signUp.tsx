@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from "../../firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../../firebase"; // adjust path if needed
 import buildingImg from "../../assets/images/ambassador1.webp";
 
 interface FormData {
@@ -10,15 +10,20 @@ interface FormData {
   password: string;
 }
 
-const Login = () => {
-  const [loginFormData, setLoginFormData] = useState<FormData>({ email: "", password: "" });
+const Signup = () => {
+  const [formData, setFormData] = useState<FormData>({ email: "", password: "" });
+  const [userType, setUserType] = useState<"manager" | "tenant">("manager");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setLoginFormData({ ...loginFormData, [name]: value });
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleUserTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setUserType(e.target.value as "manager" | "tenant");
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -26,35 +31,29 @@ const Login = () => {
     setIsLoading(true);
     setError(null);
 
-    const { email, password } = loginFormData;
+    const { email, password } = formData;
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      // 1. Sign up with Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // 🔥 Fetch the userType from Firestore
-      const userDocRef = doc(db, "users", user.uid);
-      const userDocSnap = await getDoc(userDocRef);
+      // 2. Save additional info to Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        email,
+        userType,
+        createdAt: new Date().toISOString()
+      });
 
-      if (userDocSnap.exists()) {
-        const userData = userDocSnap.data();
-        const userType = userData.userType;
+      alert("Account created successfully!");
 
-        alert("Login successful!");
+     
+        navigate("/login");
+     
 
-        if (userType === "manager") {
-          navigate("/getting-started");
-        } else if (userType === "tenant") {
-          navigate("/my-rents");
-        } else {
-          throw new Error("Unknown user type.");
-        }
-      } else {
-        throw new Error("User role not found. Please contact admin.");
-      }
     } catch (err: any) {
-      console.error("Login error:", err);
-      setError(err.message || "Failed to login");
+      console.error("Signup error:", err);
+      setError(err.message || "Signup failed");
     } finally {
       setIsLoading(false);
     }
@@ -74,20 +73,20 @@ const Login = () => {
             </div>
           </div>
           <h2 className="text-4xl font-bold text-gray-800 mb-4 mt-24">
-            Welcome to <span className="text-teal-600">AMBASSADOR MALL</span>
+            Join <span className="text-teal-600">AMBASSADOR MALL</span>
           </h2>
-          <p className="text-gray-500 text-lg">XP Property Management System</p>
+          <p className="text-gray-500 text-lg">Create your account below</p>
         </div>
 
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
-            <label className="block text-sm font-medium text-gray-700">What is your Username?</label>
+            <label className="block text-sm font-medium text-gray-700">Your Email</label>
             <div className="mt-1 relative rounded-md shadow-sm">
               <input
-                type="text"
+                type="email"
                 name="email"
                 id="email"
-                value={loginFormData.email}
+                value={formData.email}
                 onChange={handleInputChange}
                 className="block w-full pl-10 p-3 sm:text-sm border border-gray-300 rounded-md"
                 placeholder="abebe@ambassador.com"
@@ -119,7 +118,7 @@ const Login = () => {
                 type="password"
                 name="password"
                 id="password"
-                value={loginFormData.password}
+                value={formData.password}
                 onChange={handleInputChange}
                 className="block w-full pl-10 p-3 sm:text-sm border border-gray-300 rounded-md"
                 placeholder="************"
@@ -145,13 +144,26 @@ const Login = () => {
           </div>
 
           <div>
+            <label className="block text-sm font-medium text-gray-700">Register As</label>
+            <select
+              className="block w-full mt-1 p-3 border border-gray-300 rounded-md"
+              value={userType}
+              onChange={handleUserTypeChange}
+            >
+              <option value="manager">Building Manager</option>
+              <option value="tenant">Tenant</option>
+            </select>
+          </div>
+
+          <div>
             <button
               type="submit"
               className="w-full py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700"
             >
-              {isLoading ? "Loading..." : "Login to your account"}
+              {isLoading ? "Registering..." : "Create your account"}
             </button>
           </div>
+          
         </form>
 
         {error && (
@@ -160,15 +172,15 @@ const Login = () => {
           </div>
         )}
 
-        <p className="text-center text-sm text-gray-500 mt-8">
-          Don't have an account?{" "}
-          <a href="/" className="text-teal-600 hover:underline font-medium">
-            Create one here
+        <p className="text-center text-sm text-gray-500 mt-12">
+          Already have an account?{" "}
+          <a href="/login" className="text-teal-600 hover:underline">
+            Login
           </a>
         </p>
 
         <p className="text-center text-sm text-gray-500 mt-4">
-          Copyright © 2024 XPProperty
+          © 2024 XPProperty
         </p>
       </div>
 
@@ -187,4 +199,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
