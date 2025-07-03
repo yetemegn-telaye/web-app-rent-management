@@ -10,7 +10,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ allowedRoles }) => {
   const { user, userType, loading } = useAuth();
 
   if (loading) {
-    return <p>Loading...</p>; // you can replace this with a spinner
+    return <p>Loading...</p>;
   }
 
   if (!user) {
