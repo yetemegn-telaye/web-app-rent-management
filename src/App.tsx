@@ -27,8 +27,8 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Signup />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
 
           <Route element={<PrivateRoute allowedRoles={['manager']} />} >
             <Route path="/getting-started" element={<OnboardingScreen />} />
