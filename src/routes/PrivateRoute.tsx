@@ -1,27 +1,26 @@
 import React from 'react';
-import { Navigate, RouteProps, Outlet } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store'; // Adjust based on your store setup
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAuth } from '../contexts/authContext';
 
 interface PrivateRouteProps {
-  allowedRoles: string[];
+  allowedRoles: Array<'manager' | 'tenant'>;
 }
 
-
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ allowedRoles }) => {
-  const  isAuthenticated = window.localStorage.getItem('token');
-  const role = window.localStorage.getItem('role');
- console.log(isAuthenticated,role);
+  const { user, userType, loading } = useAuth();
 
-  if (!isAuthenticated) {
-   
-    return <Navigate to="/" />;
-  } else if (role && !allowedRoles.includes(role)) {
-    
-    return <Navigate to="/unauthorized" />;
+  if (loading) {
+    return <p>Loading...</p>;
   }
 
-  
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (!userType || !allowedRoles.includes(userType)) {
+    return <Navigate to="/unauthorized" replace />;
+  }
+
   return <Outlet />;
 };
 

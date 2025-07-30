@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import buildingImg from "../../assets/images/builing2-bg.png";
 
@@ -10,15 +10,20 @@ interface FormData {
   password: string;
 }
 
-const Login = () => {
-  const [loginFormData, setLoginFormData] = useState<FormData>({ email: "", password: "" });
+const Signup = () => {
+  const [formData, setFormData] = useState<FormData>({ email: "", password: "" });
+  const [userType, setUserType] = useState<"manager" | "tenant">("manager");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setLoginFormData({ ...loginFormData, [name]: value });
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleUserTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setUserType(e.target.value as "manager" | "tenant");
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -27,20 +32,19 @@ const Login = () => {
     setError(null);
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, loginFormData.email, loginFormData.password);
+      const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       const user = userCredential.user;
-      const userDocRef = doc(db, "users", user.uid);
-      const userDocSnap = await getDoc(userDocRef);
 
-      if (userDocSnap.exists()) {
-        const userType = userDocSnap.data().userType;
-        alert("Login successful!");
-        navigate(userType === "manager" ? "/getting-started" : "/my-rents");
-      } else {
-        throw new Error("User role not found. Please contact admin.");
-      }
+      await setDoc(doc(db, "users", user.uid), {
+        email: formData.email,
+        userType,
+        createdAt: new Date().toISOString(),
+      });
+
+      alert("Account created successfully!");
+      navigate("/login");
     } catch (err: any) {
-      setError(err.message || "Failed to login");
+      setError(err.message || "Signup failed");
     } finally {
       setIsLoading(false);
     }
@@ -68,18 +72,18 @@ const Login = () => {
         </div>
 
         {/* Title */}
-        <h2 className="font-bold text-4xl text-white tracking-tight">Welcome Back 👋</h2>
-        <p className="text-gray-300 font-medium mt-1">Manage your property with ease.</p>
+        <h2 className="text-3xl font-bold text-white tracking-tight">Join Here 🏢</h2>
+        <p className="text-gray-300 font-medium mt-1">Create your account below to get started.</p>
 
         {/* Form */}
         <form className="space-y-6 mt-6" onSubmit={handleSubmit}>
           {/* Email */}
           <div className="relative">
             <input
-              type="text"
+              type="email"
               name="email"
               id="email"
-              value={loginFormData.email}
+              value={formData.email}
               onChange={handleInputChange}
               className="peer block w-full px-3 pt-5 pb-2 text-sm border border-white/40 bg-white/10 text-white rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-transparent"
               placeholder="Email"
@@ -102,7 +106,7 @@ const Login = () => {
               type="password"
               name="password"
               id="password"
-              value={loginFormData.password}
+              value={formData.password}
               onChange={handleInputChange}
               className="peer block w-full px-3 pt-5 pb-2 text-sm border border-white/40 bg-white/10 text-white rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-transparent"
               placeholder="Password"
@@ -119,12 +123,25 @@ const Login = () => {
             </label>
           </div>
 
+          {/* User Type */}
+          <div>
+            <label className="block text-sm font-medium text-gray-200 mb-1">Register As</label>
+            <select
+              className="block w-full mt-1 p-3 border border-white/40 bg-white/10 text-white rounded-md focus:ring-2 focus:ring-teal-500"
+              value={userType}
+              onChange={handleUserTypeChange}
+            >
+              <option value="manager">Building Manager</option>
+              <option value="tenant">Tenant</option>
+            </select>
+          </div>
+
           {/* Button */}
           <button
             type="submit"
             className="w-full py-2.5 px-4 text-sm font-semibold tracking-wide rounded-xl text-white bg-teal-600 hover:bg-teal-700 transition-transform duration-300 shadow-md hover:shadow-lg hover:scale-[1.02]"
           >
-            {isLoading ? "Signing in..." : "Login"}
+            {isLoading ? "Registering..." : "Create your account"}
           </button>
         </form>
 
@@ -137,9 +154,9 @@ const Login = () => {
 
         {/* Footer */}
         <p className="text-center text-sm text-gray-300 mt-8 font-medium">
-          Don't have an account?{" "}
-          <a href="/" className="text-teal-400 hover:underline font-semibold">
-            Create one here
+          Already have an account?{" "}
+          <a href="/login" className="text-teal-400 hover:underline font-semibold">
+            Login
           </a>
         </p>
         <p className="text-center text-xs text-gray-400 mt-4 font-medium">
@@ -150,4 +167,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
