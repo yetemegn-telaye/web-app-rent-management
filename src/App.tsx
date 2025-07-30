@@ -18,6 +18,8 @@ import OnboardingScreen from './features/onbaordingScreeen';
 import PrivateRoute from './routes/PrivateRoute';
 import UnauthorizedPage from './features/UnauthorizedPage';
 import { AuthProvider } from './contexts/authContext';
+import "react-datepicker/dist/react-datepicker.css";
+
 
 
 function App() {

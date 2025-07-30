@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { auth, db } from "../../firebase"; // adjust path if needed
-import buildingImg from "../../assets/images/ambassador1.webp";
+import { auth, db } from "../../firebase";
+import buildingImg from "../../assets/images/builing2-bg.png";
 
 interface FormData {
   email: string;
@@ -31,28 +31,19 @@ const Signup = () => {
     setIsLoading(true);
     setError(null);
 
-    const { email, password } = formData;
-
     try {
-      // 1. Sign up with Firebase Auth
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       const user = userCredential.user;
 
-      // 2. Save additional info to Firestore
       await setDoc(doc(db, "users", user.uid), {
-        email,
+        email: formData.email,
         userType,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       });
 
       alert("Account created successfully!");
-
-     
-        navigate("/login");
-     
-
+      navigate("/login");
     } catch (err: any) {
-      console.error("Signup error:", err);
       setError(err.message || "Signup failed");
     } finally {
       setIsLoading(false);
@@ -60,93 +51,83 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
-      <div className="flex flex-col justify-between w-full lg:w-1/2 bg-gray-100 p-8 lg:p-24">
-        <div className="mb-12">
-          <div className="flex items-center mb-6">
-            <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center text-gray-700 text-lg font-semibold">
-              AM
-            </div>
-            <div className="ml-3">
-              <h1 className="text-xl font-bold text-gray-800">Ambassador Mall</h1>
-              <p className="text-gray-500 text-sm">XP Property Management</p>
-            </div>
+    <div
+      className="relative flex items-center justify-center min-h-screen bg-cover bg-center font-sans"
+      style={{
+        backgroundImage: `url(${buildingImg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="bg-black/30 backdrop-blur-lg shadow-[0_0_30px_rgba(20,184,166,0.15)] rounded-2xl p-8 sm:p-10 w-full max-w-md mx-4 animate-fadeIn">
+        {/* Header */}
+        <div className="flex items-center mb-8">
+          <div className="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center text-teal-600 text-lg font-bold">
+            Y
           </div>
-          <h2 className="text-4xl font-bold text-gray-800 mb-4 mt-24">
-            Join <span className="text-teal-600">AMBASSADOR MALL</span>
-          </h2>
-          <p className="text-gray-500 text-lg">Create your account below</p>
+          <div className="ml-3">
+            <h1 className="text-2xl font-bold text-white tracking-tight">Building Name</h1>
+            <p className="text-white/70 text-sm font-medium">YT Property Management</p>
+          </div>
         </div>
 
-        <form className="space-y-6" onSubmit={handleSubmit}>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Your Email</label>
-            <div className="mt-1 relative rounded-md shadow-sm">
-              <input
-                type="email"
-                name="email"
-                id="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="block w-full pl-10 p-3 sm:text-sm border border-gray-300 rounded-md"
-                placeholder="abebe@ambassador.com"
-                required
-              />
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg
-                  className="h-5 w-5 text-gray-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M16 12h2a2 2 0 002-2V7a2 2 0 00-2-2h-2m-4 0H8a2 2 0 00-2 2v3a2 2 0 002 2h4m-4 0v5m4 5l-1.5-1.5M9 20l1.5 1.5m7.5-1.5L16 20m1.5-1.5L18 18"
-                  />
-                </svg>
-              </div>
-            </div>
+        {/* Title */}
+        <h2 className="text-3xl font-bold text-white tracking-tight">Join Here 🏢</h2>
+        <p className="text-gray-300 font-medium mt-1">Create your account below to get started.</p>
+
+        {/* Form */}
+        <form className="space-y-6 mt-6" onSubmit={handleSubmit}>
+          {/* Email */}
+          <div className="relative">
+            <input
+              type="email"
+              name="email"
+              id="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              className="peer block w-full px-3 pt-5 pb-2 text-sm border border-white/40 bg-white/10 text-white rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-transparent"
+              placeholder="Email"
+              required
+            />
+            <label
+              htmlFor="email"
+              className="absolute left-3 top-2 text-white/80 text-xs transition-all
+                         peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm
+                         peer-placeholder-shown:text-gray-300 peer-focus:top-2
+                         peer-focus:text-xs peer-focus:text-teal-300"
+            >
+              Email Address
+            </label>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
-            <div className="mt-1 relative rounded-md shadow-sm">
-              <input
-                type="password"
-                name="password"
-                id="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                className="block w-full pl-10 p-3 sm:text-sm border border-gray-300 rounded-md"
-                placeholder="************"
-                required
-              />
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg
-                  className="h-5 w-5 text-gray-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 11c-1.656 0-3-1.344-3-3s1.344-3 3-3 3 1.344 3 3-1.344 3-3 3zM4 18h16v2H4v-2z"
-                  />
-                </svg>
-              </div>
-            </div>
+          {/* Password */}
+          <div className="relative">
+            <input
+              type="password"
+              name="password"
+              id="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              className="peer block w-full px-3 pt-5 pb-2 text-sm border border-white/40 bg-white/10 text-white rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-transparent"
+              placeholder="Password"
+              required
+            />
+            <label
+              htmlFor="password"
+              className="absolute left-3 top-2 text-white/80 text-xs transition-all
+                         peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm
+                         peer-placeholder-shown:text-gray-300 peer-focus:top-2
+                         peer-focus:text-xs peer-focus:text-teal-300"
+            >
+              Password
+            </label>
           </div>
 
+          {/* User Type */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Register As</label>
+            <label className="block text-sm font-medium text-gray-200 mb-1">Register As</label>
             <select
-              className="block w-full mt-1 p-3 border border-gray-300 rounded-md"
+              className="block w-full mt-1 p-3 border border-white/40 bg-white/10 text-white rounded-md focus:ring-2 focus:ring-teal-500"
               value={userType}
               onChange={handleUserTypeChange}
             >
@@ -155,45 +136,32 @@ const Signup = () => {
             </select>
           </div>
 
-          <div>
-            <button
-              type="submit"
-              className="w-full py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700"
-            >
-              {isLoading ? "Registering..." : "Create your account"}
-            </button>
-          </div>
-          
+          {/* Button */}
+          <button
+            type="submit"
+            className="w-full py-2.5 px-4 text-sm font-semibold tracking-wide rounded-xl text-white bg-teal-600 hover:bg-teal-700 transition-transform duration-300 shadow-md hover:shadow-lg hover:scale-[1.02]"
+          >
+            {isLoading ? "Registering..." : "Create your account"}
+          </button>
         </form>
 
+        {/* Error */}
         {error && (
-          <div className="mt-4 text-red-500 text-center">
+          <div className="mt-4 text-red-200 text-center animate-fadeIn font-medium">
             {error}
           </div>
         )}
 
-        <p className="text-center text-sm text-gray-500 mt-12">
+        {/* Footer */}
+        <p className="text-center text-sm text-gray-300 mt-8 font-medium">
           Already have an account?{" "}
-          <a href="/login" className="text-teal-600 hover:underline">
+          <a href="/login" className="text-teal-400 hover:underline font-semibold">
             Login
           </a>
         </p>
-
-        <p className="text-center text-sm text-gray-500 mt-4">
+        <p className="text-center text-xs text-gray-400 mt-4 font-medium">
           © 2024 XPProperty
         </p>
-      </div>
-
-      <div className="lg:w-1/2 hidden lg:block relative overflow-hidden">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url(${buildingImg})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            clipPath: "polygon(20% 0, 100% 0, 100% 100%, 0% 100%)",
-          }}
-        ></div>
       </div>
     </div>
   );
