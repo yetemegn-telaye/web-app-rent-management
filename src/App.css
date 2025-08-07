@@ -12,7 +12,9 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
+.clip-slant {
+  clip-path: polygon(0 0, 80% 0, 70% 100%, 0% 100%);
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

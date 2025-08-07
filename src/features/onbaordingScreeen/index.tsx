@@ -16,27 +16,39 @@ const OnboardingScreen = () => {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-between min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 px-4 py-8">
-      {/* Header */}
-      <div className="text-center space-y-2 animate-fadeIn">
-        <h1 className="text-3xl md:text-5xl font-extrabold text-gray-800">
+    <div className="flex flex-col items-center justify-between min-h-screen bg-gradient-to-b from-teal-50 to-gray-200 px-4 py-10">
+      
+      {/* Circle Logo */}
+      <div className="w-16 h-16 rounded-full bg-gray-200 border-2 border-teal-600 text-gray-700 flex items-center justify-center text-xl font-bold shadow-lg animate-fadeIn mb-4">
+        YT
+      </div>
+
+      {/* Heading */}
+      <div className="text-center space-y-2 mt-2 animate-slideUp">
+        <h1 className="text-2xl md:text-4xl font-lato font-bold text-teal-950">
           Welcome to YT Rent Management
         </h1>
-        <p className="text-base md:text-lg text-gray-500 font-light">
+        <p className="text-sm md:text-base text-gray-600 font-light">
           Here’s how to get started
         </p>
       </div>
 
-      {/* Steps */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8 w-full max-w-4xl">
-        {steps.map((step) => (
+      {/* Responsive Step Layout */}
+      <div className="relative w-full max-w-5xl flex flex-col sm:flex-row items-center sm:justify-between mt-10 gap-10 sm:gap-4 px-4">
+        {steps.map((step, index) => (
           <div
             key={step.id}
-            className="flex flex-col items-center text-center bg-white/70 backdrop-blur-md border border-gray-200 rounded-2xl shadow-lg p-6 hover:shadow-2xl transition-all duration-300 animate-slideUp"
+            className="relative flex flex-col items-center text-center bg-white/90 backdrop-blur-lg border border-gray-200 rounded-xl shadow-md p-6 animate-slideUp w-full sm:w-1/3"
           >
-            <img src={step.icon} alt={step.title} className="w-16 h-16 mb-4" />
-            <h2 className="text-xl font-bold text-teal-700">{step.title}</h2>
-            <p className="text-gray-500 text-sm mt-2">{step.desc}</p>
+            <img src={step.icon} alt={step.title} className="w-14 h-14 mb-3" />
+            <h2 className="text-lg md:text-xl font-semibold text-teal-700">
+              {step.title}
+            </h2>
+            <p className="text-gray-600 text-sm md:text-base mt-1">
+              {step.desc}
+            </p>
+
+
           </div>
         ))}
       </div>
@@ -44,7 +56,7 @@ const OnboardingScreen = () => {
       {/* CTA Button */}
       <button
         onClick={handleStart}
-        className="mt-10 w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-teal-600 to-teal-700 shadow-xl font-bold text-white rounded-xl hover:from-teal-700 hover:to-teal-800 transition-transform transform hover:scale-[1.02] animate-bounce"
+        className="mt-10 w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-teal-500 to-teal-600 shadow-xl font-semibold text-white rounded-full hover:from-teal-700 hover:to-teal-800 transition-transform transform hover:scale-[1.02]"
       >
         Click to Get Started!
       </button>
