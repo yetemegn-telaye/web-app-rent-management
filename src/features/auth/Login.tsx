@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
-import buildingImg from "../../assets/images/ambassador1.webp"; // Adjust path if needed
+import buildingImg from "../../assets/images/ambassador1.webp";
 
 interface FormData {
   email: string;
@@ -54,7 +54,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100 relative overflow-x-hidden">
+    <div className="flex flex-col lg:flex-row h-screen bg-gray-100 relative overflow-hidden">
       {/* Left Panel */}
       <div className="flex flex-col justify-between w-full lg:w-1/2 bg-gray-100 p-4 lg:p-24 z-10">
         <div className="mb-12">
@@ -70,7 +70,7 @@ const Login = () => {
           </div>
 
           {/* Title */}
-          <h2 className="text-4xl font-bold text-gray-800 mb-4 mt-24">
+          <h2 className="text-4xl font-bold text-gray-800 mb-4 mt-16">
             Welcome to <span className="text-teal-600">Our Building</span>
           </h2>
           <p className="text-gray-500 text-sm">
@@ -78,8 +78,9 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Form */}
-        <form className="space-y-6" onSubmit={handleSubmit}>
+        {/* Login Form */}
+        <form className="space-y-5" onSubmit={handleSubmit}>
+          {/* Email Field */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
               What is your Username?
@@ -113,6 +114,7 @@ const Login = () => {
             </div>
           </div>
 
+          {/* Password Field + Forgot Link */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Password
@@ -144,34 +146,56 @@ const Login = () => {
                 </svg>
               </div>
             </div>
+            {/* Forgot Password Link */}
+            <div className="text-right mt-2">
+              <a
+                href="/forgot-password"
+                className="text-sm text-teal-600 hover:underline font-medium"
+              >
+                Forgot Password?
+              </a>
+            </div>
           </div>
 
+          {/* Submit Button */}
           <div>
             <button
               type="submit"
-              className="w-full py-3 px-4 border border-transparent text-sm font-medium rounded-md  bg-gradient-to-r from-teal-500 to-teal-600 shadow-xl  text-white  hover:from-teal-600 hover:to-teal-700 transition-transform transform hover:scale-[1.02]"
+              className="w-full py-3 px-4 border border-transparent text-sm font-medium rounded-md bg-gradient-to-r from-teal-500 to-teal-600 shadow-xl text-white hover:from-teal-600 hover:to-teal-700 transition-transform transform hover:scale-[1.02]"
             >
               {isLoading ? "Logging in..." : "Login to your account"}
             </button>
           </div>
 
+          {/* Signup Link */}
+          <p className="text-center text-sm text-gray-500 mt-6">
+            Don’t have an account?{" "}
+            <a
+              href="/signup"
+              className="text-teal-600 hover:underline font-semibold"
+            >
+              Create one here
+            </a>
+          </p>
+
+          {/* Error */}
           {error && (
-            <p className="text-red-500 text-sm text-center font-medium">
+            <p className="text-red-500 text-sm text-center font-medium mt-4">
               {error}
             </p>
           )}
         </form>
 
-        {/* Footer */}
-        <p className="text-center text-sm text-gray-500 mt-12">
-          Copyright © 2024 XPProperty
+        
+        <p className="text-center text-sm text-gray-400 mt-7">
+          Copyright © 2024 YTProperty
         </p>
       </div>
 
-      {/* Right Slanted Image Panel */}
+      {/* Right Slanted Background Image */}
       <div className="lg:w-1/2 hidden lg:block relative overflow-hidden">
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 w-full h-full"
           style={{
             clipPath: "polygon(50% 0, 100% 0, 100% 100%, 0% 100%)",
             backgroundImage: `url(${buildingImg})`,
