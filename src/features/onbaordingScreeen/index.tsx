@@ -6,7 +6,7 @@ import startIcon from "../../assets/icons/iconSTEP3.svg";
 const OnboardingScreen = () => {
   const navigate = useNavigate();
   const handleStart = () => {
-    navigate("/add-listing");
+    navigate("/all-listing");
   };
 
   const steps = [

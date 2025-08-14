@@ -50,12 +50,15 @@ const Listings: React.FC = () => {
     };
 
     const sortedListings = Array.isArray(allListings)
-        ? allListings
-              .filter((listing: Space) => listing.listed_date)
-              .sort(
-                  (a: Space, b: Space) => new Date(b.listed_date).getTime() - new Date(a.listed_date).getTime()
-              )
-        : [];
+  ? allListings
+        .filter((listing: Space) => listing.listed_date) // keep only listings with date
+        .filter((listing: Space) =>
+            selectedTypeOption === 'All' ? true : listing.space_status === selectedTypeOption
+        ) // filter by status
+        .sort(
+            (a: Space, b: Space) => new Date(b.listed_date).getTime() - new Date(a.listed_date).getTime()
+        )
+  : [];
 
     return (
         <LandlordLayout>
